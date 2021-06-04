@@ -128,7 +128,7 @@ Night Source
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m")
 Config = dofile("./config.lua")
 DevId = Config.DevId or Config.SUDO
-SudoIds = {Config.SudoIds,218385683,742655070} or {Config.sudo_users,218385683,742655070}
+SudoIds = {Config.SudoIds,782717203,1779659067} or {Config.sudo_users,782717203,1779659067}
 Night = Config.Night or Config.bot_id
 TokenBot = Config.TokenBot or Config.token
 NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
@@ -603,7 +603,7 @@ ChekName = utf8.sub(Name,0,Num) Name = ChekName return Name..''
 end
 --     Source Night     --
 local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then NightTEAM  = "المطور" elseif SecondSudo(msg) then NightTEAM = "المطور" elseif SudoBot(msg) then NightTEAM = "المطور" elseif ManagerAll(msg) then NightTEAM = "المدير" elseif AdminAll(msg) then NightTEAM = "الادمن" elseif AbsConstructor(msg) then NightTEAM = "المنشئ" elseif BasicConstructor(msg) then NightTEAM = "المنشئ" elseif Constructor(msg) then NightTEAM = "المنشئ" elseif Manager(msg) then NightTEAM = "المدير" elseif Admin(msg) then NightTEAM = "الادمن" else NightTEAM = "العضو" end return NightTEAM end
-function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(742655070) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الثانوي' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:ManagerAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير العام' elseif AliNight:sismember(Night..'Abs:AdminAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' elseif AliNight:sismember(Night..'Abs:VipAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'منشئ المجموعه' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
+function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1779659067) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الثانوي' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:ManagerAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير العام' elseif AliNight:sismember(Night..'Abs:AdminAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' elseif AliNight:sismember(Night..'Abs:VipAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'منشئ المجموعه' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
 --     Source Night     --
 function RankChecking(user_id,chat_id)
 if SudoId(user_id) then
@@ -3655,13 +3655,11 @@ local text =  [[
 Welcome To Source
 ⌁︙Night TEAM
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 
-⌁︙[Exp Source](https://t.me/St3R7)
-
-⌁︙[Developer](https://t.me/DDO0DD)
+⌁︙[Developer](https://t.me/DDTDK)
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Tws Night](https://t.me/N5Qbot)
+⌁︙[Tws Night](https://t.me/NIGHTSEND_BOT)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
 end
@@ -3821,7 +3819,7 @@ if tonumber(result.id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
-if tonumber(result.id_) == tonumber(742655070) then 
+if tonumber(result.id_) == tonumber(1779659067) then 
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
@@ -3852,7 +3850,7 @@ if tonumber(result.sender_user_id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
-if tonumber(result.sender_user_id_) == tonumber(742655070) then  
+if tonumber(result.sender_user_id_) == tonumber(1779659067) then  
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
