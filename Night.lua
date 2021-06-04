@@ -3,7 +3,7 @@
 -- (abbasfadhil) @abbasfadhil. --
 -- This Is The Source Channel @NightTeaM   --
 --    - Night -                  --
---       -- https://t.me/Night --          --
+--       -- https://t.me/sheserlo0 --          --
 --------------------------------------------- 
 redis = require('redis') 
 URL = require('socket.url') 
@@ -3491,7 +3491,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1,[[
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙نقاطي • بيع نقاطي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]], 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا الالعاب معطله في المجموعه', 1, 'md')
@@ -7855,7 +7855,7 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙التكرار ↫ "..flood.."\n"
 .."⌁︙عدد التكرار ↫ "..Flood_Num.."\n"
 .."⌁︙عدد السبام ↫ "..spam_c.."\n"
-.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/Night)\n"
+.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/sheserlo0)\n"
 Ali_Night(msg.chat_id_, msg.id_, 1, TXTE, 1, 'md')
 end
 end
@@ -9178,7 +9178,7 @@ local text =  [[
 ⌁︙البوتات بالطرد
 ⌁︙البوتات بالتقيد
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end end
@@ -9253,7 +9253,7 @@ local text =  [[
 ⌁︙تقييد يوم + عدد الايام
 ⌁︙الغاء تقييد ↫ لالغاء التقييد بالوقت
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end end
@@ -9314,7 +9314,7 @@ local text =  [[
 ⌁︙ردود المدير • ردود المطور
 ⌁︙ضافني • حساب العمر • الزخرفه
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end end
@@ -9371,7 +9371,7 @@ local text =  [[
 ⌁︙المنشئين الاساسيين 
 ⌁︙حذف جميع الرتب
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end end
@@ -9455,7 +9455,7 @@ local text =  [[
 ⌁︙ترحيب البوت • المغادره
 ⌁︙البوت الخدمي • التواصل
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end end
@@ -9501,7 +9501,7 @@ local text =  [[
 ⌁︙ايدي • كشف  ↫ بالرد • بالمعرف • بالايدي
 ⌁︙تحويل + بالرد ↫ صوره • ملصق • صوت • بصمه
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end
@@ -9833,5 +9833,5 @@ end
 -- (abbasfadhil) @abbasfadhil. --
 -- This Is The Source Channel @NightTeaM   --
 --    - Night -                  --
---       -- https://t.me/Night --          --
+--       -- https://t.me/sheserlo0 --          --
 --------------------------------------------- 
