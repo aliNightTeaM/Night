@@ -9488,7 +9488,7 @@ if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس نايت', 1, 'md') 
 os.execute('rm -rf Night.lua') 
-os.execute('wget https://raw.githubusercontent.com/NightTEM/Night/master/Night.lua') 
+os.execute('wget https://raw.githubusercontent.com/aliNightTeaM/Night/main/Night.lua') 
 dofile('Night.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
@@ -9516,7 +9516,7 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/NightTEM/NightFiles/master/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
@@ -9548,7 +9548,7 @@ end
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTEM/NightFiles/master/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 os.execute("rm -fr Files/"..FileName)
 send(msg.chat_id_, msg.id_,"\n⌁︙الملف ↫ *"..FileName.."*\n⌁︙تم تعطيله وحذفه من البوت بنجاح") 
@@ -9560,7 +9560,7 @@ end
 if text and text:match("^(تفعيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تفعيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTEM/NightFiles/master/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 local ChekAuto = io.open("Files/"..FileName,'w+')
 ChekAuto:write(GetJson)
