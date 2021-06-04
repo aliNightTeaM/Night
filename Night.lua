@@ -3823,10 +3823,6 @@ if tonumber(result.id_) == tonumber(1779659067) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
-if tonumber(result.id_) == tonumber(782717203) then 
-Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
-return false  
-end 
 if AliNight:sismember(Night.."Abs:AbsConstructor:"..msg.chat_id_,result.id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
@@ -3855,10 +3851,6 @@ Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج را
 return false
 end 
 if tonumber(result.sender_user_id_) == tonumber(1779659067) then  
-Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
-return false
-end 
-if tonumber(result.sender_user_id_) == tonumber(782717203) then  
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
