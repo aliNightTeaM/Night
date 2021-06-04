@@ -9108,7 +9108,7 @@ local text =  [[
 ⌁︙م5 ↫ اوامر المطورين
 ⌁︙م6 ↫ اوامر الاعضاء
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/Night)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]] 
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
 end
@@ -9698,7 +9698,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم يتم تعيين قناة ال�
 end end end end
 --     Source Night     --
 if text == 'القناة' or text == 'قناة السورس' or text == 'قناه السورس' or text == 'قنات السورس' then 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ @Night', 1, 'html')    
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ @sheserlo0', 1, 'html')    
 end 
 --     Source Night     --
 if Sudo(msg) then 
