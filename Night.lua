@@ -2576,6 +2576,11 @@ if not AliNight:get(Night.."Abs:Lock:Fshar"..msg.chat_id_) and not VipMem(msg) t
 DeleteMessage(msg.chat_id_,{[0] = msg.id_})
 ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙ممنوع الفشار في المجموعه")  
 end end
+if text and (text:match("طيز") or text:match("ديس") or text:match("انيج") or text:match("نيج") or text:match("ديوس") or text:match("عير") or text:match("كسختك") or text:match("كسمك") or text:match("كسربك") or text:match("بلاع") or text:match("ابو العيوره") or text:match("منيوج") or text:match("كحبه") or text:match("كحاب") or text:match("الكحبه") or text:match("كسك") or text:match("طيزك") or text:match("كس امك") or text:match("صرم") or text:match("كس اختك")) then
+if not AliNight:get(Night.."Abs:Lock:abahi"..msg.chat_id_) and not VipMem(msg) then
+DeleteMessage(msg.chat_id_,{[0] = msg.id_})
+ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙ممنوع الفشار في المجموعه")  
+end end
 if text and (text:match("ڬ") or text:match("ٺ") or text:match("چ") or text:match("ڇ") or text:match("ڿ") or text:match("ڀ") or text:match("ڎ") or text:match("ݫ") or text:match("ژ") or text:match("ڟ") or text:match("ݜ") or text:match("ڸ") or text:match("پ") or text:match("۴") or text:match("مک") or text:match("زدن") or text:match("دخترا") or text:match("دیوث") or text:match("کلیپشن") or text:match("خوششون") or text:match("میدا") or text:match("که") or text:match("بدانیم") or text:match("باید") or text:match("زناشویی") or text:match("آموزش") or text:match("راحتی") or text:match("خسته") or text:match("بیام") or text:match("بپوشم") or text:match("كرمه")) then
 if AliNight:get(Night.."Abs:Lock:Farsi"..msg.chat_id_) and not VipMem(msg) then
 DeleteMessage(msg.chat_id_,{[0] = msg.id_})
@@ -6555,6 +6560,14 @@ else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الفشار بالفعل مقفل في المجموعه', 1, 'md')
 end
 end
+if LockText[2] == "الاباحي" then
+if AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل الاباحي")  
+AliNight:del(Night..'Abs:Lock:abahi'..msg.chat_id_)
+else
+Ali_Night(msg.chat_id_, msg.id_, 1, 'الاباحي بالفعل مقفل في المجموعه', 1, 'md')
+end
+end
 if LockText[2] == "الطائفيه" then
 if AliNight:get(Night..'Abs:Lock:Taf'..msg.chat_id_) then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل الطائفيه")  
@@ -6998,6 +7011,14 @@ ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح الفشار")
 AliNight:set(Night..'Abs:Lock:Fshar'..msg.chat_id_,true)
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الفشار بالفعل مفتوح في المجموعه', 1, 'md')
+end
+end
+if UnLockText[2] == "الاباحي" then
+if not AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح الاباحي")  
+AliNight:set(Night..'Abs:Lock:abahi'..msg.chat_id_,true)
+else
+Ali_Night(msg.chat_id_, msg.id_, 1, 'الاباحي بالفعل مفتوح في المجموعه', 1, 'md')
 end
 end
 if UnLockText[2] == "الطائفيه" then
@@ -7825,6 +7846,7 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙الشبكات ↫ "..lock_wp.."\n"
 .."⌁︙المواقع ↫ "..lock_location.."\n"
 .."⌁︙الفشار ↫ "..lock_fshar.."\n"
+.."⌁︙الاباحي ↫ "..lock_abahi.."\n"
 .."⌁︙الكفر ↫ "..lock_kaf.."\n"
 .."⌁︙الطائفيه ↫ "..lock_taf.."\n"
 .."⌁︙العربيه ↫ "..lock_arabic.."\n"
@@ -8113,6 +8135,7 @@ if text == "العربيه" then if AliNight:get(Night..'Abs:Lock:Arabic'..msg.c
 if text == "الانكليزيه" then if AliNight:get(Night..'Abs:Lock:English'..msg.chat_id_) then lock_english = 'مقفوله' else lock_english = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الانكليزيه ↫ "..lock_english.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
 if text == "الكفر" then if AliNight:get(Night..'Abs:Lock:Kfr'..msg.chat_id_) then lock_kaf = 'مفتوح' else lock_kaf = 'مقفل' end local NightTEAM = "\n" .."⌁︙الكفر ↫ "..lock_kaf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
 if text == "الفشار" then if AliNight:get(Night..'Abs:Lock:Fshar'..msg.chat_id_) then lock_fshar = 'مفتوح' else lock_fshar = 'مقفل' end local NightTEAM = "\n" .."⌁︙الفشار ↫ "..lock_fshar.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
+if text == "الاباحي" then if AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then lock_abahi = 'مفتوح' else lock_abahi = 'مقفل' end local NightTEAM = "\n" .."⌁︙الاباحي ↫ "..lock_fshar.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
 if text == "الطائفيه" then if AliNight:get(Night..'Abs:Lock:Taf'..msg.chat_id_) then lock_taf = 'مفتوحه' else lock_taf = 'مقفله' end local NightTEAM = "\n" .."⌁︙الطائفيه ↫ "..lock_taf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
 end
 --     Source Night     --
@@ -9136,6 +9159,7 @@ local text =  [[
 ⌁︙قفل • فتح ↫ الشبكات
 ⌁︙قفل • فتح ↫ المواقع
 ⌁︙قفل • فتح ↫ الفشار
+⌁︙قفل • فتح ↫ الاباحي
 ⌁︙قفل • فتح ↫ الكفر
 ⌁︙قفل • فتح ↫ الطائفيه
 ⌁︙قفل • فتح ↫ الكل
