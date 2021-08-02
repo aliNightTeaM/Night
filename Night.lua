@@ -1,43 +1,38 @@
 ---------------------------------------------
--- This Source Was Developed By  --
+-- This Source Was Developed By abbas      --
 -- (abbasfadhil) @abbasfadhil. --
 -- This Is The Source Channel @NightTeaM   --
---    - Night -                  --
---       -- https://t.me/sheserlo0 --          --
+--                 - Night -               --
+--       -- https://t.me/sheserlo0 --      --
 --------------------------------------------- 
-redis = require('redis') 
-URL = require('socket.url') 
-HTTPS = require ("ssl.https") 
-https = require ("ssl.https") 
-http  = require ("socket.http") 
-serpent = require("serpent") 
-json = dofile('./JSON.lua') 
-JSON = dofile('./dkjson.lua') 
-lgi = require('lgi') 
-notify = lgi.require('Notify') 
-utf8 = require ('lua-utf8') 
-notify.init ("Telegram updates") 
-AliNight = redis.connect('127.0.0.1', 6379) 
-User = io.popen("whoami"):read('*a'):gsub('[\n\r]+', '')
-ServerNight = io.popen("echo $SSH_CLIENT | awk '{ print $1}'"):read('*a') 
-Ip = io.popen("dig +short myip.opendns.com @resolver1.opendns.com"):read('*a'):gsub('[\n\r]+', '')
-Name = io.popen("uname -a | awk '{ name = $2 } END { print name }'"):read('*a'):gsub('[\n\r]+', '')
-Port = io.popen("echo ${SSH_CLIENT} | awk '{ port = $3 } END { print port }'"):read('*a'):gsub('[\n\r]+', '')
-UpTime = io.popen([[uptime | awk -F'( |,|:)+' '{if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days,",h+0,"hours,",m+0,"minutes"}']]):read('*a'):gsub('[\n\r]+', '')
+AliNight  = dofile("./libs/redis.lua").connect("127.0.0.1", 6379)
+serpent = dofile("./libs/serpent.lua")
+JSON    = dofile("./libs/dkjson.lua")
+json    = dofile("./libs/JSON.lua")
+URL     = dofile("./libs/url.lua")
+http    = require("socket.http") 
+HTTPS   = require("ssl.https") 
+https   = require("ssl.https") 
+User    = io.popen("whoami"):read('*a'):gsub('[\n\r]+', '')
+Server  = io.popen("echo $SSH_CLIENT | awk '{ print $1}'"):read('*a') 
+Ip      = io.popen("dig +short myip.opendns.com @resolver1.opendns.com"):read('*a'):gsub('[\n\r]+', '')
+Name    = io.popen("uname -a | awk '{ name = $2 } END { print name }'"):read('*a'):gsub('[\n\r]+', '')
+Port    = io.popen("echo ${SSH_CLIENT} | awk '{ port = $3 } END { print port }'"):read('*a'):gsub('[\n\r]+', '')
+UpTime  = io.popen([[uptime | awk -F'( |,|:)+' '{if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days,",h+0,"hours,",m+0,"minutes"}']]):read('*a'):gsub('[\n\r]+', '')
 --     Source Night     --
 local AutoSet = function() 
-if not AliNight:get(ServerNight.."IdNight") then 
+if not AliNight:get(Server.."IdNight") then 
 io.write('\27[1;35m\nالان ارسل ايدي المطور الاساسي ↫ ⤈\n\27[0;33;49m') 
 local DevId = io.read():gsub(' ','') 
 if tostring(DevId):match('%d+') then 
 io.write('\27[1;36mتم حفظ ايدي المطور الاساسي\n27[0;39;49m') 
-AliNight:set(ServerNight.."IdNight",DevId) 
+AliNight:set(Server.."IdNight",DevId) 
 else 
 print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nلم يتم حفظ ايدي المطور الاساسي ارسله مره اخرى\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
 end 
 os.execute('lua Night.lua') 
 end 
-if not AliNight:get(ServerNight.."TokenNight") then 
+if not AliNight:get(Server.."TokenNight") then 
 io.write('\27[1;35m\nالان قم بارسال توكن البوت ↫ ⤈\n\27[0;33;49m') 
 local TokenBot = io.read() 
 if TokenBot ~= '' then 
@@ -46,7 +41,7 @@ if res ~= 200 then
 print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nالتوكن غير صحيح تاكد منه ثم ارسله\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
 else 
 io.write('\27[1;36mتم حفظ توكن البوت بنجاح\n27[0;39;49m') 
-AliNight:set(ServerNight.."TokenNight",TokenBot) 
+AliNight:set(Server.."TokenNight",TokenBot) 
 end  
 else 
 print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nلم يتم حفظ توكن البوت ارسله مره اخرى\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
@@ -66,28 +61,28 @@ file:close()
 end
 local CreateConfigAuto = function()
 Config = {
-DevId = AliNight:get(ServerNight.."IdNight"),
-TokenBot = AliNight:get(ServerNight.."TokenNight"),
-Night = AliNight:get(ServerNight.."TokenNight"):match("(%d+)"),
-SudoIds = {AliNight:get(ServerNight.."IdNight")},
+DevId = AliNight:get(Server.."IdNight"),
+TokenBot = AliNight:get(Server.."TokenNight"),
+Night = AliNight:get(Server.."TokenNight"):match("(%d+)"),
+SudoIds = {AliNight:get(Server.."IdNight")},
 }
-Create(Config, "./config.lua")   
+Create(Config, "./config.lua") 
 file = io.open("Night.sh", "w")  
 file:write([[
 #!/usr/bin/env bash
 cd $HOME/Night
-token="]]..AliNight:get(ServerNight.."TokenNight")..[["
+token="]]..AliNight:get(Server.."TokenNight")..[["
 while(true) do
 rm -fr ../.telegram-cli
 if [ ! -f ./tg ]; then
 echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
-echo "~ The tg File Was Not Found In The Bot Files"
+echo "~ The tg File Was Not Found In The Bot Files!"
 echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 exit 1
 fi
 if [ ! $token ]; then
 echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
-echo "~ The Token Was Not Found In The config.lua File"
+echo "~ The Token Was Not Found In The config.lua File!"
 echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 exit 1
 fi
@@ -117,21 +112,23 @@ if not f then
 AutoSet() 
 else 
 f:close() 
-AliNight:del(ServerNight.."IdNight");AliNight:del(ServerNight.."TokenNight")
+AliNight:del(Server.."IdNight");AliNight:del(Server.."TokenNight")
 end 
 local config = loadfile("./config.lua")() 
 return config 
 end  
 Load_Night() 
 print("\27[36m"..[[                                           
-Night Source
+---------------------------------------------
+|               - Night -                 |
+---------------------------------------------
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m")
 Config = dofile("./config.lua")
-DevId = Config.DevId or Config.SUDO
+DevId = Config.DevId
 SudoIds = {Config.SudoIds,782717203,1809393499,1779659067,1746615144} or {Config.sudo_users,782717203,1809393499,1779659067,1746615144}
-Night = Config.Night or Config.bot_id
-TokenBot = Config.TokenBot or Config.token
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
+Night = Config.Night
+TokenBot = Config.TokenBot
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
 --     Source Night     --
 FilesPrint = "\27[35m".."\nAll Source Files Started ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"..'\27[m'
 FilesNumber = 0
@@ -227,7 +224,7 @@ return false
 end  
 end
 --     Source Night     --
------- VIP MEMBER ALL ------
+------ Vip Member All ------
 function VipAll(msg) 
 local Status = AliNight:sismember(Night..'Abs:VipAll:',msg.sender_user_id_) 
 if Status or SudoBot(msg) or ManagerAll(msg) or AdminAll(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
@@ -397,7 +394,7 @@ send(chat,msg.id_,"⌁︙عذرا هذا الملف ليس تابع لهذا ا�
 return false 
 end
 send(chat,msg.id_,"⌁︙جاري رفع الملف ... .")
-local File = json:decode(https.request('https://api.telegram.org/bot' .. TokenBot .. '/getfile?file_id='..ID_FILE) ) 
+local File = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/getfile?file_id='..ID_FILE) ) 
 download_to_file('https://api.telegram.org/file/bot'..TokenBot..'/'..File.result.file_path, ''..File_Name) 
 else
 send(chat,msg.id_,"⌁︙عذرا الملف ليس بصيغة ↫ Json يرجى رفع الملف الصحيح")
@@ -505,11 +502,6 @@ function ChatLeave(chat_id, user_id)
 changeChatMemberStatus(chat_id, user_id, "Left")
 end
 --     Source Night     --
-function do_notify(user, msg)
-local n = notify.Notification.new(user, msg)
-n:show ()
-end
---     Source Night     --
 function ChatKick(chat_id, user_id)
 changeChatMemberStatus(chat_id, user_id, "Kicked")
 end
@@ -587,7 +579,7 @@ end
 --     Source Night     --
 function EditMsg(chat_id, message_id, text, markdown) local send_api = "https://api.telegram.org/bot"..TokenBot.."/editMessageText?chat_id="..chat_id.."&message_id="..message_id.."&text="..URL.escape(text).."&parse_mode=Markdown&disable_web_page_preview=true" return GetApi(send_api)  end
 --     Source Night     --
-function pin(channel_id, message_id, disable_notification) 
+function Pin(channel_id, message_id, disable_notification) 
 tdcli_function ({ 
 ID = "PinChannelMessage", 
 channel_id_ = getChatId(channel_id).ID, 
@@ -598,11 +590,7 @@ vardump(data)
 end ,nil) 
 end
 --     Source Night     --
-function CatchName(Name,Num) 
-ChekName = utf8.sub(Name,0,Num) Name = ChekName return Name..'' 
-end
---     Source Night     --
-local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then NightTEAM  = "المطور" elseif SecondSudo(msg) then NightTEAM = "المطور" elseif SudoBot(msg) then NightTEAM = "المطور" elseif ManagerAll(msg) then NightTEAM = "المدير" elseif AdminAll(msg) then NightTEAM = "الادمن" elseif AbsConstructor(msg) then NightTEAM = "المنشئ" elseif BasicConstructor(msg) then NightTEAM = "المنشئ" elseif Constructor(msg) then NightTEAM = "المنشئ" elseif Manager(msg) then NightTEAM = "المدير" elseif Admin(msg) then NightTEAM = "الادمن" else NightTEAM = "العضو" end return NightTEAM end
+local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then NightTeaM  = "المطور" elseif SecondSudo(msg) then NightTeaM = "المطور" elseif SudoBot(msg) then NightTeaM = "المطور" elseif ManagerAll(msg) then NightTeaM = "المدير" elseif AdminAll(msg) then NightTeaM = "الادمن" elseif AbsConstructor(msg) then NightTeaM = "المالك" elseif BasicConstructor(msg) then NightTeaM = "المنشئ" elseif Constructor(msg) then NightTeaM = "المنشئ" elseif Manager(msg) then NightTeaM = "المدير" elseif Admin(msg) then NightTeaM = "الادمن" else NightTeaM = "العضو" end return NightTeaM end
 function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1779659067) then NightTEAM = 'مطور السورس' elseif tonumber(user_id) == tonumber(782717203) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الثانوي' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:ManagerAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير العام' elseif AliNight:sismember(Night..'Abs:AdminAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' elseif AliNight:sismember(Night..'Abs:VipAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'منشئ المجموعه' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
 --     Source Night     --
 function RankChecking(user_id,chat_id)
@@ -809,16 +797,27 @@ function absmoned(chat_id, user_id, msg_id, text, offset, length) local tt = Ali
 --     Source Night     --
 function ChCheck(msg)
 local var = true 
-if AliNight:get(Night.."AliNight2") then
-local url , res = https.request('https://api.telegram.org/bot'..TokenBot..'/getchatmember?chat_id='..AliNight:get(Night..'AliNight2')..'&user_id='..msg.sender_user_id_)
+if AliNight:get(Night.."Abs:ChId") then
+local url , res = https.request('https://api.telegram.org/bot'..TokenBot..'/getchatmember?chat_id='..AliNight:get(Night..'Abs:ChId')..'&user_id='..msg.sender_user_id_)
 local data = json:decode(url)
 if res ~= 200 or data.result.status == "left" or data.result.status == "kicked" then
 var = false 
-if AliNight:get(Night..'Abs:textch:user') then
-local textchuser = AliNight:get(Night..'Abs:textch:user')
-send(msg.chat_id_,msg.id_,'['..textchuser..']')
+if AliNight:get(Night..'Abs:ChText') then
+local ChText = AliNight:get(Night..'Abs:ChText')
+send(msg.chat_id_,msg.id_,'['..ChText..']')
 else
-send(msg.chat_id_,msg.id_,"⌁︙عليك الاشتراك في قناة البوت \n⌁︙قناة البوت ↫ ["..AliNight:get(Night..'AliNight3').."]")
+local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChat?chat_id='..AliNight:get(Night.."Abs:ChId"))
+local GetInfo = JSON.decode(Check)
+if GetInfo.result.username then
+User = "https://t.me/"..GetInfo.result.username
+else
+User = GetInfo.result.invite_link
+end
+Text = "⌁︙عذرا لاتستطيع استخدام البوت !\n⌁︙عليك الاشتراك في القناة اولا :"
+keyboard = {} 
+keyboard.inline_keyboard = {{{text=GetInfo.result.title,url=User}}} 
+Msg_id = msg.id_/2097152/0.5
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
 elseif data.ok then
 return var
@@ -827,7 +826,6 @@ else
 return var
 end
 end
-chats = {}
 function tdcli_update_callback(data)
 if (data.ID == "UpdateNewCallbackQuery") then
 local Chat_Id2 = data.chat_id_
@@ -889,7 +887,7 @@ AliNight:srem(Night..'Abs:Admins:'..data.chat_id_,data.sender_user_id_)
 AliNight:srem(Night..'Abs:VipMem:'..data.chat_id_,data.sender_user_id_)
 AliNight:srem(Night..'Abs:Cleaner:'..data.chat_id_,data.sender_user_id_)
 AliNight:srem(Night..'User:Donky:'..data.chat_id_,data.sender_user_id_)
-EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم تنزيلك من ↫ ⤈\n~ ( "..constructor..''..Managers..''..admins..''..vipmem..''..cleaner..''..donky.." ) ~ \n") 
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم تنزيلك من ↫ ⤈\n~ ( "..constructor..Managers..admins..vipmem..cleaner..donky.." ) ~ \n") 
 else 
 if IdRank(data.sender_user_id_, data.chat_id_) == 'العضو' then
 EditMsg(Chat_Id2, Msg_Id2, "⌁︙ليس لديك رتبه في البوت") 
@@ -907,10 +905,10 @@ end
 if DataText == '/setyes' then
 local NewDev = AliNight:get(Night.."Abs:NewDev"..data.sender_user_id_)
 tdcli_function ({ID = "GetUser",user_id_ = NewDev},function(arg,dp) 
-EditMsg(Chat_Id2, Msg_Id2, "⌁︙المطور الجديد ↫ ["..CatchName(dp.first_name_,15).."](tg://user?id="..dp.id_..")\n⌁︙تم تغير المطور الاساسي بنجاح") 
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙المطور الجديد ↫ ["..dp.first_name_.."](tg://user?id="..dp.id_..")\n⌁︙تم تغير المطور الاساسي بنجاح") 
 end,nil)
 tdcli_function ({ID = "GetUser",user_id_ = data.sender_user_id_},function(arg,dp) 
-SendText(NewDev,"⌁︙بواسطة ↫ ["..CatchName(dp.first_name_,15).."](tg://user?id="..dp.id_..")\n⌁︙لقد اصبحت انت مطور هذا البوت",0,'md')
+SendText(NewDev,"⌁︙بواسطة ↫ ["..dp.first_name_.."](tg://user?id="..dp.id_..")\n⌁︙لقد اصبحت انت مطور هذا البوت",0,'md')
 end,nil)
 local Create = function(data, file, uglify)  
 file = io.open(file, "w+")   
@@ -966,11 +964,445 @@ keyboard = {}
 keyboard.inline_keyboard = {{{text="نعم",callback_data="/YesRolet"},{text="لا",callback_data="/NoRolet"}}} 
 return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Text..Textt).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
+if DataText == '/UnTkeed' then
+if AliNight:sismember(Night..'Abs:Tkeed:'..Chat_Id2, data.sender_user_id_) then
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..Chat_Id2.."&user_id="..data.sender_user_id_.."&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")
+AliNight:srem(Night..'Abs:Tkeed:'..Chat_Id2, data.sender_user_id_)
+DeleteMessage(Chat_Id2,{[0] = MsgId2})
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ تم الغاء تقيدك من المجموعه بنجاح .")..'&show_alert=true')
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا هذا الامر لكشف الروبوت وليس لك .")..'&show_alert=true')
+end 
+end
+if DataText and DataText:match('/DelRed:'..tonumber(data.sender_user_id_)..'(.*)') then
+local Abbs = DataText:match('/DelRed:'..tonumber(data.sender_user_id_)..'(.*)')
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙الكلمه ↫ "..Abbs.." تم حذفها") 
+AliNight:del(Night..'Abs:Text:GpTexts'..Abbs..data.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRedod'..data.chat_id_,Abbs)
+end
+if DataText and DataText:match('/EndRedod:'..tonumber(data.sender_user_id_)..'(.*)') then
+local Abbs = DataText:match('/EndRedod:'..tonumber(data.sender_user_id_)..'(.*)')
+local List = AliNight:smembers(Night..'Abs:Text:GpTexts'..Abbs..data.chat_id_)
+if AliNight:get(Night..'Abs:Add:GpRedod'..data.sender_user_id_..data.chat_id_) then
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم انهاء وحفظ ↫ "..#List.." من الردود المتعدده للامر ↫ "..Abbs) 
+AliNight:del(Night..'Abs:Add:GpRedod'..data.sender_user_id_..data.chat_id_)
+else
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙عذرا صلاحية الامر منتهيه !") 
+end
+end
+if DataText and DataText:match('/DelRedod:'..tonumber(data.sender_user_id_)..'(.*)') then
+local Abbs = DataText:match('/DelRedod:'..tonumber(data.sender_user_id_)..'(.*)')
+if AliNight:get(Night..'Abs:Add:GpRedod'..data.sender_user_id_..data.chat_id_) then
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم الغاء عملية حفظ الردود المتعدده للامر ↫ "..Abbs) 
+AliNight:del(Night..'Abs:Add:GpRedod'..data.sender_user_id_..data.chat_id_)
+AliNight:del(Night..'Abs:Text:GpTexts'..Abbs..data.chat_id_)
+AliNight:del(Night..'Abs:Add:GpTexts'..data.sender_user_id_..data.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRedod'..data.chat_id_,Abbs)
+else
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙عذرا صلاحية الامر منتهيه !") 
+end
+end
+if DataText and DataText:match('/HideHelpList:(.*)') then
+local Abbs = DataText:match('/HideHelpList:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم اخفاء كليشة الاوامر") 
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList:(.*)') then
+local Abbs = DataText:match('/HelpList:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+local Help = AliNight:get(Night..'Abs:Help')
+local Text = [[
+⌁︙اهلا بك في قائمة الاوامر ↫ ⤈ 
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙م1 ↫ اوامر الحمايه
+⌁︙م2 ↫ اوامر الادمنيه
+⌁︙م3 ↫ اوامر المدراء
+⌁︙م4 ↫ اوامر المنشئين
+⌁︙م5 ↫ اوامر المطورين
+⌁︙م6 ↫ اوامر الاعضاء
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]] 
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList1:(.*)') then
+local Abbs = DataText:match('/HelpList1:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+if not Admin(data) then
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا ليس لديك صلاحية التحكم لهذا الامر .")..'&show_alert=true')
+end
+local Help = AliNight:get(Night..'Abs:Help1')
+local Text = [[
+⌁︙اوامر حماية المجموعه ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙قفل • فتح ↫ الروابط
+⌁︙قفل • فتح ↫ المعرفات
+⌁︙قفل • فتح ↫ البوتات
+⌁︙قفل • فتح ↫ المتحركه
+⌁︙قفل • فتح ↫ الملصقات
+⌁︙قفل • فتح ↫ الملفات
+⌁︙قفل • فتح ↫ الصور
+⌁︙قفل • فتح ↫ الفيديو
+⌁︙قفل • فتح ↫ الاونلاين
+⌁︙قفل • فتح ↫ الدردشه
+⌁︙قفل • فتح ↫ التوجيه
+⌁︙قفل • فتح ↫ الاغاني
+⌁︙قفل • فتح ↫ الصوت
+⌁︙قفل • فتح ↫ الجهات
+⌁︙قفل • فتح ↫ الماركداون
+⌁︙قفل • فتح ↫ التكرار
+⌁︙قفل • فتح ↫ الهاشتاك
+⌁︙قفل • فتح ↫ التعديل
+⌁︙قفل • فتح ↫ الاباحي
+⌁︙قفل • فتح ↫ التثبيت
+⌁︙قفل • فتح ↫ الاشعارات
+⌁︙قفل • فتح ↫ الكلايش
+⌁︙قفل • فتح ↫ الدخول
+⌁︙قفل • فتح ↫ الشبكات
+⌁︙قفل • فتح ↫ المواقع
+⌁︙قفل • فتح ↫ الفشار
+⌁︙قفل • فتح ↫ الكفر
+⌁︙قفل • فتح ↫ الطائفيه
+⌁︙قفل • فتح ↫ الكل
+⌁︙قفل • فتح ↫ العربيه
+⌁︙قفل • فتح ↫ الانكليزيه
+⌁︙قفل • فتح ↫ الفارسيه
+⌁︙قفل • فتح ↫ التفليش
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙اوامر حمايه اخرى ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙قفل • فتح + الامر ↫ ⤈
+⌁︙التكرار بالطرد
+⌁︙التكرار بالكتم
+⌁︙التكرار بالتقيد
+⌁︙الفارسيه بالطرد
+⌁︙البوتات بالطرد
+⌁︙البوتات بالتقيد
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList2:(.*)') then
+local Abbs = DataText:match('/HelpList2:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+if not Admin(data) then
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا ليس لديك صلاحية التحكم لهذا الامر .")..'&show_alert=true')
+end
+local Help = AliNight:get(Night..'Abs:Help2')
+local Text = [[
+⌁︙اوامر الادمنيه ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙الاعدادت
+⌁︙تاك للكل 
+⌁︙انشاء رابط
+⌁︙ضع وصف
+⌁︙ضع رابط
+⌁︙ضع صوره
+⌁︙حذف الرابط
+⌁︙حذف المطايه
+⌁︙كشف البوتات
+⌁︙طرد البوتات
+⌁︙تنظيف + العدد
+⌁︙تنظيف التعديل
+⌁︙كللهم + الكلمه
+⌁︙اسم البوت + الامر
+⌁︙ضع • حذف ↫ ترحيب
+⌁︙ضع • حذف ↫ قوانين
+⌁︙اضف • حذف ↫ صلاحيه
+⌁︙الصلاحيات • حذف الصلاحيات
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙ضع سبام + العدد
+⌁︙ضع تكرار + العدد
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙رفع مميز • تنزيل مميز
+⌁︙المميزين • حذف المميزين
+⌁︙كشف القيود • رفع القيود
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙حذف • مسح + بالرد
+⌁︙منع • الغاء منع
+⌁︙قائمه المنع
+⌁︙حذف قائمه المنع
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تفعيل • تعطيل ↫ الرابط
+⌁︙تفعيل • تعطيل ↫ الالعاب
+⌁︙تفعيل • تعطيل ↫ الترحيب
+⌁︙تفعيل • تعطيل ↫ التاك للكل
+⌁︙تفعيل • تعطيل ↫ كشف الاعدادات
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙طرد المحذوفين
+⌁︙طرد ↫ بالرد • بالمعرف • بالايدي
+⌁︙كتم • الغاء كتم
+⌁︙تقيد • الغاء تقيد
+⌁︙حظر • الغاء حظر
+⌁︙المكتومين • حذف المكتومين
+⌁︙المقيدين • حذف المقيدين
+⌁︙المحظورين • حذف المحظورين
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تقييد دقيقه + عدد الدقائق
+⌁︙تقييد ساعه + عدد الساعات
+⌁︙تقييد يوم + عدد الايام
+⌁︙الغاء تقييد ↫ لالغاء التقييد بالوقت
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList3:(.*)') then
+local Abbs = DataText:match('/HelpList3:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+if not Admin(data) then
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا ليس لديك صلاحية التحكم لهذا الامر .")..'&show_alert=true')
+end
+local Help = AliNight:get(Night..'Abs:Help3')
+local Text = [[
+⌁︙اوامر المدراء ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙فحص البوت
+⌁︙ضع اسم + الاسم
+⌁︙اضف • حذف ↫ رد
+⌁︙ردود المدير
+⌁︙حذف ردود المدير
+⌁︙اضف • حذف ↫ رد متعدد
+⌁︙حذف رد من متعدد
+⌁︙الردود المتعدده
+⌁︙حذف الردود المتعدده
+⌁︙حذف قوائم المنع
+⌁︙منع ↫ بالرد على ( ملصق • صوره • متحركه )
+⌁︙حذف قائمه منع + ↫ ⤈
+( الصور • المتحركات • الملصقات )
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تنزيل الكل
+⌁︙رفع ادمن • تنزيل ادمن
+⌁︙الادمنيه • حذف الادمنيه
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تثبيت
+⌁︙الغاء التثبيت
+⌁︙اعاده التثبيت
+⌁︙الغاء تثبيت الكل
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تغير رد + اسم الرتبه + النص ↫ ⤈
+⌁︙المطور • منشئ الاساسي
+⌁︙المنشئ • المدير • الادمن
+⌁︙المميز • المنظف • العضو
+⌁︙حذف ردود الرتب
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تغيير الايدي ↫ لتغيير الكليشه
+⌁︙تعيين الايدي ↫ لتعيين الكليشه
+⌁︙حذف الايدي ↫ لحذف الكليشه
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تفعيل • تعطيل + الامر ↫ ⤈
+⌁︙اطردني • الايدي بالصوره • الابراج
+⌁︙معاني الاسماء • اوامر النسب • انطق
+⌁︙الايدي • تحويل الصيغ • اوامر التحشيش
+⌁︙ردود المدير • ردود المطور • التحقق
+⌁︙ضافني • حساب العمر • الزخرفه
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList4:(.*)') then
+local Abbs = DataText:match('/HelpList4:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+if not Admin(data) then
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا ليس لديك صلاحية التحكم لهذا الامر .")..'&show_alert=true')
+end
+local Help = AliNight:get(Night..'Abs:Help4')
+local Text = [[
+⌁︙اوامر المنشئين ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تنزيل الكل
+⌁︙الميديا • امسح
+⌁︙تعين عدد الحذف
+⌁︙ترتيب الاوامر
+⌁︙اضف • حذف ↫ امر
+⌁︙حذف الاوامر المضافه
+⌁︙الاوامر المضافه
+⌁︙اضف نقاط ↫ بالرد • بالايدي
+⌁︙اضف رسائل ↫ بالرد • بالايدي
+⌁︙رفع منظف • تنزيل منظف
+⌁︙المنظفين • حذف المنظفين
+⌁︙رفع مدير • تنزيل مدير
+⌁︙المدراء • حذف المدراء
+⌁︙تفعيل • تعطيل + الامر ↫ ⤈
+⌁︙نزلني • امسح
+⌁︙الحظر • الكتم
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙اوامر المنشئين الاساسيين ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙وضع لقب + اللقب
+⌁︙تفعيل • تعطيل ↫ الرفع
+⌁︙رفع منشئ • تنزيل منشئ
+⌁︙المنشئين • حذف المنشئين
+⌁︙رفع • تنزيل ↫ مشرف
+⌁︙رفع بكل الصلاحيات
+⌁︙حذف القوائم
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙اوامر المالكين ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙رفع • تنزيل ↫ منشئ اساسي
+⌁︙حذف المنشئين الاساسيين 
+⌁︙المنشئين الاساسيين 
+⌁︙حذف جميع الرتب
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList5:(.*)') then
+local Abbs = DataText:match('/HelpList5:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+if not Admin(data) then
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا ليس لديك صلاحية التحكم لهذا الامر .")..'&show_alert=true')
+end
+local Help = AliNight:get(Night..'Abs:Help5')
+local Text = [[
+⌁︙اوامر المطورين ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙الكروبات
+⌁︙المطورين
+⌁︙المشتركين
+⌁︙الاحصائيات
+⌁︙المجموعات
+⌁︙اسم البوت + غادر
+⌁︙اسم البوت + تعطيل
+⌁︙كشف + -ايدي المجموعه
+⌁︙رفع مالك • تنزيل مالك
+⌁︙المالكين • حذف المالكين
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙رفع • تنزيل ↫ مدير عام
+⌁︙حذف • المدراء العامين 
+⌁︙رفع • تنزيل ↫ ادمن عام
+⌁︙حذف • الادمنيه العامين 
+⌁︙رفع • تنزيل ↫ مميز عام
+⌁︙حذف • المميزين عام 
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙اوامر المطور الاساسي ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تحديث
+⌁︙الملفات
+⌁︙المتجر
+⌁︙السيرفر
+⌁︙روابط الكروبات
+⌁︙تحديث السورس
+⌁︙تنظيف الكروبات
+⌁︙تنظيف المشتركين
+⌁︙حذف جميع الملفات
+⌁︙تعيين الايدي العام
+⌁︙تغير المطور الاساسي
+⌁︙حذف معلومات الترحيب
+⌁︙تغير معلومات الترحيب
+⌁︙غادر + -ايدي المجموعه
+⌁︙تعيين عدد الاعضاء + العدد
+⌁︙حظر عام • الغاء العام
+⌁︙كتم عام • الغاء العام
+⌁︙قائمه العام • حذف قائمه العام
+⌁︙وضع • حذف ↫ اسم البوت
+⌁︙اضف • حذف ↫ رد عام
+⌁︙ردود المطور • حذف ردود المطور
+⌁︙تعيين • حذف • جلب ↫ رد الخاص
+⌁︙جلب نسخه الكروبات
+⌁︙رفع النسخه + بالرد على الملف
+⌁︙تعيين • حذف ↫ قناة الاشتراك
+⌁︙جلب كليشه الاشتراك
+⌁︙تغيير • حذف ↫ كليشه الاشتراك
+⌁︙رفع • تنزيل ↫ مطور
+⌁︙المطورين • حذف المطورين
+⌁︙رفع • تنزيل ↫ مطور ثانوي
+⌁︙الثانويين • حذف الثانويين
+⌁︙تعيين • حذف ↫ كليشة الايدي
+⌁︙اذاعه للكل بالتوجيه ↫ بالرد
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙تفعيل ملف + اسم الملف
+⌁︙تعطيل ملف + اسم الملف
+⌁︙تفعيل • تعطيل + الامر ↫ ⤈
+⌁︙الاذاعه • الاشتراك الاجباري
+⌁︙ترحيب البوت • المغادره
+⌁︙البوت الخدمي • التواصل
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
+if DataText and DataText:match('/HelpList6:(.*)') then
+local Abbs = DataText:match('/HelpList6:(.*)')
+if tonumber(Abbs) == tonumber(data.sender_user_id_) then
+local Help = AliNight:get(Night..'Abs:Help6')
+local Text = [[
+⌁︙اوامر الاعضاء ↫ ⤈
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙السورس • موقعي • رتبتي • معلوماتي 
+⌁︙رقمي • لقبي • نبذتي • صلاحياتي • غنيلي
+⌁︙رسائلي • حذف رسائلي • اسمي • معرفي 
+⌁︙ايدي •ايديي • جهاتي • راسلني • الالعاب 
+⌁︙نقاطي • بيع نقاطي • القوانين • زخرفه 
+⌁︙رابط الحذف • نزلني • اطردني • المطور 
+⌁︙منو ضافني • مشاهدات المنشور • الرابط 
+⌁︙ايدي المجموعه • معلومات المجموعه 
+⌁︙نسبه الحب • نسبه الكره • نسبه الغباء 
+⌁︙نسبه الرجوله • نسبه الانوثه • التفاعل
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙لقبه + بالرد
+⌁︙كول + الكلمه
+⌁︙زخرفه + اسمك
+⌁︙برج + نوع البرج
+⌁︙معنى اسم + الاسم
+⌁︙بوسه • بوسها ↫ بالرد
+⌁︙احسب + تاريخ ميلادك
+⌁︙رفع مطي • تنزيل مطي • المطايه
+⌁︙هينه • هينها ↫ بالرد • بالمعرف
+⌁︙صيحه • صيحها ↫ بالرد • بالمعرف
+⌁︙صلاحياته ↫ بالرد • بالمعرف • بالايدي
+⌁︙ايدي • كشف  ↫ بالرد • بالمعرف • بالايدي
+⌁︙تحويل + بالرد ↫ صوره • ملصق • صوت • بصمه
+⌁︙انطق + الكلام تدعم جميع اللغات مع الترجمه للعربي
+┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
+⌁︙[Source Channel](https://t.me/YV9YV)
+]]
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
+return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Help or Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
+return https.request("https://api.telegram.org/bot"..TokenBot..'/answercallbackquery?callback_query_id='..data.id_..'&text='..URL.escape("⌁ عذرا الامر ليس لك .")..'&show_alert=true')
+end
+end
 end
 if (data.ID == "UpdateNewMessage") then
 local msg = data.message_
-local d = data.disable_notification_
-local chat = chats[msg.chat_id_]
 text = msg.content_.text_ 
 if text and AliNight:get(Night.."Del:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_) == "true" then
 local NewCmmd = AliNight:get(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..text)
@@ -985,8 +1417,8 @@ end
 AliNight:del(Night.."Del:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_)
 return false
 end
-if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ') then
-data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ','')
+if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "جيسون")..' ') then
+data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "جيسون")..' ','')
 end
 if data.message_.content_.text_ then
 local NewCmmd = AliNight:get(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..data.message_.content_.text_)
@@ -1016,9 +1448,9 @@ t = "⌁︙قائمة الاوامر المضافه ↫ ⤈ \n┉ ≈ ┉ ≈ �
 for k,v in pairs(List) do
 Cmds = AliNight:get(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..v)
 if Cmds then 
-t = t..""..k.."~ ("..v..") • {"..Cmds.."}\n"
+t = t..k.."~ ("..v..") • {"..Cmds.."}\n"
 else
-t = t..""..k.."~ ("..v..") \n"
+t = t..k.."~ ("..v..") \n"
 end
 end
 if #List == 0 then
@@ -1033,6 +1465,27 @@ AliNight:del(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..v)
 AliNight:del(Night.."List:Cmd:Group:New"..msg.chat_id_)
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف الاوامر المضافه في المجموعه", 1, 'html')
+end
+if text == "ترتيب الاوامر" then
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":ا","ايدي")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"ا")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":تك","تنزيل الكل")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"تك")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":م","رفع مميز")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"م")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":اد","رفع ادمن")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"اد")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":مد","رفع مدير")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"مد")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":من","رفع منشئ")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"من")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":اس","رفع منشئ اساسي")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"اس")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":تعط","تعطيل الايدي بالصوره")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"تعط")
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":تفع","تفعيل الايدي بالصوره")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"تفع")
+send(msg.chat_id_, msg.id_,"⌁︙تم ترتيب الاوامر بالشكل التالي ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙ايدي ↫ ا\n⌁︙تنزيل الكل ↫ تك\n⌁︙رفع مميز ↫ م\n⌁︙رفع ادمن ↫ اد \n⌁︙رفع مدير ↫ مد \n⌁︙رفع منشئ ↫ من \n⌁︙رفع منشئ اساسي ↫ اس  \n⌁︙تفعيل الايدي بالصوره ↫ تفع\n⌁︙تعطيل الايدي بالصوره ↫ تعط\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉")  
 end
 if text == "اضف امر" or text == "اضافة امر" or text == "اضافه امر" and ChCheck(msg) then
 AliNight:set(Night.."Set:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_,"true") 
@@ -1056,9 +1509,9 @@ t = "⌁︙قائمة الصلاحيات المضافه ↫ ⤈ \n┉ ≈ ┉ �
 for k,v in pairs(List) do
 var = AliNight:get(Night.."Comd:New:rt:Abs:"..v..msg.chat_id_)
 if var then
-t = t..""..k.."~ "..v.." • ("..var..")\n"
+t = t..k.."~ "..v.." • ("..var..")\n"
 else
-t = t..""..k.."~ "..v.."\n"
+t = t..k.."~ "..v.."\n"
 end
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, t, 1, 'html')
@@ -1077,7 +1530,7 @@ if text and text:match("^اضف صلاحيه (.*)$") and ChCheck(msg) then
 ComdNew = text:match("^اضف صلاحيه (.*)$")
 AliNight:set(Night.."Comd:New:rt"..msg.chat_id_..msg.sender_user_id_,ComdNew)  
 AliNight:sadd(Night.."Coomds"..msg.chat_id_,ComdNew)  
-AliNight:setex(Night.."Comd:New"..msg.chat_id_..""..msg.sender_user_id_,200,true)  
+AliNight:setex(Night.."Comd:New"..msg.chat_id_..msg.sender_user_id_,200,true)  
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل نوع الصلاحيه \n{ عضو • مميز  • ادمن  • مدير }\n⌁︙ارسل الغاء لالغاء الامر ", 1, 'html')
 end
 if text and text:match("^حذف صلاحيه (.*)$") and ChCheck(msg) or text and text:match("^مسح صلاحيه (.*)$") and ChCheck(msg) then 
@@ -1085,10 +1538,10 @@ ComdNew = text:match("^حذف صلاحيه (.*)$") or text:match("^مسح صلا
 AliNight:del(Night.."Comd:New:rt:Abs:"..ComdNew..msg.chat_id_)
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف الصلاحيه", 1, 'html')
 end
-if AliNight:get(Night.."Comd:New"..msg.chat_id_..""..msg.sender_user_id_) then 
+if AliNight:get(Night.."Comd:New"..msg.chat_id_..msg.sender_user_id_) then 
 if text and text:match("^الغاء$") then 
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر", 1, 'html')
-AliNight:del(Night.."Comd:New"..msg.chat_id_..""..msg.sender_user_id_) 
+AliNight:del(Night.."Comd:New"..msg.chat_id_..msg.sender_user_id_) 
 return false  
 end 
 if text == "مدير" then
@@ -1113,7 +1566,7 @@ if text == "مدير" or text == "ادمن" or text == "مميز" or text == "ع
 local textn = AliNight:get(Night.."Comd:New:rt"..msg.chat_id_..msg.sender_user_id_)  
 AliNight:set(Night.."Comd:New:rt:Abs:"..textn..msg.chat_id_,text)
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اضافة الصلاحيه", 1, 'html')
-AliNight:del(Night.."Comd:New"..msg.chat_id_..""..msg.sender_user_id_) 
+AliNight:del(Night.."Comd:New"..msg.chat_id_..msg.sender_user_id_) 
 return false  
 end 
 end
@@ -1247,7 +1700,7 @@ end
 if ChatType == 'pv' then 
 if text == '/start' or text == 'رجوع ،🔙‘' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '⌁︙مرحبا عزيزي المطور \n⌁︙انت المطور الاساسي هنا \n⌁︙اليك ازرار سورس نايت \n⌁︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '⌁︙مرحبا عزيزي المطور \n⌁︙انت المطور الاساسي هنا \n⌁︙اليك ازرار سورس جيسون \n⌁︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'وضع اسم البوت','↫ تحديث ⌁','وضع كليشه المطور'},
 {'↫ المطورين ⌁','↫ الاحصائيات ⌁'},
@@ -1275,7 +1728,7 @@ return false
 end end
 if text == '~ تعيين كلايش الاوامر ~' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '⌁︙اهلا بك مجددا عزيزي المطور \n⌁︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '⌁︙اهلا بك مجددا عزيزي المطور \n⌁︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس جيسون فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'حذف كليشة الايدي','تعيين كليشة الايدي'},
 {'تعيين امر الاوامر'},
@@ -1394,13 +1847,13 @@ Ali_Night(msg.chat_id_, msg.id_, 1, Start_Source, 1, 'md')
 return false
 end
 if text == 'تفعيل التواصل' or text == '↫ تفعيل التواصل ⌁' then   
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل التواصل بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل التواصل بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Texting:Pv') 
 end
 if text == 'تعطيل التواصل' or text == '↫ تعطيل التواصل ⌁' then  
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل التواصل بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل التواصل بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Texting:Pv',true) 
 end
 end
@@ -1455,7 +1908,7 @@ end
 end
 for i=0,#mem_id do  
 if msg.content_.members_[i].type_.ID == "UserTypeBot" and Bots == "ked" and not VipMem(msg) then
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/restrictChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" .. msg.sender_user_id_ .. "&can_send_messages=false&can_send_media_messages=false&can_send_other_messages=false&can_add_web_page_previews=false")
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id="..msg.sender_user_id_.."&can_send_messages=false&can_send_media_messages=false&can_send_other_messages=false&can_add_web_page_previews=false")
 AliNight:sadd(Night..'Abs:Tkeed:'..msg.chat_id_, msg.sender_user_id_)
 GetInfo = https.request("https://api.telegram.org/bot"..TokenBot.."/kickChatMember?chat_id="..msg.chat_id_.."&user_id="..mem_id[i].id_)
 local JsonInfo = JSON.decode(GetInfo)
@@ -1492,7 +1945,7 @@ local NameChat = NameChat:gsub("`","")
 local NameChat = NameChat:gsub("*","") 
 local NameChat = NameChat:gsub("{","") 
 local NameChat = NameChat:gsub("}","") 
-if not Sudo(msg) then
+if not Sudo(msg) and not Bot(msg) then
 SendText(DevId,"⌁︙تم طرد البوت من المجموعه ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙بواسطة ↫ "..Name.."\n⌁︙اسم المجموعه ↫ ["..NameChat.."]\n⌁︙ايدي المجموعه ↫ ⤈ \n❨ `"..msg.chat_id_.."` ❩\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙الوقت ↫ "..os.date("%I:%M%p").."\n⌁︙التاريخ ↫ "..os.date("%Y/%m/%d").."",0,'md')
 end
 end,nil)
@@ -1536,7 +1989,6 @@ status = 'ادمن'
 else 
 status = 'عضو'
 end
-AliNight:del(Night..'Abs:AbsConstructor:'..msg.chat_id_)
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,abbas) 
 local admins = abbas.members_
 for i=0 , #admins do
@@ -1607,11 +2059,6 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا تستطيع تفعيل هذه �
 end 
 end 
 --     Source Night     --
-if msg.date_ and msg.date_ < tonumber(os.time() - 30) then
-print("*( OLD MESSAGE )*")
-return false
-end
---     Source Night     --
 tdcli_function({ID = "GetUser",user_id_ = msg.sender_user_id_},function(arg,data) 
 if data.username_ ~= false then
 AliNight:set(Night..'Save:UserName'..msg.sender_user_id_,data.username_)
@@ -1619,12 +2066,24 @@ end;end,nil)
 --     Source Night     --
 local ReFalse = tostring(msg.chat_id_)
 if not AliNight:sismember(Night.."Abs:Groups",msg.chat_id_) and not ReFalse:match("^(%d+)") and not SudoBot(msg) then
-print("Return False [ Not Enable ]")
+print("Return False : The Bot Is Not Enabled In The Group")
 return false
 end
 --     Source Night     --
 -------- MSG TYPES ---------
 if msg.content_.ID == "MessageChatJoinByLink" and not VipMem(msg) then 
+if AliNight:get(Night..'Abs:Lock:Robot'..msg.chat_id_) then
+tdcli_function({ID="GetUser",user_id_=msg.sender_user_id_},function(arg,dp) 
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id="..dp.id_)
+AliNight:sadd(Night..'Abs:Tkeed:'..msg.chat_id_, dp.id_)
+local Text = '⌁︙اهلا عزيزي ↫ ['..string.sub(dp.first_name_,0, 40)..'](tg://user?id='..dp.id_..')\n⌁︙يجب علينا التأكد أنك لست روبوت\n⌁︙تم تقيدك اضغط الزر بالاسفل لفكه'
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اضغط هنا لفك تقيدك",callback_data="/UnTkeed"}}} 
+Msg_id = msg.id_/2097152/0.5
+HTTPS.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text='..URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+end,nil)
+return false
+end
 if AliNight:get(Night.."Abs:Lock:Join"..msg.chat_id_) then
 ChatKick(msg.chat_id_,msg.sender_user_id_) 
 return false  
@@ -1636,7 +2095,7 @@ local filter = AliNight:smembers(Night.."Abs:FilterPhoto"..msg.chat_id_)
 for k,v in pairs(filter) do
 if v == msg.content_.photo_.id_ then
 ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙الصوره التي ارسلتها تم منعها من المجموعه")  
-DeleteMessage(msg.chat_id_,{[0] = msg.id_})       
+DeleteMessage(msg.chat_id_,{[0] = msg.id_})
 return false   
 end
 end
@@ -1666,29 +2125,75 @@ end
 end
 end
 end
---     Source Night     --
-if ((not d) and chat) then
-if msg.content_.ID == "MessageText" then
-do_notify (chat.title_, msg.content_.text_)
-else
-do_notify (chat.title_, msg.content_.ID)
+if msg.content_.ID == "MessagePhoto" or msg.content_.ID == "MessageSticker" then
+if AliNight:get(Night..'Abs:Lock:NightClub'..msg.chat_id_) and msg.reply_to_message_id_ == 0 then
+if msg.content_.ID == "MessagePhoto" then Media = 'صوره اباحيه' UrlId = msg.content_.photo_.sizes_[1].photo_.persistent_id_
+elseif msg.content_.ID == "MessageSticker" then Media = 'ملصق اباحي' UrlId = msg.content_.sticker_.sticker_.persistent_id_
+end
+HttpsMsg = https.request('https://apiabs.ml/nightclub.php?Get=Night&TokenBot='..TokenBot..'&Url='..UrlId)
+EndMsg = JSON.decode(HttpsMsg)
+if EndMsg.Result.Info == "Indecent" then
+DeleteMessage(msg.chat_id_,{[0] = msg.id_})
+tdcli_function ({ID = "GetUser",user_id_ = msg.sender_user_id_},function(arg,dp) 
+local absname = '⌁︙العضو ↫ ['..dp.first_name_..'](tg://user?id='..dp.id_..')'
+local absid = '⌁︙ايديه ↫ `'..dp.id_..'`'
+local abstext = '⌁︙قام بنشر '..Media
+local abstxt = '┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙تعالو يامشرفين اكو مخرب'
+tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,abbas) 
+local admins = abbas.members_  
+text = '\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n'
+for i=0 , #admins do 
+if not abbas.members_[i].bot_info_ then
+tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,data) 
+if data.first_name_ ~= false then
+text = text.."~ [@"..data.username_.."]\n"
+end
+if #admins == i then 
+SendText(msg.chat_id_, absname..'\n'..absid..'\n'..abstext..text..abstxt,0,'md') 
+end
+end,nil)
+end
+end
+end,nil)
+end,nil)
+end
 end
 end
 --     Source Night     --
 if text and text:match("^(.*)$") then
-local DelGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'')
+local DelGpRedRedods = AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+local GetGpTexts = AliNight:get(Night..'Abs:Add:GpTexts'..msg.sender_user_id_..msg.chat_id_)
+if DelGpRedRedods == 'DelGpRedRedods' then
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الرد ↫ '..msg.content_.text_..' للكلمه ↫ '..GetGpTexts..' تم حذفها',  1, "html")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+AliNight:srem(Night..'Abs:Text:GpTexts'..GetGpTexts..msg.chat_id_,msg.content_.text_)
+return false
+end
+end
+if text and text:match("^(.*)$") then
+local DelGpRed = AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+if DelGpRed == 'DelGpRedod' then
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الكلمه ↫ '..msg.content_.text_..' تم حذفها',  1, "html")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'Abs:Text:GpTexts'..msg.content_.text_..msg.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRedod'..msg.chat_id_,msg.content_.text_)
+return false
+end
+end
+if text and text:match("^(.*)$") then
+local DelGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
 if DelGpRed == 'DelGpRed' then
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الكلمه ↫ '..msg.content_.text_..' تم حذفها',  1, "html")
-AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Gif:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Voice:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Audio:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Photo:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Stecker:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Video:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:File:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Text:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
-AliNight:srem(Night..'Abs:Manager:GpRed'..msg.chat_id_..'',msg.content_.text_)
+AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'Abs:Gif:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Voice:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Audio:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Photo:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Stecker:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Video:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:File:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:del(Night..'Abs:Text:GpRed'..msg.content_.text_..msg.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRed'..msg.chat_id_,msg.content_.text_)
 return false
 end
 end
@@ -1710,29 +2215,64 @@ return false
 end
 end
 --     Source Night     --
-if msg.content_.text_ or msg.content_.video_ or msg.content_.document_ or msg.content_.sticker_ or msg.content_.voice_ or msg.content_.audio_ or msg.content_.photo_ or msg.content_.animation_ then 
-local SaveGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'')
-if SaveGpRed == 'SaveGpRed' then 
-if text == 'الغاء' then
-local DelManagerRep = AliNight:get(Night..'DelManagerRep'..msg.chat_id_..'')
-AliNight:srem(Night..'Abs:Manager:GpRed'..msg.chat_id_..'',DelManagerRep)
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء حفظ الرد', 1, 'md')
-AliNight:del(Night..'Abs:Add:GpText'..msg.sender_user_id_..''..msg.chat_id_..'')
-AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_)
-AliNight:del(Night..'DelManagerRep'..msg.chat_id_..'')
+if text and text:match("^(.*)$") then
+local SaveGpRedod = AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+if SaveGpRedod == 'SaveGpRedod' then
+local GetGpTexts = AliNight:get(Night..'Abs:Add:GpTexts'..msg.sender_user_id_..msg.chat_id_)
+local List = AliNight:smembers(Night..'Abs:Text:GpTexts'..GetGpTexts..msg.chat_id_)
+if text == "الغاء" then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙⌁︙تم الغاء عملية حفظ الردود المتعدده للامر ↫ "..GetGpTexts ,  1, "md")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'Abs:Text:GpTexts'..GetGpTexts..msg.chat_id_)
+AliNight:del(Night..'Abs:Add:GpTexts'..msg.sender_user_id_..msg.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRedod'..msg.chat_id_,GetGpTexts)
 return false
 end
-AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'')
-local SaveGpRed = AliNight:get(Night..'Abs:Add:GpText'..msg.sender_user_id_..''..msg.chat_id_..'')
-if msg.content_.video_ then AliNight:set(Night..'Abs:Video:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.video_.video_.persistent_id_)
+Text = text:gsub('"',""):gsub('"',""):gsub("`",""):gsub("*","")
+AliNight:sadd(Night..'Abs:Text:GpTexts'..GetGpTexts..msg.chat_id_,Text)
+if #List == 4 then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ ↫ 5 من الردود المتعدده للامر ↫ "..GetGpTexts ,  1, "md")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+return false
 end
-if msg.content_.document_ then AliNight:set(Night..'Abs:File:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.document_.document_.persistent_id_)
+local Abs = "⌁︙تم حفظ الرد رقم ↫ "..(#List+1).."\n⌁︙قم بارسال الرد رقم ↫ "..(#List+2)
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="انهاء وحفظ "..(#List+1).." من الردود",callback_data="/EndRedod:"..msg.sender_user_id_..GetGpTexts}},{{text="الغاء وحذف التخزين",callback_data="/DelRedod:"..msg.sender_user_id_..GetGpTexts}}} 
+Msg_id = msg.id_/2097152/0.5
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Abs).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return false
 end
-if msg.content_.sticker_ then AliNight:set(Night..'Abs:Stecker:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.sticker_.sticker_.persistent_id_) 
+end
+if text and not AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_) then
+if AliNight:sismember(Night..'Abs:Manager:GpRedod'..msg.chat_id_,text) then
+local NightTeaM =  AliNight:smembers(Night..'Abs:Text:GpTexts'..text..msg.chat_id_)
+Ali_Night(msg.chat_id_, msg.id_, 1, '['..NightTeaM[math.random(#NightTeaM)]..']' , 1, 'md')  
+end
+end
+--     Source Night     --
+if msg.content_.text_ or msg.content_.video_ or msg.content_.document_ or msg.content_.sticker_ or msg.content_.voice_ or msg.content_.audio_ or msg.content_.photo_ or msg.content_.animation_ then 
+local SaveGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
+if SaveGpRed == 'SaveGpRed' then 
+if text == 'الغاء' then
+local DelManagerRep = AliNight:get(Night..'DelManagerRep'..msg.chat_id_)
+AliNight:srem(Night..'Abs:Manager:GpRed'..msg.chat_id_,DelManagerRep)
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء حفظ الرد', 1, 'md')
+AliNight:del(Night..'Abs:Add:GpText'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'DelManagerRep'..msg.chat_id_)
+return false
+end
+AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
+local SaveGpRed = AliNight:get(Night..'Abs:Add:GpText'..msg.sender_user_id_..msg.chat_id_)
+if msg.content_.video_ then AliNight:set(Night..'Abs:Video:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.video_.video_.persistent_id_)
+end
+if msg.content_.document_ then AliNight:set(Night..'Abs:File:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.document_.document_.persistent_id_)
+end
+if msg.content_.sticker_ then AliNight:set(Night..'Abs:Stecker:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.sticker_.sticker_.persistent_id_) 
 end 
-if msg.content_.voice_ then AliNight:set(Night..'Abs:Voice:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.voice_.voice_.persistent_id_) 
+if msg.content_.voice_ then AliNight:set(Night..'Abs:Voice:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.voice_.voice_.persistent_id_) 
 end
-if msg.content_.audio_ then AliNight:set(Night..'Abs:Audio:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.audio_.audio_.persistent_id_) 
+if msg.content_.audio_ then AliNight:set(Night..'Abs:Audio:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.audio_.audio_.persistent_id_) 
 end
 if msg.content_.photo_ then
 if msg.content_.photo_.sizes_[0] then
@@ -1747,47 +2287,47 @@ end
 if msg.content_.photo_.sizes_[3] then
 photo_in_group = msg.content_.photo_.sizes_[3].photo_.persistent_id_
 end
-AliNight:set(Night..'Abs:Photo:GpRed'..SaveGpRed..''..msg.chat_id_..'', photo_in_group) 
+AliNight:set(Night..'Abs:Photo:GpRed'..SaveGpRed..msg.chat_id_, photo_in_group) 
 end
-if msg.content_.animation_ then AliNight:set(Night..'Abs:Gif:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.animation_.animation_.persistent_id_) 
+if msg.content_.animation_ then AliNight:set(Night..'Abs:Gif:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.animation_.animation_.persistent_id_) 
 end 
 if msg.content_.text_ then
-AliNight:set(Night..'Abs:Text:GpRed'..SaveGpRed..''..msg.chat_id_..'', msg.content_.text_)
+AliNight:set(Night..'Abs:Text:GpRed'..SaveGpRed..msg.chat_id_, msg.content_.text_)
 end 
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم حفظ الرد الجديد', 1, 'md') 
-AliNight:del(Night..'Abs:Add:GpText'..msg.sender_user_id_..''..msg.chat_id_..'')
-AliNight:del(Night..'DelManagerRep'..msg.chat_id_..'')
+AliNight:del(Night..'Abs:Add:GpText'..msg.sender_user_id_..msg.chat_id_)
+AliNight:del(Night..'DelManagerRep'..msg.chat_id_)
 return false 
 end 
 end
 if msg.content_.text_ and not AliNight:get(Night..'Abs:Lock:GpRed'..msg.chat_id_) then 
-if AliNight:get(Night..'Abs:Video:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendVideo(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:Video:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:Video:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendVideo(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:Video:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end 
-if AliNight:get(Night..'Abs:File:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendDocument(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:File:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:File:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendDocument(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:File:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end 
-if AliNight:get(Night..'Abs:Voice:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendVoice(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Voice:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:Voice:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendVoice(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Voice:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end
-if AliNight:get(Night..'Abs:Audio:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendAudio(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Audio:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:Audio:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendAudio(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Audio:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end
-if AliNight:get(Night..'Abs:Photo:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendPhoto(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Photo:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:Photo:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendPhoto(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Photo:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end
-if AliNight:get(Night..'Abs:Gif:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Gif:GpRed'..msg.content_.text_..''..msg.chat_id_..'')) 
+if AliNight:get(Night..'Abs:Gif:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, AliNight:get(Night..'Abs:Gif:GpRed'..msg.content_.text_..msg.chat_id_)) 
 end 
-if AliNight:get(Night..'Abs:Stecker:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then 
-sendSticker(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:Stecker:GpRed'..msg.content_.text_..''..msg.chat_id_..''))
+if AliNight:get(Night..'Abs:Stecker:GpRed'..msg.content_.text_..msg.chat_id_) then 
+sendSticker(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night..'Abs:Stecker:GpRed'..msg.content_.text_..msg.chat_id_))
 end
-if AliNight:get(Night..'Abs:Text:GpRed'..msg.content_.text_..''..msg.chat_id_..'') then
-function NightTEAM(extra,result,success)
+if AliNight:get(Night..'Abs:Text:GpRed'..msg.content_.text_..msg.chat_id_) then
+function NightTeaM(extra,result,success)
 if result.username_ then username = '[@'..result.username_..']' else username = 'لا يوجد' end
 local edit_msg = AliNight:get(Night..'Abs:EditMsg'..msg.chat_id_..msg.sender_user_id_) or 0
 local user_msgs = AliNight:get(Night..'Abs:UsersMsgs'..msg.chat_id_..':'..msg.sender_user_id_)
-local Text = AliNight:get(Night..'Abs:Text:GpRed'..msg.content_.text_..''..msg.chat_id_..'')
+local Text = AliNight:get(Night..'Abs:Text:GpRed'..msg.content_.text_..msg.chat_id_)
 local Text = Text:gsub('#username',(username or 'لا يوجد')) 
 local Text = Text:gsub('#name','['..result.first_name_..']')
 local Text = Text:gsub('#id',msg.sender_user_id_)
@@ -1796,7 +2336,7 @@ local Text = Text:gsub('#msgs',(user_msgs or 'لا يوجد'))
 local Text = Text:gsub('#stast',(IdRank(msg.sender_user_id_, msg.chat_id_) or 'لا يوجد'))
 send(msg.chat_id_,msg.id_,Text)
 end
-getUser(msg.sender_user_id_, NightTEAM)
+getUser(msg.sender_user_id_, NightTeaM)
 end
 end
 --     Source Night     --
@@ -1878,7 +2418,7 @@ if AliNight:get(Night.."Abs:Stecker:AllRed"..msg.content_.text_) then
 sendSticker(msg.chat_id_, msg.id_, 0, 1,nil, AliNight:get(Night.."Abs:Stecker:AllRed"..msg.content_.text_))
 end
 if AliNight:get(Night.."Abs:Text:AllRed"..msg.content_.text_) then
-function NightTEAM(extra,result,success)
+function NightTeaM(extra,result,success)
 if result.username_ then username = '[@'..result.username_..']' else username = 'لا يوجد' end
 local edit_msg = AliNight:get(Night..'Abs:EditMsg'..msg.chat_id_..msg.sender_user_id_) or 0
 local user_msgs = AliNight:get(Night..'Abs:UsersMsgs'..msg.chat_id_..':'..msg.sender_user_id_)
@@ -1891,14 +2431,14 @@ local Text = Text:gsub('#msgs',(user_msgs or 'لا يوجد'))
 local Text = Text:gsub('#stast',(IdRank(msg.sender_user_id_, msg.chat_id_) or 'لا يوجد'))
 send(msg.chat_id_,msg.id_,Text)
 end
-getUser(msg.sender_user_id_, NightTEAM)
+getUser(msg.sender_user_id_, NightTeaM)
 end
 end 
 --     Source Night     --
 --       Spam Send        --
 function NotSpam(msg,Type)
 tdcli_function ({ID = "GetUser",user_id_ = msg.sender_user_id_},function(arg,dp) 
-local GetName = '['..CatchName(dp.first_name_,15)..'](tg://user?id='..dp.id_..')'
+local GetName = '['..dp.first_name_..'](tg://user?id='..dp.id_..')'
 if Type == "kick" then 
 ChatKick(msg.chat_id_,msg.sender_user_id_) 
 my_ide = msg.sender_user_id_
@@ -1921,7 +2461,7 @@ DeleteMessage(msg.chat_id_,{[0] = msg.id_})
 return false  
 end 
 if Type == "keed" and not AliNight:sismember(Night..'Abs:Tkeed:'..msg.chat_id_, msg.sender_user_id_) then
-https.request("https://api.telegram.org/bot" .. TokenBot .. "/restrictChatMember?chat_id=" ..msg.chat_id_.. "&user_id=" ..msg.sender_user_id_.."") 
+https.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id="..msg.sender_user_id_.."") 
 AliNight:sadd(Night..'Abs:Tkeed:'..msg.chat_id_, msg.sender_user_id_)
 my_ide = msg.sender_user_id_
 msgm = msg.id_
@@ -2147,14 +2687,14 @@ return
 end
 function get_welcome(extra,result,success)
 if AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_) then
-text = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
+Welcomes = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
 else
-text = '• نورت حبي \n• [firstname lastname] \n• [@username]'
+Welcomes = '• نورت حبي \n• firstname \n• @username'
 end
-local text = text:gsub('firstname',(result.first_name_ or ''))
-local text = text:gsub('lastname',(result.last_name_ or ''))
-local text = text:gsub('username',(result.username_ or 'Night'))
-Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
+local Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
+local Welcomes = Welcomes:gsub('firstname',('['..result.first_name_..']' or ''))
+local Welcomes = Welcomes:gsub('username',('[@'..result.username_..']' or '[@YV9YV]'))
+Ali_Night(msg.chat_id_, msg.id_, 1, Welcomes, 1, 'md')
 end 
 if AliNight:get(Night.."Abs:Lock:Welcome"..msg.chat_id_) then
 getUser(msg.sender_user_id_,get_welcome)
@@ -2167,14 +2707,10 @@ tdcli_function ({ID = "GetUserProfilePhotos",user_id_ = Night,offset_ = 0,limit_
 for i=0,#msg.content_.members_ do    
 BotWelcome = msg.content_.members_[i].id_    
 if BotWelcome and BotWelcome == tonumber(Night) then 
-if AliNight:sismember(Night..'Abs:Groups',msg.chat_id_) then
-BotText = "مفعله في السابق\n⌁︙ارسل ↫ الاوامر واستمتع بالمميزيات"
-else 
-BotText = "معطله يجب رفعي مشرف\n⌁︙بعد ذلك يرجى ارسال امر ↫ تفعيل\n⌁︙سيتم رفع الادمنيه والمنشئ تلقائيا"
-end 
-local AbsText = (AliNight:get(Night.."Abs:Text:BotWelcome") or "⌁︙مرحبا انا بوت اسمي "..NameBot.."\n⌁︙حالة المجموعه ↫ "..BotText.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉")
-local AbsPhoto = (AliNight:get(Night.."Abs:Photo:BotWelcome") or abbas.photos_[0].sizes_[1].photo_.persistent_id_)
-if AliNight:get(Night.."Abs:Photo:BotWelcome") or abbas.photos_[0] then
+if AliNight:sismember(Night..'Abs:Groups',msg.chat_id_) then BotText = "مفعله في السابق\n⌁︙ارسل ↫ الاوامر واستمتع بالمميزيات" else BotText = "معطله يجب رفعي مشرف\n⌁︙بعد ذلك يرجى ارسال امر ↫ تفعيل\n⌁︙سيتم رفع الادمنيه والمنشئ تلقائيا" end 
+if AliNight:get(Night.."Abs:Text:BotWelcome") then AbsText = AliNight:get(Night.."Abs:Text:BotWelcome") else AbsText = "⌁︙مرحبا انا بوت اسمي "..NameBot.."\n⌁︙حالة المجموعه ↫ "..BotText.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉" end 
+if AliNight:get(Night.."Abs:Photo:BotWelcome") then AbsPhoto = AliNight:get(Night.."Abs:Photo:BotWelcome") elseif abbas.photos_[0] then AbsPhoto = abbas.photos_[0].sizes_[1].photo_.persistent_id_ else AbsPhoto = nil end 
+if AbsPhoto ~= nil then
 sendPhoto(msg.chat_id_,msg.id_,0,1,nil,AbsPhoto,AbsText)
 else 
 send(msg.chat_id_,msg.id_,AbsText)
@@ -2199,14 +2735,14 @@ return false
 end
 if AliNight:get(Night.."Abs:Lock:Welcome"..msg.chat_id_) then
 if AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_) then
-text = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
+Welcomes = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
 else
-text = '• نورت حبي \n• [firstname lastname] \n• [@username]'
+Welcomes = '• نورت حبي \n• firstname \n• @username'
 end
-local text = text:gsub('firstname',(msg.content_.members_[0].first_name_ or ''))
-local text = text:gsub('lastname',(msg.content_.members_[0].last_name_ or ''))
-local text = text:gsub('username',(msg.content_.members_[0].username_ or 'Night'))
-Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
+local Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
+local Welcomes = Welcomes:gsub('firstname',('['..msg.content_.members_[0].first_name_..']' or ''))
+local Welcomes = Welcomes:gsub('username',('[@'..msg.content_.members_[0].username_..']' or '[@YV9YV]'))
+Ali_Night(msg.chat_id_, msg.id_, 1, Welcomes, 1, 'md')
 end
 --     Source Night     --
 --        Contact         --
@@ -2523,17 +3059,17 @@ end
 end
 end
 --     Source Night     --
-if AliNight:get(Night.."Abs:Set:Groups:Links"..msg.chat_id_..""..msg.sender_user_id_) then
+if AliNight:get(Night.."Abs:Set:Groups:Links"..msg.chat_id_..msg.sender_user_id_) then
 if text == "الغاء" then
 send(msg.chat_id_,msg.id_,"⌁︙تم الغاء حفظ الرابط")       
-AliNight:del(Night.."Abs:Set:Groups:Links"..msg.chat_id_..""..msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Set:Groups:Links"..msg.chat_id_..msg.sender_user_id_) 
 return false
 end
 if msg.content_.text_:match("(https://telegram.me/joinchat/%S+)") or msg.content_.text_:match("(https://t.me/joinchat/%S+)") then
 local Link = msg.content_.text_:match("(https://telegram.me/joinchat/%S+)") or msg.content_.text_:match("(https://t.me/joinchat/%S+)")
 AliNight:set(Night.."Abs:Groups:Links"..msg.chat_id_,Link)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم حفظ الرابط بنجاح', 1, 'md')
-AliNight:del(Night.."Abs:Set:Groups:Links"..msg.chat_id_..""..msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Set:Groups:Links"..msg.chat_id_..msg.sender_user_id_) 
 return false 
 end
 end
@@ -2541,43 +3077,38 @@ end
 local msg = data.message_
 text = msg.content_.text_
 if text and Constructor(msg) then 
-if AliNight:get('NightTEAM:'..Night.."numadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then 
+if AliNight:get('NightTeaM:'..Night.."numadd:user"..msg.chat_id_.."" .. msg.sender_user_id_) then 
 if text and text:match("^الغاء$") then 
-AliNight:del('NightTEAM:'..Night..'id:user'..msg.chat_id_)  
+AliNight:del('NightTeaM:'..Night..'id:user'..msg.chat_id_)  
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء الامر', 1, 'md')
-AliNight:del('NightTEAM:'..Night.."numadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del('NightTeaM:'..Night.."numadd:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 return false  end 
-AliNight:del('NightTEAM:'..Night.."numadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del('NightTeaM:'..Night.."numadd:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 local numadded = string.match(text, "(%d+)") 
-local iduserr = AliNight:get('NightTEAM:'..Night..'id:user'..msg.chat_id_)  
+local iduserr = AliNight:get('NightTeaM:'..Night..'id:user'..msg.chat_id_)  
 AliNight:incrby(Night..'Abs:UsersMsgs'..msg.chat_id_..':'..iduserr,numadded)
 Ali_Night(msg.chat_id_, msg.id_,  1, "⌁︙تم اضافة "..numadded..' رساله', 1, 'md')
-AliNight:del('NightTEAM:'..Night..'id:user'..msg.chat_id_) 
+AliNight:del('NightTeaM:'..Night..'id:user'..msg.chat_id_) 
 end
 end
 if text and Constructor(msg) then 
-if AliNight:get('NightTEAM:'..Night.."nmadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then 
+if AliNight:get('NightTeaM:'..Night.."nmadd:user"..msg.chat_id_.."" .. msg.sender_user_id_) then 
 if text and text:match("^الغاء$") then 
-AliNight:del('NightTEAM:'..Night..'ids:user'..msg.chat_id_)  
+AliNight:del('NightTeaM:'..Night..'ids:user'..msg.chat_id_)  
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء الامر', 1, 'md')
-AliNight:del('NightTEAM:'..Night.."nmadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del('NightTeaM:'..Night.."nmadd:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 return false  end 
-AliNight:del('NightTEAM:'..Night.."nmadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del('NightTeaM:'..Night.."nmadd:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 local numadded = string.match(text, "(%d+)") 
-local iduserr = AliNight:get('NightTEAM:'..Night..'ids:user'..msg.chat_id_)  
+local iduserr = AliNight:get('NightTeaM:'..Night..'ids:user'..msg.chat_id_)  
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..iduserr,numadded)  
 Ali_Night(msg.chat_id_, msg.id_,  1, "⌁︙تم اضافة "..numadded..' نقطه', 1, 'md')
-AliNight:del('NightTEAM:'..Night..'ids:user'..msg.chat_id_)  
+AliNight:del('NightTeaM:'..Night..'ids:user'..msg.chat_id_)  
 end
 end
 --     Source Night     --
 if text and (text:match("طيز") or text:match("ديس") or text:match("انيج") or text:match("نيج") or text:match("ديوس") or text:match("عير") or text:match("كسختك") or text:match("كسمك") or text:match("كسربك") or text:match("بلاع") or text:match("ابو العيوره") or text:match("منيوج") or text:match("كحبه") or text:match("كحاب") or text:match("الكحبه") or text:match("كسك") or text:match("طيزك") or text:match("كس امك") or text:match("صرم") or text:match("كس اختك")) then
 if not AliNight:get(Night.."Abs:Lock:Fshar"..msg.chat_id_) and not VipMem(msg) then
-DeleteMessage(msg.chat_id_,{[0] = msg.id_})
-ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙ممنوع الفشار في المجموعه")  
-end end
-if text and (text:match("طيز") or text:match("ديس") or text:match("انيج") or text:match("نيج") or text:match("ديوس") or text:match("عير") or text:match("كسختك") or text:match("كسمك") or text:match("كسربك") or text:match("بلاع") or text:match("ابو العيوره") or text:match("منيوج") or text:match("كحبه") or text:match("كحاب") or text:match("الكحبه") or text:match("كسك") or text:match("طيزك") or text:match("كس امك") or text:match("صرم") or text:match("كس اختك")) then
-if not AliNight:get(Night.."Abs:Lock:abahi"..msg.chat_id_) and not VipMem(msg) then
 DeleteMessage(msg.chat_id_,{[0] = msg.id_})
 ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙ممنوع الفشار في المجموعه")  
 end end
@@ -2603,13 +3134,14 @@ ReplyStatus(msg,msg.sender_user_id_,"WrongWay","⌁︙ممنوع التكلم ب
 end end
 --     Source Night     --
 if SecondSudo(msg) then
-if text == 'جلب نسخه الكروبات' and ChCheck(msg) or text == 'جلب نسخه احتياطيه' and ChCheck(msg) then
+if text == 'جلب نسخه الكروبات' or text == 'جلب نسخه احتياطيه' or text == 'جلب النسخه الاحتياطيه' then
 local List = AliNight:smembers(Night..'Abs:Groups') 
-local BotName = (AliNight:get(Night.."Abs:NameBot") or 'نايت')
+local BotName = (AliNight:get(Night.."Abs:NameBot") or 'جيسون')
 local GetJson = '{"BotId": '..Night..',"BotName": "'..BotName..'","GroupsList":{'  
 for k,v in pairs(List) do 
 LinkGroups = AliNight:get(Night.."Abs:Groups:Links"..v)
 Welcomes = AliNight:get(Night..'Abs:Groups:Welcomes'..v) or ''
+Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
 AbsConstructors = AliNight:smembers(Night..'Abs:AbsConstructor:'..v)
 Constructors = AliNight:smembers(Night..'Abs:BasicConstructor:'..v)
 BasicConstructors = AliNight:smembers(Night..'Abs:Constructor:'..v)
@@ -2699,7 +3231,7 @@ File:close()
 sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './'..Night..'.json', '⌁︙يحتوي الملف على ↫ '..#List..' مجموعه',dl_cb, nil)
 io.popen('rm -rf ./'..Night..'.json')
 end
-if text == 'رفع النسخه' and tonumber(msg.reply_to_message_id_) > 0 or text == 'رفع النسخه الاحتياطيه' and tonumber(msg.reply_to_message_id_) > 0 then   
+if text and (text == 'رفع النسخه' or text == 'رفع النسخه الاحتياطيه' or text == 'رفع نسخه الاحتياطيه') and tonumber(msg.reply_to_message_id_) > 0 then   
 function by_reply(extra, result, success)   
 if result.content_.document_ then 
 local ID_FILE = result.content_.document_.document_.persistent_id_ 
@@ -2748,8 +3280,7 @@ return false  end
 if data and data.type_ and data.type_.channel_ and data.type_.channel_.is_supergroup_ == false then
 if data and data.type_ and data.type_.channel_ and data.type_.channel_.ID and data.type_.channel_.status_.ID == 'ChatMemberStatusEditor' then
 send(msg.chat_id_, msg.id_,'⌁︙البوت ادمن في القناة \n⌁︙تم تفعيل الاشتراك الاجباري \n⌁︙ايدي القناة ↫ '..data.id_..'\n⌁︙معرف القناة ↫ [@'..data.type_.channel_.username_..']')
-AliNight:set(Night..'AliNight2',data.id_)
-AliNight:set(Night..'AliNight3','@'..data.type_.channel_.username_)
+AliNight:set(Night..'Abs:ChId',data.id_)
 else
 send(msg.chat_id_, msg.id_,'⌁︙عذرا البوت ليس ادمن في القناة')
 end
@@ -2758,13 +3289,13 @@ end
 end,nil)
 end
 --     Source Night     --
-if AliNight:get(Night.."Abs:DevText" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then
+if AliNight:get(Night.."Abs:DevText"..msg.chat_id_..":" .. msg.sender_user_id_) then
 if text and text:match("^الغاء$") then 
-AliNight:del(Night.."Abs:DevText" .. msg.chat_id_ .. ":" .. msg.sender_user_id_)
+AliNight:del(Night.."Abs:DevText"..msg.chat_id_..":" .. msg.sender_user_id_)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء الامر', 1, 'md')
 return false 
 end 
-AliNight:del(Night.."Abs:DevText" .. msg.chat_id_ .. ":" .. msg.sender_user_id_)
+AliNight:del(Night.."Abs:DevText"..msg.chat_id_..":" .. msg.sender_user_id_)
 local DevText = msg.content_.text_:match("(.*)")
 AliNight:set(Night.."DevText", DevText)
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ كليشة المطور", 1, "md")
@@ -2795,24 +3326,21 @@ end
 --     Source Night     --
 if ChatType == 'sp' or ChatType == 'gp'  then
 if text == 'بوت' or text == 'بوتت' then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
-local NightTEAM = {"لتكول بوت اسمي "..NameBot.." 😒🔪","اسمي القميل "..NameBot.." 😚♥️","عندي اسم تره 😒💔","صيحولي "..NameBot.." كافي بوت 😒🔪","انت البوت لك 😒💔"} 
-AliNight2 = math.random(#NightTEAM) 
-Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM[AliNight2] , 1, 'html') 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
+local NightTeaM = {"لتكول بوت اسمي "..NameBot.." 😒🔪","اسمي القميل "..NameBot.." 😚♥️","عندي اسم تره 😒💔","صيحولي "..NameBot.." كافي بوت 😒🔪","انت البوت لك 😒💔"} 
+Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false
 end
 if text == 'اسم البوت' or text == 'البوت شنو اسمه' or text == 'شسمه البوت' or text == 'البوت شسمه' then
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت') 
-local NightTEAM = {"اسمي القميل "..NameBot.." 😚♥️","هلاا يروحيي وياكك "..NameBot.." 😻♥️"} 
-AliNight2 = math.random(#NightTEAM) 
-Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM[AliNight2] , 1, 'html') 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون') 
+local NightTeaM = {"اسمي القميل "..NameBot.." 😚♥️","هلاا يروحيي وياكك "..NameBot.." 😻♥️"} 
+Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false
 end
-if text and text == (AliNight:get(Night..'Abs:NameBot') or 'نايت') then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
-local namebot = {'😸♥️ هلا كلبي وياك '..NameBot..' تفضل','ترةه مصختهاا احجيي شرايد 😕😒💔','اطلقق واحدد يصيح '..NameBot..' 😻♥️','خبصتت امنةة شتريدد عااد 🤧😒💔'} 
-name = math.random(#namebot) 
-Ali_Night(msg.chat_id_, msg.id_, 1, namebot[name] , 1, 'html') 
+if text and text == (AliNight:get(Night..'Abs:NameBot') or 'جيسون') then 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
+local NightTeaM = {'😸♥️ هلا كلبي وياك '..NameBot..' تفضل','ترةه مصختهاا احجيي شرايد 😕😒💔','اطلقق واحدد يصيح '..NameBot..' 😻♥️','خبصتت امنةة شتريدد عااد 🤧😒💔'} 
+Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false 
 end
 if text =='نقاطي' and ChCheck(msg) then 
@@ -2947,14 +3475,14 @@ name = string.gsub(name,'⏰','⏰')
 name = string.gsub(name,'📺','📺')
 name = string.gsub(name,'🎚','🎚')
 name = string.gsub(name,'☎️','☎️')
-NightTEAM = '⌁︙اول واحد يدز هذا السمايل يربح ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اول واحد يدز هذا السمايل يربح ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ سمايلات للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ سمايلات للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3005,14 +3533,14 @@ name = string.gsub(name,'حاسوب','س ا ح و ب')
 name = string.gsub(name,'انترنيت','ا ت ن ر ن ي ت')
 name = string.gsub(name,'ساحه','ح ا ه س')
 name = string.gsub(name,'جسر','ر ج س')
-NightTEAM = '⌁︙اول واحد يرتبها يربح ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اول واحد يرتبها يربح ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ ترتيب للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ ترتيب للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3072,14 +3600,14 @@ name = string.gsub(name,'الثلج','انا ابن الماء فان تركون
 name = string.gsub(name,'الاسفنج','كلي ثقوب ومع ذالك احفض الماء فمن اكون ؟')
 name = string.gsub(name,'الصوت','اسير بلا رجلين ولا ادخل الا بالاذنين فمن انا ؟')
 name = string.gsub(name,'بلم','حامل ومحمول نصف ناشف ونصف مبلول فمن اكون ؟ ')
-NightTEAM = '⌁︙اول واحد يحلها يربح ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اول واحد يحلها يربح ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ حزوره للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ حزوره للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3115,14 +3643,14 @@ name = string.gsub(name,'زرافه','🦒')
 name = string.gsub(name,'قنفذ','🦔')
 name = string.gsub(name,'تفاحه','🍎')
 name = string.gsub(name,'باذنجان','🍆')
-NightTEAM = '⌁︙ما معنى هذا السمايل :؟ ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙ما معنى هذا السمايل :؟ ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum2'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ المعاني للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ المعاني للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3158,14 +3686,14 @@ name = string.gsub(name,'موعطشان','عطشان')
 name = string.gsub(name,'خوش ولد','موخوش ولد')
 name = string.gsub(name,'اني','مطي')
 name = string.gsub(name,'هادئ','عصبي')
-NightTEAM = '⌁︙ما هو عكس كلمة ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙ما هو عكس كلمة ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum3'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ العكس للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ العكس للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3204,14 +3732,14 @@ name = string.gsub(name,'⌛️','⏳⏳⏳⏳⏳⌛️⏳⏳')
 name = string.gsub(name,'📅','📆📆📆📆📆📅📆📆')
 name = string.gsub(name,'👩‍⚖️','👨‍⚖️👨‍⚖️👨‍⚖️👨‍⚖️👨‍⚖️👩‍⚖️👨‍⚖️👨‍⚖️')
 name = string.gsub(name,'👨‍🎨','👩‍🎨👩‍🎨👨‍🎨👩‍🎨👩‍🎨👩‍🎨👩‍🎨👩‍🎨')
-NightTEAM = '⌁︙اول واحد يطلع المختلف يربح\n{'..name..'} '
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اول واحد يطلع المختلف يربح\n{'..name..'} '
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum4'..msg.chat_id_) and not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ المختلف للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ المختلف للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
@@ -3244,16 +3772,16 @@ name = string.gsub(name,'شهر','امشي ___ ولا تعبر نهر')
 name = string.gsub(name,'شكه','يامن تعب يامن ___ يا من على الحاضر لكة')
 name = string.gsub(name,'القرد',' ___ بعين امه غزال')
 name = string.gsub(name,'يكحله','اجه ___ عماها')
-NightTEAM = '⌁︙اكمل المثال التالي ↫ ['..name..']'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اكمل المثال التالي ↫ ['..name..']'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum5'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 AliNight:del(Night..'Abs:GameNum5'..msg.chat_id_)
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ امثله للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ امثله للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
@@ -3276,16 +3804,16 @@ name = string.gsub(name,'15','25 - 10 = ?')
 name = string.gsub(name,'39','44 - 5 = ?')
 name = string.gsub(name,'5','12 + 1 - 8 = ?')
 name = string.gsub(name,'16','16 + 16 - 16 = ?')
-NightTEAM = '⌁︙اكمل المعادله التاليه ↫ ⤈\n{'..name..'} '
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙اكمل المعادله التاليه ↫ ⤈\n{'..name..'} '
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum6'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 AliNight:del(Night..'Abs:GameNum6'..msg.chat_id_)
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ رياضيات للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ رياضيات للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
@@ -3307,16 +3835,16 @@ name = string.gsub(name,'تمساح','crocodile')
 name = string.gsub(name,'شاطئ','Beach')
 name = string.gsub(name,'غبي','Stupid')
 name = string.gsub(name,'صداقه','Friendchip')
-NightTEAM = '⌁︙ما معنى كلمة ↫ '..name
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙ما معنى كلمة ↫ '..name
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum7'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 AliNight:del(Night..'Abs:GameNum7'..msg.chat_id_)
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ انكليزيه للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ انكليزيه للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
@@ -3357,21 +3885,21 @@ name = string.gsub(name,'لندن','⌁︙ماهي عاصمه انجلترا ؟\
 name = string.gsub(name,'الانسان','⌁︙ماهو الشئ الذي برأسه سبع فتحات ؟\n1- الهاتف\n2- التلفاز\n3- الانسان')
 name = string.gsub(name,'طوكيو','⌁︙ماهي عاصمه اليابان ؟\n1- بانكول\n2- نيو دلهي\n3- طوكيو')
 name = string.gsub(name,'خديجه','⌁︙من هي زوجه الرسول الاكبر منه سنآ ؟\n1- حفضه\n2- زينب\n3- خديجه')
-NightTEAM = name..'\n⌁︙ارسل الجواب الصحيح فقط'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = name..'\n⌁︙ارسل الجواب الصحيح فقط'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 return false
 end end
 if text == AliNight:get(Night..'Abs:GameNum8'..msg.chat_id_) then
 if not AliNight:get(Night..'Abs:Games:Ids'..msg.chat_id_) then 
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_, 1)  
 AliNight:del(Night..'Abs:GameNum8'..msg.chat_id_)
-NightTEAM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ الاسئله للعب مره اخرى'
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md')
+NightTeaM = '⌁︙مبروك لقد ربحت في اللعبه \n⌁︙ارسل ↫ الاسئله للعب مره اخرى'
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md')
 end
 AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
 --     Source Night     --
-if AliNight:get(Night.."GAME:TKMEN" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then  
+if AliNight:get(Night.."GAME:TKMEN"..msg.chat_id_.."" .. msg.sender_user_id_) then  
 if text and text:match("^(%d+)$") then
 local NUM = text:match("^(%d+)$")
 if tonumber(NUM) > 20 then
@@ -3380,14 +3908,14 @@ return false  end
 local GETNUM = AliNight:get(Night.."GAMES:NUM"..msg.chat_id_)
 if tonumber(NUM) == tonumber(GETNUM) then
 AliNight:del(Night..'Set:Num'..msg.chat_id_..msg.sender_user_id_)
-AliNight:del(Night.."GAME:TKMEN" .. msg.chat_id_ .. "" .. msg.sender_user_id_)   
+AliNight:del(Night.."GAME:TKMEN"..msg.chat_id_.."" .. msg.sender_user_id_)   
 AliNight:incrby(Night..'Abs:GamesNumber'..msg.chat_id_..msg.sender_user_id_,5)  
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙*التخمين الصحيح هو* ↫ '..NUM..'\n⌁︙*مبروك لقد ربحت وحصلت على 5 نقاط يمكنك استبدالها بالرسائل*', 1, 'md')
 elseif tonumber(NUM) ~= tonumber(GETNUM) then
 AliNight:incrby(Night..'Set:Num'..msg.chat_id_..msg.sender_user_id_,1)
 if tonumber(AliNight:get(Night..'Set:Num'..msg.chat_id_..msg.sender_user_id_)) >= 3 then
 AliNight:del(Night..'Set:Num'..msg.chat_id_..msg.sender_user_id_)
-AliNight:del(Night.."GAME:TKMEN" .. msg.chat_id_ .. "" .. msg.sender_user_id_)   
+AliNight:del(Night.."GAME:TKMEN"..msg.chat_id_.."" .. msg.sender_user_id_)   
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙*التخمين الصحيح هو* ↫ '..GETNUM..'\n⌁︙*للاسف لقد خسرت حاول مره اخرى لتخمين الرقم الصحيح*', 1, 'md')
 else
 if tonumber(AliNight:get(Night..'Set:Num'..msg.chat_id_..msg.sender_user_id_)) == 1 then
@@ -3405,7 +3933,7 @@ if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
 Num = math.random(1,20)
 AliNight:set(Night.."GAMES:NUM"..msg.chat_id_,Num) 
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙اهلا بك عزيزي في لعبة التخمين ↫ ⤈\n ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙سيتم تخمين عدد ما بين الـ1 والـ20 اذا تعتقد انك تستطيع الفوز جرب واللعب الان .\n⌁︙ملاحظه لديك ثلاث محاولات فقط فكر قبل ارسال تخمينك !', 1, 'md')
-AliNight:setex(Night.."GAME:TKMEN" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 100, true)  
+AliNight:setex(Night.."GAME:TKMEN"..msg.chat_id_.."" .. msg.sender_user_id_, 100, true)  
 return false  
 end
 end
@@ -3451,20 +3979,25 @@ local Text = "⌁︙تم ادخال المعرف ↫ ["..text.."]\n⌁︙وتم 
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="نعم",callback_data="/YesRolet"},{text="لا",callback_data="/NoRolet"}},{{text="اللاعبين",callback_data="/ListRolet"}}} 
 Msg_id = msg.id_/2097152/0.5
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id=' .. msg.chat_id_ .. '&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end 
 local Text = "⌁︙تم ادخال المعرف ↫ ["..text.."] وتبقى ↫ "..CountUser.." لاعبين ليكتمل العدد ارسل المعرف الاخر"
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="الغاء",callback_data="/NoRolet"}}} 
 Msg_id = msg.id_/2097152/0.5
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id=' .. msg.chat_id_ .. '&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end,nil) 
 end
 --     Source Night     --
 if text == 'كت تويت' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-local NightTEAM = {  "آخر مرة زرت مدينة الملاهي؟",  "آخر مرة أكلت أكلتك المفضّلة؟",  "الوضع الحالي؟\n‏1. سهران\n‏2. ضايج\n‏3. أتأمل",  "آخر شيء ضاع منك؟","كلمة أخيرة لشاغل البال؟","طريقتك المعتادة في التخلّص من الطاقة السلبية؟","شهر من أشهر العام له ذكرى جميلة معك؟","كلمة غريبة من لهجتك ومعناها؟🤓","‏- شيء سمعته عالق في ذهنك هاليومين؟","متى تكره الشخص الذي أمامك حتى لو كنت مِن أشد معجبينه؟","‏- أبرز صفة حسنة في صديقك المقرب؟","هل تشعر أن هنالك مَن يُحبك؟","اذا اكتشفت أن أعز أصدقائك يضمر لك السوء، موقفك الصريح؟","أجمل شيء حصل معك خلال هاليوم؟","صِف شعورك وأنت تُحب شخص يُحب غيرك؟👀💔","كلمة لشخص غالي اشتقت إليه؟💕","آخر خبر سعيد، متى وصلك؟","أنا آسف على ....؟","أوصف نفسك بكلمة؟","صريح، مشتاق؟","‏- صريح، هل سبق وخذلت أحدهم ولو عن غير قصد؟","‏- ماذا ستختار من الكلمات لتعبر لنا عن حياتك التي عشتها الى الآن؟💭","‏- فنان/ة تود لو يدعوكَ على مائدة عشاء؟😁❤","‏- تخيّل شيء قد يحدث في المستقبل؟","‏- للشباب | آخر مرة وصلك غزل من فتاة؟🌚","شخص أو صاحب عوضك ونساك مُر الحياة ما اسمه ؟","| اذا شفت حد واعجبك وعندك الجرأه انك تروح وتتعرف عليه ، مقدمة الحديث شو راح تكون ؟.", }  
-Ali_Night(msg.chat_id_, msg.id_, 1, ''..NightTEAM[math.random(#NightTEAM)]..'' , 1, 'md')  
+local NightTeaM = {
+'آخر مرة زرت مدينة الملاهي؟','آخر مرة أكلت أكلتك المفضّلة؟','الوضع الحالي؟\n‏1. سهران\n‏2. ضايج\n‏3. أتأمل','آخر شيء ضاع منك؟','كلمة أخيرة لشاغل البال؟','طريقتك المعتادة في التخلّص من الطاقة السلبية؟','شهر من أشهر العام له ذكرى جميلة معك؟','كلمة غريبة من لهجتك ومعناها؟🤓','‏- شيء سمعته عالق في ذهنك هاليومين؟','متى تكره الشخص الذي أمامك حتى لو كنت مِن أشد معجبينه؟','‏- أبرز صفة حسنة في صديقك المقرب؟','هل تشعر أن هنالك مَن يُحبك؟','اذا اكتشفت أن أعز أصدقائك يضمر لك السوء، موقفك الصريح؟','أجمل شيء حصل معك خلال هاليوم؟','صِف شعورك وأنت تُحب شخص يُحب غيرك؟👀💔','كلمة لشخص غالي اشتقت إليه؟💕','آخر خبر سعيد، متى وصلك؟','أنا آسف على ....؟','أوصف نفسك بكلمة؟','صريح، مشتاق؟','‏- صريح، هل سبق وخذلت أحدهم ولو عن غير قصد؟','‏- ماذا ستختار من الكلمات لتعبر لنا عن حياتك التي عشتها الى الآن؟💭','‏- فنان/ة تود لو يدعوكَ على مائدة عشاء؟😁❤','‏- تخيّل شيء قد يحدث في المستقبل؟','‏- للشباب | آخر مرة وصلك غزل من فتاة؟🌚','شخص أو صاحب عوضك ونساك مُر الحياة ما اسمه ؟','| اذا شفت حد واعجبك وعندك الجرأه انك تروح وتتعرف عليه ، مقدمة الحديث شو راح تكون ؟.','كم مره تسبح باليوم','نسبة النعاس عندك حاليًا؟','لو فقط مسموح شخص واحد تتابعه فالسناب مين بيكون ؟','يهمك ملابسك تكون ماركة ؟','وش الشيء الي تطلع حرتك فيه و زعلت ؟','عندك أخوان او خوات من الرضاعة؟','عندك معجبين ولا محد درا عنك؟',
+'أطول مدة قضيتها بعيد عن أهلك ؟','لو يجي عيد ميلادك تتوقع يجيك هدية؟','يبان عليك الحزن من " صوتك - ملامحك','وين تشوف نفسك بعد سنتين؟','وش يقولون لك لما تغني ؟','عندك حس فكاهي ولا نفسية؟','كيف تتصرف مع الشخص الفضولي ؟','كيف هي أحوال قلبك؟','حاجة تشوف نفسك مبدع فيها ؟','متى حبيت؟','شيء كل م تذكرته تبتسم ...','العلاقه السريه دايماً تكون حلوه؟','صوت مغني م تحبه','لو يجي عيد ميلادك تتوقع يجيك هدية؟','اذا احد سألك عن شيء م تعرفه تقول م اعرف ولا تتفلسف ؟','مع او ضد : النوم افضل حل لـ مشاكل الحياة؟','مساحة فارغة (..............) اكتب اي شيء تبين','اغرب اسم مر عليك ؟','عمرك كلمت فويس احد غير جنسك؟','اذا غلطت وعرفت انك غلطان تحب تعترف ولا تجحد؟','لو عندك فلوس وش السيارة اللي بتشتريها؟','وش اغبى شيء سويته ؟','شيء من صغرك ماتغير فيك؟','وش نوع الأفلام اللي تحب تتابعه؟','وش نوع الأفلام اللي تحب تتابعه؟','تجامل احد على حساب مصلحتك ؟','تتقبل النصيحة من اي شخص؟','كلمه ماسكه معك الفترة هذي ؟','متى لازم تقول لا ؟','اكثر شيء تحس انه مات ف مجتمعنا؟','تؤمن ان في "حُب من أول نظرة" ولا لا ؟.','تؤمن ان في "حُب من أول نظرة" ولا لا ؟.','هل تعتقد أن هنالك من يراقبك بشغف؟','اشياء اذا سويتها لشخص تدل على انك تحبه كثير ؟','اشياء صعب تتقبلها بسرعه ؟','اقتباس لطيف؟','أكثر جملة أثرت بك في حياتك؟','عندك فوبيا من شيء ؟.',
+'اكثر لونين تحبهم مع بعض؟','أجمل بيت شعر سمعته ...','سبق وراودك شعور أنك لم تعد تعرف نفسك؟','تتوقع فيه احد حاقد عليك ويكرهك ؟','أجمل سنة ميلادية مرت عليك ؟','لو فزعت/ي لصديق/ه وقالك مالك دخل وش بتسوي/ين؟','وش تحس انك تحتاج الفترة هاذي ؟','يومك ضاع على؟','@منشن .. شخص تخاف منه اذا عصب ...','فيلم عالق في ذهنك لا تنساه مِن روعته؟','تختار أن تكون غبي أو قبيح؟','الفلوس او الحب ؟','أجمل بلد في قارة آسيا بنظرك؟','ما الذي يشغل بالك في الفترة الحالية؟','احقر الناس هو من ...','وين نلقى السعاده برايك؟','اشياء تفتخر انك م سويتها ؟','تزعلك الدنيا ويرضيك ؟','وش الحب بنظرك؟','افضل هديه ممكن تناسبك؟','كم في حسابك البنكي ؟','كلمة لشخص أسعدك رغم حزنك في يومٍ من الأيام ؟','عمرك انتقمت من أحد ؟!','ما السيء في هذه الحياة ؟','غنية عندك معاها ذكريات🎵🎻','/','أفضل صفة تحبه بنفسك؟','اكثر وقت تحب تنام فيه ...','أطول مدة نمت فيها كم ساعة؟','أصعب قرار ممكن تتخذه ؟','أفضل صفة تحبه بنفسك؟','اكثر وقت تحب تنام فيه ...','أنت محبوب بين الناس؟ ولاكريه؟','إحساسك في هاللحظة؟','اخر شيء اكلته ؟','تشوف الغيره انانيه او حب؟','اذكر موقف ماتنساه بعمرك؟','اكثر مشاكلك بسبب ؟','اول ماتصحى من النوم مين تكلمه؟','آخر مرة ضحكت من كل قلبك؟','لو الجنسية حسب ملامحك وش بتكون جنسيتك؟','اكثر شيء يرفع ضغطك','اذكر موقف ماتنساه بعمرك؟','لو قالوا لك  تناول صنف واحد فقط من الطعام لمدة شهر .',
+'كيف تشوف الجيل ذا؟','ردة فعلك لو مزح معك شخص م تعرفه ؟','احقر الناس هو من ...','تحب ابوك ولا امك','آخر فيلم مسلسل والتقييم🎥؟','أقبح القبحين في العلاقة: الغدر أو الإهمال🤷🏼؟','كلمة لأقرب شخص لقلبك🤍؟','حط@منشن لشخص وقوله "حركتك مالها داعي"😼!','اذا جاك خبر مفرح اول واحد تعلمه فيه مين💃🏽؟','طبع يمكن يخليك تكره شخص حتى لو كنت تُحبه🙅🏻‍♀️؟','افضل ايام الاسبوع عندك🔖؟','يقولون ان الحياة دروس ، ماهو أقوى درس تعلمته من الحياة🏙؟','تاريخ لن تنساه📅؟','تحب الصيف والا الشتاء❄️☀️؟','شخص تحب تستفزه😈؟','شنو ينادونك وانت صغير (عيارتك)👼🏻؟','عقل يفهمك/ج ولا قلب يحبك/ج❤️؟','اول سفره لك وين رح تكون✈️؟','كم عدد اللي معطيهم بلوك👹؟','نوعية من الأشخاص تتجنبهم في حياتك❌؟','شاركنا صورة او فيديو من تصويرك؟📸','كم من عشره تعطي حظك📩؟','اكثر برنامج تواصل اجتماعي تحبه😎؟','من اي دوله انت🌍؟','اكثر دوله ودك تسافر لها🏞؟','مقولة "نكبر وننسى" هل تؤمن بصحتها🧓🏼؟','تعتقد فيه أحد يراقبك👩🏼‍💻؟','لو بيدك تغير الزمن ، تقدمه ولا ترجعه🕰؟','مشروبك المفضل🍹؟','‏قم بلصق آخر اقتباس نسخته؟💭','كم وزنك/ج طولك/ج؟🌚','كم كان عمرك/ج قبل ٨ سنين😈؟','دوله ندمت انك سافرت لها😁؟','لو قالو لك ٣ أمنيات راح تتحقق عالسريع شنو تكون🧞‍♀️؟','‏- نسبة احتياجك للعزلة من 10📊؟','شخص تحبه حظرك بدون سبب واضح، ردة فعلك🧐؟','مبدأ في الحياة تعتمد عليه دائما🕯؟'
+}  
+Ali_Night(msg.chat_id_, msg.id_, 1, ''..NightTeaM[math.random(#NightTeaM)]..'' , 1, 'md')  
 return false
 end
 end
@@ -3491,7 +4024,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1,[[
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙نقاطي • بيع نقاطي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]], 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا الالعاب معطله في المجموعه', 1, 'md')
@@ -3511,7 +4044,6 @@ end
 --     Source Night     --
 if text == 'رفع المشرفين' and ChCheck(msg) or text == 'رفع الادمنيه' and ChCheck(msg) then  
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 200},function(arg,abbas) 
-AliNight:del(Night..'Abs:AbsConstructor:'..msg.chat_id_)
 local num = 0
 local admins = abbas.members_  
 for i=0 , #admins do   
@@ -3533,9 +4065,9 @@ AliNight:sadd(Night..'Abs:AbsConstructor:'..msg.chat_id_,Manager_id)
 end  
 end  
 if num == 0 then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا يوجد ادمنيه ليتم رفعهم\n⌁︙تم رفع منشئ المجموعه", 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا يوجد ادمنيه ليتم رفعهم\n⌁︙تم رفع مالك المجموعه", 1, 'md')
 else
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم رفع '..num..' من الادمنيه \n⌁︙تم رفع منشئ المجموعه', 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم رفع '..num..' من الادمنيه \n⌁︙تم رفع مالك المجموعه', 1, 'md')
 end
 end,nil) 
 end
@@ -3578,7 +4110,7 @@ end
 end
 --     Source Night     --
 if text == "تعيين قناة الاشتراك" or text == "تغيير قناة الاشتراك" or text == "تعيين الاشتراك الاجباري" or text == "وضع قناة الاشتراك" then
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
 AliNight:setex(Night..'AliNight4'..msg.sender_user_id_,360,true)
@@ -3587,12 +4119,13 @@ end
 return false  
 end
 if text == "تفعيل الاشتراك الاجباري" then  
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-if AliNight:get(Night..'AliNight2') then
-local DevCh = AliNight:get(Night..'AliNight3')
-send(msg.chat_id_, msg.id_,"⌁︙الاشتراك الاجباري مفعل \n⌁︙على القناة ↫ ["..DevCh.."]")
+if AliNight:get(Night..'Abs:ChId') then
+local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChat?chat_id='..AliNight:get(Night.."Abs:ChId"))
+local GetInfo = JSON.decode(Check)
+send(msg.chat_id_, msg.id_,"⌁︙الاشتراك الاجباري مفعل \n⌁︙على القناة ↫ [@"..GetInfo.result.username.."]")
 else
 AliNight:setex(Night..'AliNight4'..msg.sender_user_id_,360,true)
 send(msg.chat_id_, msg.id_,"⌁︙لاتوجد قناة لتفعيل الاشتراك\n⌁︙ارسل لي معرف قناة الاشتراك الان")
@@ -3601,28 +4134,29 @@ end
 return false  
 end
 if text == "تعطيل الاشتراك الاجباري" then  
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-AliNight:del(Night..'AliNight2') AliNight:del(Night..'AliNight3')
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الاشتراك الاجباري'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:del(Night..'Abs:ChId')
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الاشتراك الاجباري'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 return false  
 end
 if text == "حذف قناة الاشتراك" or text == "حذف قناه الاشتراك" then
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-AliNight:del(Night..'AliNight2') AliNight:del(Night..'AliNight3')
+AliNight:del(Night..'Abs:ChId')
 Ali_Night(msg.chat_id_, msg.id_, 1,"⌁︙تم حذف قناة الاشتراك الاجباري", 1, 'md') 
 end
 end
 if SecondSudo(msg) then
 if text == 'جلب قناة الاشتراك' or text == 'قناة الاشتراك' or text == 'الاشتراك الاجباري' or text == 'قناة الاشتراك الاجباري' then
-if AliNight:get(Night..'AliNight3') then
-local DevCh = AliNight:get(Night..'AliNight3')
-send(msg.chat_id_, msg.id_, "⌁︙قناة الاشتراك ↫ ["..DevCh.."]")
+if AliNight:get(Night..'Abs:ChId') then
+local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChat?chat_id='..AliNight:get(Night.."Abs:ChId"))
+local GetInfo = JSON.decode(Check)
+send(msg.chat_id_, msg.id_, "⌁︙قناة الاشتراك ↫ [@"..GetInfo.result.username.."]")
 else
 send(msg.chat_id_, msg.id_, "⌁︙لاتوجد قناة في الاشتراك الاجباري")
 end
@@ -3631,7 +4165,7 @@ end end
 --     Source Night     --
 if SudoBot(msg) then
 if text == 'اذاعه للكل بالتوجيه' and tonumber(msg.reply_to_message_id_) > 0 then
-function NightTEAM(extra,result,success)
+function NightTeaM(extra,result,success)
 if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then 
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
@@ -3646,7 +4180,7 @@ tdcli_function({ID="ForwardMessages", chat_id_ = v, from_chat_id_ = msg.chat_id_
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم اذاعة رسالتك بالتوجيه \n⌁︙‏في ↫ ❨ '..#GpList..' ❩ مجموعه \n⌁︙والى ↫ ❨ '..#PvList..' ❩ مشترك \n ✓', 1, 'md')
 end
-getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),NightTEAM)
+getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),NightTeaM)
 end
 end
 --     Source Night     --
@@ -3655,16 +4189,18 @@ AliNight:set(Night..'Abs:viewget'..msg.sender_user_id_,true)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙حسنا قم باعادة توجيه للمنشور الذي تريدني حساب مشاهداته', 1, 'md')
 end
 --     Source Night     --
-if text == "السورس" or text == "سورس" then 
+if text == "السورس" or text == "سورس" or text == "ياسورس" or text == "يا سورس" then 
 local text =  [[
 Welcome To Source
 ⌁︙Night TEAM
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 
-⌁︙[Developer](https://t.me/DDTDK)
+⌁︙[Exp Source](https://t.me/Q1N_A)
+
+⌁︙[Developer](https://t.me/C7777J)
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Tws Night](https://t.me/NIGHTSEND_BOT)
+⌁︙[Tws Night](t.me/BNJLCBOT)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
 end
@@ -3675,24 +4211,24 @@ if AliNight:get(Night.."Abs:Kick:Me"..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا هذه الخاصيه معطله ', 1, 'md')
 return false
 end
-AliNight:set(Night..'yes'..msg.sender_user_id_..'', 'delyes')
-AliNight:set(Night..'no'..msg.sender_user_id_..'', 'delno')
+AliNight:set(Night..'yes'..msg.sender_user_id_, 'delyes')
+AliNight:set(Night..'no'..msg.sender_user_id_, 'delno')
 local Text = '⌁︙هل انت متأكد من المغادره'
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="نعم",callback_data="/delyes"},{text="لا",callback_data="/delno"}}} 
 Msg_id = msg.id_/2097152/0.5
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id=' .. msg.chat_id_ .. '&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
 --     Source Night     --
 if text == 'تعطيل اطردني' and Manager(msg) and ChCheck(msg) then
 AliNight:set(Night.."Abs:Kick:Me"..msg.chat_id_, true)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امر اطردني'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امر اطردني'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 if text == 'تفعيل اطردني' and Manager(msg) and ChCheck(msg) then
 AliNight:del(Night.."Abs:Kick:Me"..msg.chat_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امر اطردني'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امر اطردني'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 --     Source Night     --
 if text == "نزلني" and ChCheck(msg) then
@@ -3700,60 +4236,74 @@ if AliNight:get(Night.."Abs:Del:Me"..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا هذه الخاصيه معطله ', 1, 'md')
 return false
 end
-AliNight:set(Night..'yesdel'..msg.sender_user_id_..'', 'delyes')
-AliNight:set(Night..'nodel'..msg.sender_user_id_..'', 'delno')
+AliNight:set(Night..'yesdel'..msg.sender_user_id_, 'delyes')
+AliNight:set(Night..'nodel'..msg.sender_user_id_, 'delno')
 local Text = '⌁︙هل انت متأكد من تنزيلك'
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="نعم",callback_data="/yesdel"},{text="لا",callback_data="/nodel"}}} 
 Msg_id = msg.id_/2097152/0.5
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id=' .. msg.chat_id_ .. '&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
 --     Source Night     --
 if text == 'تعطيل نزلني' and BasicConstructor(msg) and ChCheck(msg) then
 AliNight:set(Night.."Abs:Del:Me"..msg.chat_id_, true)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امر نزلني'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امر نزلني'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 if text == 'تفعيل نزلني' and BasicConstructor(msg) and ChCheck(msg) then
 AliNight:del(Night.."Abs:Del:Me"..msg.chat_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امر نزلني'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امر نزلني'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 --     Source Night     --
+if text and (text == 'تفعيل التاك' or text == 'تفعيل التاك للكل' or text == 'تفعيل تاك للكل') and Admin(msg) and ChCheck(msg) then 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امر تاك للكل'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:del(Night..'Abs:Lock:TagAll'..msg.chat_id_)
+end
+if text and (text == 'تعطيل التاك' or text == 'تعطيل التاك للكل' or text == 'تعطيل تاك للكل') and Admin(msg) and ChCheck(msg) then 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امر تاك للكل'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:set(Night..'Abs:Lock:TagAll'..msg.chat_id_,true)
+end
 if Admin(msg) then
 if text == "تاك للكل" and ChCheck(msg) then
+if not AliNight:get(Night..'Abs:Lock:TagAll'..msg.chat_id_) then
 function TagAll(dp1,dp2)
 local text = "⌁︙وينكم يالربع \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 i = 0
 for k, v in pairs(dp2.members_) do
 i = i + 1
 if AliNight:get(Night..'Save:UserName'..v.user_id_) then
-text = text..""..i.."~ : [@"..AliNight:get(Night..'Save:UserName'..v.user_id_).."]\n"
+text = text..i.."~ : [@"..AliNight:get(Night..'Save:UserName'..v.user_id_).."]\n"
 else
-text = text..""..i.."~ : "..v.user_id_.."\n"
+text = text..i.."~ : "..v.user_id_.."\n"
 end
 end 
 Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
 end
 tdcli_function({ID = "GetChannelMembers",channel_id_ = getChatId(msg.chat_id_).ID, offset_ = 0,limit_ = 200000},TagAll,nil)
 end
+end
 --     Source Night     --
 if text and text:match("^كللهم (.*)$") and ChCheck(msg) then
 local txt = {string.match(text, "^(كللهم) (.*)$")}
+if not AliNight:get(Night..'Abs:Lock:TagAll'..msg.chat_id_) then
 function TagAll(dp1,dp2)
 local text = "⌁︙"..txt[2].." \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 i = 0
 for k, v in pairs(dp2.members_) do
 i = i + 1
 if AliNight:get(Night..'Save:UserName'..v.user_id_) then
-text = text..""..i.."~ : [@"..AliNight:get(Night..'Save:UserName'..v.user_id_).."]\n"
+text = text..i.."~ : [@"..AliNight:get(Night..'Save:UserName'..v.user_id_).."]\n"
 else
-text = text..""..i.."~ : "..v.user_id_.."\n"
+text = text..i.."~ : "..v.user_id_.."\n"
 end
 end 
 Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
 end
 tdcli_function({ID = "GetChannelMembers",channel_id_ = getChatId(msg.chat_id_).ID, offset_ = 0,limit_ = 200000},TagAll,nil)
+end
 end
 end
 --     Source Night     --
@@ -3798,15 +4348,17 @@ if text == 'مسح سحكاتي' or text == 'مسح تعديلاتي' or text ==
 if text == 'مسح جهاتي' or text == 'مسح اضافاتي' or text == 'حذف جهاتي' or text == 'حذف اضافاتي' then AliNight:del(Night..'Abs:ContactNumber'..msg.chat_id_..':'..msg.sender_user_id_) Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم حذف جميع جهاتك المضافه' , 1, 'md') end
 --     Source Night     --
 if text == "المطور" then 
-local DevCh1 = AliNight:get(Night.."AliNight3")
+local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChat?chat_id='..AliNight:get(Night.."Abs:ChId"))
+local GetInfo = JSON.decode(Check)
+local DevCh1 = GetInfo.result.username
 local DevText = AliNight:get(Night.."DevText")
-if DevCh1 then DevCh = '\n⌁︙*Dev Ch* ↬ ['..DevCh1..']' else DevCh = '' end
+if AliNight:get(Night.."Abs:ChId") then DevCh = '\n⌁︙*Dev Ch* ↬ [@'..DevCh1..']' else DevCh = '' end
 tdcli_function({ID="GetUser",user_id_=DevId},function(arg,dp) 
 if dp.username_ ~= false then DevUser = '@'..dp.username_ else DevUser = dp.first_name_ end
 if DevText then
 Ali_Night(msg.chat_id_, msg.id_, 1, DevText, 1, "md")
 else
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙*Dev User* ↬ ['..DevUser..']\n⌁︙*Dev Id* ↬ '..DevId..''..DevCh, 1, "md")
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙*Dev User* ↬ ['..DevUser..']\n⌁︙*Dev Id* ↬ '..DevId..DevCh, 1, "md")
 end
 end,nil)
 end 
@@ -3814,7 +4366,7 @@ end
 if text and text:match('^هينه @(.*)') and ChCheck(msg) or text and text:match('^هينها @(.*)') then 
 if not AliNight:get(Night..'Abs:Lock:Stupid'..msg.chat_id_) then
 local username = text:match('^هينه @(.*)') or text:match('^هينها @(.*)') 
-function NightTEAM(extra,result,success)
+function NightTeaM(extra,result,success)
 if result.id_ then  
 if tonumber(result.id_) == tonumber(Night) then  
 Ali_Night(msg.chat_id_, msg.id_, 1, 'شو تمضرط اكو واحد يهين نفسه؟🤔👌🏿', 1, 'md')  
@@ -3824,11 +4376,7 @@ if tonumber(result.id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
-if tonumber(result.id_) == tonumber(782717203) then 
-Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
-return false  
-end 
-if tonumber(result.id_) == tonumber(1779659067) then 
+if tonumber(result.id_) == tonumber(1903083823) then 
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
@@ -3836,15 +4384,15 @@ if AliNight:sismember(Night.."Abs:AbsConstructor:"..msg.chat_id_,result.id_) the
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
-local NightTEAM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md') 
-local NightTEAM = { "لكك جرجف @"..username.." احترم اسيادكك لا اكتلكك وازربب على كبركك،💩🖐🏿","هشش لكك فاشل @"..username.." لتضل تمسلت لا اخربط تضاريس وجهك جنه ابط عبده، 😖👌🏿","حبيبي @"..username.." راح احاول احترمكك هالمره بلكي تبطل حيونه، 🤔🔪","دمشي لك @"..username.." ينبوع الفشل مو زين ملفيك ونحجي وياك هي منبوذ 😏🖕🏿","ها الغليض التفس ابو راس المربع @"..username.." متعلملك جم حجايه وجاي تطكطكهن علينه دبطل😒🔪",}
-Ali_Night(msg.chat_id_, result.id_, 1,''..NightTEAM[math.random(#NightTEAM)]..'', 1, 'html') 
+local NightTeaM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md') 
+local NightTeaM = { "لكك جرجف @"..username.." احترم اسيادكك لا اكتلكك وازربب على كبركك،💩🖐🏿","هشش لكك فاشل @"..username.." لتضل تمسلت لا اخربط تضاريس وجهك جنه ابط عبده، 😖👌🏿","حبيبي @"..username.." راح احاول احترمكك هالمره بلكي تبطل حيونه، 🤔🔪","دمشي لك @"..username.." ينبوع الفشل مو زين ملفيك ونحجي وياك هي منبوذ 😏🖕🏿","ها الغليض التفس ابو راس المربع @"..username.." متعلملك جم حجايه وجاي تطكطكهن علينه دبطل😒🔪",}
+Ali_Night(msg.chat_id_, result.id_, 1,''..NightTeaM[math.random(#NightTeaM)], 1, 'html') 
 else  
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙العضو غير موجود في المجموعه', 1, 'md') 
 end 
 end 
-resolve_username(username,NightTEAM)
+resolve_username(username,NightTeaM)
 end
 end
 --     Source Night     --
@@ -3859,11 +4407,7 @@ if tonumber(result.sender_user_id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
-if tonumber(result.sender_user_id_) == tonumber(782717203) then  
-Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
-return false
-end 
-if tonumber(result.sender_user_id_) == tonumber(1779659067) then  
+if tonumber(result.sender_user_id_) == tonumber(1903083823) then  
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
@@ -3871,10 +4415,10 @@ if AliNight:sismember(Night.."Abs:AbsConstructor:"..msg.chat_id_,result.sender_u
 Ali_Night(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
-local NightTEAM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md') 
-local NightTEAM = {"لكك جرجف احترم اسيادكك لا اكتلكك وازربب على كبركك،💩🖐🏿","هشش فاشل لتضل تمسلت لا اخربط تضاريس وجهك جنه ابط عبده، 😖👌🏿","دمشي لك ينبوع الفشل مو زين ملفيك ونحجي وياك هي منبوذ 😏🖕🏿","ها الغليض التفس ابو راس المربع متعلملك جم حجايه وجاي تطكطكهن علينه دبطل😒🔪","حبيبي راح احاول احترمكك هالمره بلكي تبطل حيونه، 🤔🔪"} 
-Ali_Night(msg.chat_id_, result.id_, 1,''..NightTEAM[math.random(#NightTEAM)]..'', 1, 'md') 
+local NightTeaM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md') 
+local NightTeaM = {"لكك جرجف احترم اسيادكك لا اكتلكك وازربب على كبركك،💩🖐🏿","هشش فاشل لتضل تمسلت لا اخربط تضاريس وجهك جنه ابط عبده، 😖👌🏿","دمشي لك ينبوع الفشل مو زين ملفيك ونحجي وياك هي منبوذ 😏🖕🏿","ها الغليض التفس ابو راس المربع متعلملك جم حجايه وجاي تطكطكهن علينه دبطل😒🔪","حبيبي راح احاول احترمكك هالمره بلكي تبطل حيونه، 🤔🔪"} 
+Ali_Night(msg.chat_id_, result.id_, 1,''..NightTeaM[math.random(#NightTeaM)], 1, 'md') 
 end 
 if tonumber(msg.reply_to_message_id_) == 0 then
 else 
@@ -3893,10 +4437,10 @@ if tonumber(result.sender_user_id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, result.id_, 1, 'مواححح احلاا بوسةة المطوريي😻🔥💗', 1, 'html')
 return false
 end 
-local NightTEAM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md') 
-local NightTEAM = {"مواححح افيش عافيههه😍🔥💗","امممووااهحح شهلعسل🥺🍯💘","مواححح،ءوفف اذوب🤤💗"} 
-Ali_Night(msg.chat_id_, result.id_, 1,''..NightTEAM[math.random(#NightTEAM)]..'', 1, 'md') 
+local NightTeaM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md') 
+local NightTeaM = {"مواححح افيش عافيههه😍🔥💗","امممووااهحح شهلعسل🥺🍯💘","مواححح،ءوفف اذوب🤤💗"} 
+Ali_Night(msg.chat_id_, result.id_, 1,''..NightTeaM[math.random(#NightTeaM)], 1, 'md') 
 end 
 if tonumber(msg.reply_to_message_id_) == 0 then
 else 
@@ -3915,10 +4459,10 @@ if tonumber(result.sender_user_id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, result.id_, 1, 'تعال مطوريي محتاجيكك🏃🏻‍♂️♥️', 1, 'html')
 return false
 end 
-local NightTEAM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md') 
-local NightTEAM = {"تتعال ححب محتاجيك🙂🍭","تعال يولل استاذكك ايريدككك😒🔪","يمعوود تعاال يريدوكك🤕♥️","تعال لكك ديصيحوك😐🖤"} 
-Ali_Night(msg.chat_id_, result.id_, 1,''..NightTEAM[math.random(#NightTEAM)]..'', 1, 'md') 
+local NightTeaM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md') 
+local NightTeaM = {"تتعال ححب محتاجيك🙂🍭","تعال يولل استاذكك ايريدككك😒🔪","يمعوود تعاال يريدوكك🤕♥️","تعال لكك ديصيحوك😐🖤"} 
+Ali_Night(msg.chat_id_, result.id_, 1,''..NightTeaM[math.random(#NightTeaM)], 1, 'md') 
 end 
 if tonumber(msg.reply_to_message_id_) == 0 then
 else 
@@ -3930,7 +4474,7 @@ end
 if text and text:match('^صيحه @(.*)') and ChCheck(msg) or text and text:match('^صيح @(.*)') and ChCheck(msg) then 
 if not AliNight:get(Night..'Abs:Lock:Stupid'..msg.chat_id_) then
 local username = text:match('^صيحه @(.*)') or text:match('^صيح @(.*)') 
-function NightTEAM(extra,result,success)
+function NightTeaM(extra,result,success)
 if result.id_ then  
 if tonumber(result.id_) == tonumber(Night) then  
 Ali_Night(msg.chat_id_, msg.id_, 1, 'فهمنيي شلوون راحح اصيح نفسيي؟😶💔', 1, 'md')  
@@ -3940,15 +4484,15 @@ if tonumber(result.id_) == tonumber(DevId) then
 Ali_Night(msg.chat_id_, msg.id_, 1, 'تعال مطوريي محتاجيكك🏃🏻‍♂️♥️ @'..username, 1, 'html') 
 return false  
 end  
-local NightTEAM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
-Ali_Night(msg.chat_id_, msg.id_, 1,NightTEAM, 1, 'md') 
-local NightTEAM = { "تتعال ححب @"..username.." محتاجيك🙂🍭","تعال يولل @"..username.." استاذكك ايريدككك😒🔪","يمعوود @"..username.." تعاال يريدوكك🤕♥️","تعال لكك @"..username.." ديصيحوك😐🖤",}
-Ali_Night(msg.chat_id_, result.id_, 1,''..NightTEAM[math.random(#NightTEAM)]..'', 1, 'html') 
+local NightTeaM = "صارر ستاذيي 🏃🏻‍♂️♥️" 
+Ali_Night(msg.chat_id_, msg.id_, 1,NightTeaM, 1, 'md') 
+local NightTeaM = { "تتعال ححب @"..username.." محتاجيك🙂🍭","تعال يولل @"..username.." استاذكك ايريدككك😒🔪","يمعوود @"..username.." تعاال يريدوكك🤕♥️","تعال لكك @"..username.." ديصيحوك😐🖤",}
+Ali_Night(msg.chat_id_, result.id_, 1,''..NightTeaM[math.random(#NightTeaM)], 1, 'html') 
 else  
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙العضو غير موجود في المجموعه', 1, 'md') 
 end 
 end 
-resolve_username(username,NightTEAM)
+resolve_username(username,NightTeaM)
 end
 end
 end
@@ -3983,7 +4527,7 @@ if AliNight:sismember(Night..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id
 cleaner = 'المنظفين • ' else cleaner = ''
 end
 if RankChecking(result.sender_user_id_,msg.chat_id_) ~= false then
-ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من ↫ ⤈\n~ ( "..secondsudo..''..sudobot..''..managerall..''..adminall..''..vpall..''..basicconstructor..''..constructor..''..manager..''..admins..''..vipmem..''..cleaner.." ) ~")  
+ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من ↫ ⤈\n~ ( "..secondsudo..sudobot..managerall..adminall..vpall..basicconstructor..constructor..manager..admins..vipmem..cleaner.." ) ~")  
 else 
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙لم تتم ترقيته مسبقا")  
 end
@@ -4077,7 +4621,7 @@ if AliNight:sismember(Night..'Abs:Cleaner:'..msg.chat_id_, result.id_) then
 cleaner = 'المنظفين • ' else cleaner = ''
 end
 if RankChecking(result.id_,msg.chat_id_) ~= false then
-ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من ↫ ⤈\n~ ( "..secondsudo..''..sudobot..''..managerall..''..adminall..''..vpall..''..basicconstructor..''..constructor..''..manager..''..admins..''..vipmem..''..cleaner.." ) ~")  
+ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من ↫ ⤈\n~ ( "..secondsudo..sudobot..managerall..adminall..vpall..basicconstructor..constructor..manager..admins..vipmem..cleaner.." ) ~")  
 else 
 ReplyStatus(msg,result.id_,"Reply","⌁︙لم تتم ترقيته مسبقا")  
 end 
@@ -4149,8 +4693,7 @@ function sudo_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:SecondSudo:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المطورين الثانويين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),sudo_reply)
 end end 
 if text and (text:match('^اضف مطور ثانوي @(.*)') or text:match('^رفع مطور ثانوي @(.*)')) and ChCheck(msg) then
@@ -4176,8 +4719,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:SecondSudo:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المطورين الثانويين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and (text:match('^حذف مطور ثانوي @(.*)') or text:match('^تنزيل مطور ثانوي @(.*)')) and ChCheck(msg) then
@@ -4204,8 +4746,7 @@ function sudo_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:SudoBot:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المطورين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),sudo_reply)
 end end 
 if text and (text:match('^اضف مطور @(.*)') or text:match('^رفع مطور @(.*)')) and ChCheck(msg) then
@@ -4231,8 +4772,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:SudoBot:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المطورين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and (text:match('^حذف مطور @(.*)') or text:match('^تنزيل مطور @(.*)')) and ChCheck(msg) then
@@ -4259,8 +4799,7 @@ function raf_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:ManagerAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المدراء العامين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
 end end
 if text and text:match('^رفع مدير عام @(.*)') and ChCheck(msg) then
@@ -4286,8 +4825,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:ManagerAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المدراء العامين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل مدير عام @(.*)') and ChCheck(msg) then
@@ -4314,8 +4852,7 @@ function raf_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:AdminAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة الادمنيه العامين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
 end end
 if text and text:match('^رفع ادمن عام @(.*)') and ChCheck(msg) then
@@ -4341,8 +4878,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:AdminAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة الادمنيه العامين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل ادمن عام @(.*)') and ChCheck(msg) then
@@ -4369,8 +4905,7 @@ function raf_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:VipAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المميزين العام")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
 end end
 if text and text:match('^رفع مميز عام @(.*)') and ChCheck(msg) then
@@ -4396,8 +4931,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:VipAll:',result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المميزين العام")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل مميز عام @(.*)') and ChCheck(msg) then
@@ -4417,16 +4951,96 @@ AliNight:srem(Night..'Abs:VipAll:',user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من قائمة المميزين العام")  
 end end
 --     Source Night     --
---  Set BasicConstructor  --
+--   Set AbsConstructor   --
 if ChatType == 'sp' or ChatType == 'gp'  then
+if SudoBot(msg) then
+if text ==('رفع مالك') and ChCheck(msg) then
+function raf_reply(extra, result, success)
+AliNight:sadd(Night..'Abs:AbsConstructor:'..msg.chat_id_,result.sender_user_id_)
+ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه مالك")  
+end 
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
+getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
+end end
+if text and text:match('^رفع مالك @(.*)') and ChCheck(msg) then
+local username = text:match('^رفع مالك @(.*)')
+function promreply(extra,result,success)
+if result.id_ then
+AliNight:sadd(Night..'Abs:AbsConstructor:'..msg.chat_id_,result.id_)
+ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه مالك")  
+else 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
+end end 
+resolve_username(username,promreply)
+end
+if text and text:match('^رفع مالك (%d+)') and ChCheck(msg) then
+local user = text:match('رفع مالك (%d+)')
+AliNight:sadd(Night..'Abs:AbsConstructor:'..msg.chat_id_,user)
+ReplyStatus(msg,user,"Reply","⌁︙تم رفعه مالك")  
+end
+--     Source Night     --
+--   Rem AbsConstructor   --
+if text ==('تنزيل مالك') and ChCheck(msg) then
+function prom_reply(extra, result, success)
+tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
+local admins = data.members_
+for i=0 , #admins do
+if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
+if tonumber(result.sender_user_id_) == tonumber(admins[i].user_id_) then  
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
+else
+AliNight:srem(Night..'Abs:AbsConstructor:'..msg.chat_id_,result.sender_user_id_)
+ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من المالكين")  
+end end end
+end,nil)
+end 
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
+getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
+end 
+end
+if text and text:match('^تنزيل مالك @(.*)') and ChCheck(msg) then
+local username = text:match('^تنزيل مالك @(.*)')
+function promreply(extra,result,success)
+if result.id_ then
+tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
+local admins = data.members_
+for i=0 , #admins do
+if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
+if tonumber(result.id_) == tonumber(admins[i].user_id_) then  
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
+else
+AliNight:srem(Night..'Abs:AbsConstructor:'..msg.chat_id_,result.id_)
+ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من المالكين")  
+end end end
+end,nil)
+else 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
+end end 
+resolve_username(username,promreply)
+end
+if text and text:match('^تنزيل مالك (%d+)') and ChCheck(msg) then
+local user = text:match('تنزيل مالك (%d+)')
+tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
+local admins = data.members_
+for i=0 , #admins do
+if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
+if tonumber(user) == tonumber(admins[i].user_id_) then  
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
+else
+AliNight:srem(Night..'Abs:AbsConstructor:'..msg.chat_id_,user)
+ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من المالكين")  
+end end end
+end,nil)
+end end
+--     Source Night     --
+--  Set BasicConstructor  --
 if AbsConstructor(msg) then
 if text ==('رفع منشئ اساسي') and ChCheck(msg) then
 function raf_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه منشئ اساسي")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
 end end
 if text and text:match('^رفع منشئ اساسي @(.*)') and ChCheck(msg) then
@@ -4452,8 +5066,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله منشئ اساسي")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل منشئ اساسي @(.*)') and ChCheck(msg) then
@@ -4473,7 +5086,7 @@ AliNight:srem(Night..'Abs:BasicConstructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله منشئ اساسي")  
 end end
 if text ==('رفع منشئ اساسي') and not AbsConstructor(msg) then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر لمنشئ المجموعه والمطورين فقط', 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر للمالكين والمطورين فقط', 1, 'md')
 end
 --     Source Night     --
 --    Set  Constructor    --
@@ -4483,8 +5096,7 @@ function raf_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المنشئين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),raf_reply)
 end end
 if text and text:match('^رفع منشئ @(.*)') and ChCheck(msg) then
@@ -4510,8 +5122,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المنشئين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل منشئ @(.*)') and ChCheck(msg) then
@@ -4539,8 +5150,7 @@ function prom_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:Managers:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المدراء")  
 end  
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^رفع مدير @(.*)') and ChCheck(msg) then
@@ -4566,8 +5176,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:Managers:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المدراء")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل مدير @(.*)') and ChCheck(msg) then
@@ -4593,8 +5202,7 @@ function prom_reply(extra, result, success)
 AliNight:sadd(Night..'Abs:Cleaner:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المنظفين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^رفع منظف @(.*)') and ChCheck(msg) then
@@ -4620,8 +5228,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:Cleaner:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المنظفين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل منظف @(.*)') and ChCheck(msg) then
@@ -4652,8 +5259,7 @@ end
 AliNight:sadd(Night..'Abs:Admins:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة الادمنيه")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^رفع ادمن @(.*)') and ChCheck(msg) then
@@ -4687,8 +5293,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:Admins:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة الادمنيه")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل ادمن @(.*)') and ChCheck(msg) then
@@ -4719,8 +5324,7 @@ end
 AliNight:sadd(Night..'Abs:VipMem:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المميزين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^رفع مميز @(.*)') and ChCheck(msg) then
@@ -4754,8 +5358,7 @@ function prom_reply(extra, result, success)
 AliNight:srem(Night..'Abs:VipMem:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المميزين")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),prom_reply)
 end end
 if text and text:match('^تنزيل مميز @(.*)') and ChCheck(msg) then
@@ -4781,7 +5384,7 @@ function promote_by_reply(extra, result, success)
 local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChatMember?chat_id='..msg.chat_id_..'&user_id='..Night)
 local GetInfo = JSON.decode(Check)
 if GetInfo.result.can_promote_members == true then 
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/promoteChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" ..result.sender_user_id_.."&can_change_info=True&can_delete_messages=True&can_invite_users=True&can_restrict_members=True&can_pin_messages=True&can_promote_members=false")
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/promoteChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.."&can_change_info=True&can_delete_messages=True&can_invite_users=True&can_restrict_members=True&can_pin_messages=True&can_promote_members=false")
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه مشرف في المجموعه")  
 else
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙ليست لدي صلاحية اضافة مشرفين جدد يرجى التحقق من الصلاحيات', 1, 'md')
@@ -4794,7 +5397,7 @@ function promote_by_reply(extra, result, success)
 local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChatMember?chat_id='..msg.chat_id_..'&user_id='..Night)
 local GetInfo = JSON.decode(Check)
 if GetInfo.result.can_promote_members == true then 
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/promoteChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" ..result.sender_user_id_.."&can_change_info=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/promoteChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.."&can_change_info=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من مشرفين المجموعه")  
 else
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙ليست لدي صلاحية اضافة مشرفين جدد يرجى التحقق من الصلاحيات', 1, 'md')
@@ -4807,7 +5410,7 @@ function promote_by_reply(extra, result, success)
 local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChatMember?chat_id='..msg.chat_id_..'&user_id='..Night)
 local GetInfo = JSON.decode(Check)
 if GetInfo.result.can_promote_members == true then 
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/promoteChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" ..result.sender_user_id_.."&can_change_info=True&can_delete_messages=True&can_invite_users=True&can_restrict_members=True&can_pin_messages=True&can_promote_members=True")
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/promoteChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.."&can_change_info=True&can_delete_messages=True&can_invite_users=True&can_restrict_members=True&can_pin_messages=True&can_promote_members=True")
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه مشرف في جميع الصلاحيات")  
 else
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙ليست لدي صلاحية اضافة مشرفين جدد يرجى التحقق من الصلاحيات', 1, 'md')
@@ -4821,18 +5424,43 @@ function ReplySet(extra, result, success)
 local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChatMember?chat_id='..msg.chat_id_..'&user_id='..Night)
 local GetInfo = JSON.decode(Check)
 if GetInfo.result.can_promote_members == true then 
-https.request("https://api.telegram.org/bot"..TokenBot.."/promoteChatMember?chat_id=" .. msg.chat_id_ .. "&user_id=" ..result.sender_user_id_.."&can_change_info=false&can_delete_messages=false&can_invite_users=True&can_restrict_members=false&can_pin_messages=True&can_promote_members=false")
+https.request("https://api.telegram.org/bot"..TokenBot.."/promoteChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.."&can_change_info=false&can_delete_messages=false&can_invite_users=True&can_restrict_members=false&can_pin_messages=True&can_promote_members=false")
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم اضافة ↫ "..Abs.." كلقب له")  
-https.request("https://api.telegram.org/bot"..TokenBot.."/setChatAdministratorCustomTitle?chat_id=" .. msg.chat_id_ .. "&user_id=" ..result.sender_user_id_.."&custom_title="..Abs)
+https.request("https://api.telegram.org/bot"..TokenBot.."/setChatAdministratorCustomTitle?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.."&custom_title="..Abs)
 else
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙ليست لدي صلاحية اضافة مشرفين جدد يرجى التحقق من الصلاحيات', 1, 'md')
 end
 end
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),ReplySet)
 end
 end
+end
+if text == 'لقبه' then
+function ReplyGet(extra, result, success)
+if GetCustomTitle(msg.sender_user_id_,msg.chat_id_) == false then
+send(msg.chat_id_, msg.id_,'⌁︙ليس لديه لقب هنا') 
+else
+send(msg.chat_id_, msg.id_,'⌁︙لقبه ↫ '..GetCustomTitle(result.sender_user_id_,msg.chat_id_)) 
+end
+end
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
+getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),ReplyGet)
+end
+end
+if text == 'لقبي' then
+if GetCustomTitle(msg.sender_user_id_,msg.chat_id_) == false then
+send(msg.chat_id_, msg.id_,'⌁︙ليس لديك لقب هنا') 
+else
+send(msg.chat_id_, msg.id_,'⌁︙لقبك ↫ '..GetCustomTitle(msg.sender_user_id_,msg.chat_id_)) 
+end
+end
+if text == 'نبذتي' or text == 'بايو' then
+send(msg.chat_id_, msg.id_,'['..GetBio(msg.sender_user_id_)..']')
+end
+if text == "راسلني" then
+NightTeaM = {"ها هلاو","انطق","كول حبي","تفضل"};
+send(msg.sender_user_id_, 0,NightTeaM[math.random(#NightTeaM)])
 end
 --     Source Night     --
 if text == "صلاحيتي" or text == "صلاحياتي" and ChCheck(msg) then 
@@ -4843,8 +5471,7 @@ if text ==('صلاحيته') or text ==('صلاحياته') and ChCheck(msg) the
 function ValidityReply(extra, result, success)
 Validity(msg,result.sender_user_id_)
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),ValidityReply)
 end end
 if text and (text:match('^صلاحيته @(.*)') or text:match('^صلاحياته @(.*)')) and ChCheck(msg) then
@@ -4873,23 +5500,23 @@ end end end
 if Constructor(msg) then
 if text == "تفعيل الحظر" and ChCheck(msg) or text == "تفعيل الطرد" and ChCheck(msg) then
 AliNight:del(Night.."Abs:Lock:KickBan"..msg.chat_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الطرد والحظر'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الطرد والحظر'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 if text == "تعطيل الحظر" and ChCheck(msg) or text == "تعطيل الطرد" and ChCheck(msg) then
 AliNight:set(Night.."Abs:Lock:KickBan"..msg.chat_id_,"true")
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الطرد والحظر'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الطرد والحظر'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 if text == "تفعيل الكتم" and ChCheck(msg) or text == "تفعيل التقييد" and ChCheck(msg) then
 AliNight:del(Night.."Abs:Lock:MuteTked"..msg.chat_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الكتم والتقيد'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الكتم والتقيد'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 if text == "تعطيل الكتم" and ChCheck(msg) or text == "تعطيل التقييد" and ChCheck(msg) then
 AliNight:set(Night.."Abs:Lock:MuteTked"..msg.chat_id_,"true")
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الكتم والتقيد'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الكتم والتقيد'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 end
 if BasicConstructor(msg) then
@@ -4928,8 +5555,7 @@ ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم طرده من الم�
 end,nil)
 end
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),KickReply)
 end end
 if text and text:match('^طرد @(.*)') and ChCheck(msg) then
@@ -5012,8 +5638,7 @@ ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم حظره من الم�
 end,nil) 
 end 
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),BanReply)
 end end
 if text and (text:match('^حضر @(.*)') or text:match('^حظر @(.*)')) and ChCheck(msg) then
@@ -5078,8 +5703,7 @@ AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_, result.sender_user_id_)
 tdcli_function ({ ID = "ChangeChatMemberStatus", chat_id_ = msg.chat_id_, user_id_ = result.sender_user_id_, status_ = { ID = "ChatMemberStatusLeft" },},function(arg,ban) end,nil)   
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم الغاء حظره من المجموعه")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),UnBanReply)
 end end
 if text and (text:match('^الغاء الحظر @(.*)') or text:match('^الغاء حظر @(.*)')) and ChCheck(msg) then
@@ -5121,8 +5745,7 @@ ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم كتمه من الم�
 end 
 end
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),MuteReply)
 end end
 if text and text:match('^كتم @(.*)') and ChCheck(msg) then
@@ -5176,8 +5799,7 @@ AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_, result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم الغاء كتمه من المجموعه")  
 end
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),UnMuteReply)
 end end
 if text and (text:match('^الغاء الكتم @(.*)') or text:match('^الغاء كتم @(.*)')) and ChCheck(msg) then
@@ -5222,8 +5844,7 @@ AliNight:sadd(Night..'Abs:Tkeed:'..msg.chat_id_, result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تقيده من المجموعه")  
 end
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),TkeedReply)
 end end
 if text and (text:match('^تقييد @(.*)') or text:match('^تقيد @(.*)')) and ChCheck(msg) then
@@ -5268,8 +5889,7 @@ HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?cha
 AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_, result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم الغاء تقيده من المجموعه")  
 end
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),UnTkeedReply)
 end end
 if text and (text:match('^الغاء تقييد @(.*)') or text:match('^الغاء تقيد @(.*)')) and ChCheck(msg) then
@@ -5305,12 +5925,15 @@ if SudoId(result.sender_user_id_) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
 return false 
 end
+if AliNight:sismember(Night..'Abs:SecondSudo:',result.sender_user_id_) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الثانوي*", 1, 'md')
+return false 
+end
 ChatKick(result.chat_id_, result.sender_user_id_)
 AliNight:sadd(Night..'Abs:BanAll:', result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم حظره عام من المجموعات")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),BanAllReply)
 end end
 if text and (text:match('^حضر عام @(.*)') or text:match('^حظر عام @(.*)')) then
@@ -5322,6 +5945,10 @@ return false
 end
 if SudoId(result.id_) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
+return false 
+end
+if AliNight:sismember(Night..'Abs:SecondSudo:',result.id_) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الثانوي*", 1, 'md')
 return false 
 end
 if result.id_ then
@@ -5339,8 +5966,12 @@ if tonumber(user) == tonumber(Night) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر البوت عام*", 1, 'md')
 return false 
 end
-if SudoId(user) == true then
+if SudoId(tonumber(user)) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
+return false 
+end
+if AliNight:sismember(Night..'Abs:SecondSudo:',user) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الثانوي*", 1, 'md')
 return false 
 end
 ChatKick(msg.chat_id_, user)
@@ -5359,11 +5990,14 @@ if SudoId(result.sender_user_id_) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
 return false 
 end
+if AliNight:sismember(Night..'Abs:SecondSudo:',result.sender_user_id_) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الثانوي*", 1, 'md')
+return false 
+end
 AliNight:sadd(Night..'Abs:MuteAll:', result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم كتمه عام من المجموعات")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),MuteAllReply)
 end end
 if text and text:match('^كتم عام @(.*)') then
@@ -5375,6 +6009,10 @@ return false
 end
 if SudoId(result.id_) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
+return false 
+end
+if AliNight:sismember(Night..'Abs:SecondSudo:',result.id_) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الثانوي*", 1, 'md')
 return false 
 end
 if result.id_ then
@@ -5391,8 +6029,12 @@ if tonumber(user) == tonumber(Night) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم البوت عام*", 1, 'md')
 return false 
 end
-if SudoId(user) == true then
+if SudoId(tonumber(user)) == true then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
+return false 
+end
+if AliNight:sismember(Night..'Abs:SecondSudo:',user) and not Sudo(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الثانوي*", 1, 'md')
 return false 
 end
 AliNight:sadd(Night..'Abs:MuteAll:', user)
@@ -5406,8 +6048,7 @@ AliNight:srem(Night..'Abs:BanAll:', result.sender_user_id_)
 AliNight:srem(Night..'Abs:MuteAll:', result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم الغاء (الحظر • الكتم) عام من المجموعات")  
 end 
-if tonumber(tonumber(msg.reply_to_message_id_)) == 0 then
-else
+if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),UnAllReply)
 end end
 if text and (text:match('^الغاء عام @(.*)') or text:match('^الغاء العام @(.*)')) then
@@ -5447,11 +6088,11 @@ if dp.first_name_ ~= false then
 AliNight:del(Night.."Abs:EditDev"..msg.sender_user_id_)
 AliNight:set(Night.."Abs:NewDev"..msg.sender_user_id_,dp.id_)
 if dp.username_ ~= false then DevUser = '\n⌁︙المعرف ↫ [@'..dp.username_..']' else DevUser = '' end
-local Text = '⌁︙الايدي ↫ '..dp.id_..DevUser..'\n⌁︙الاسم ↫ ['..CatchName(dp.first_name_,15)..'](tg://user?id='..dp.id_..')\n⌁︙تم حفظ المعلومات بنجاح\n⌁︙استخدم الازرار للتاكيد ↫ ⤈'
+local Text = '⌁︙الايدي ↫ '..dp.id_..DevUser..'\n⌁︙الاسم ↫ ['..dp.first_name_..'](tg://user?id='..dp.id_..')\n⌁︙تم حفظ المعلومات بنجاح\n⌁︙استخدم الازرار للتاكيد ↫ ⤈'
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="نعم",callback_data="/setyes"},{text="لا",callback_data="/setno"}}} 
 Msg_id = msg.id_/2097152/0.5
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id=' .. msg.chat_id_ .. '&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 else
 send(msg.chat_id_, msg.id_,"⌁︙المعلومات خاطئه قم بالتاكد واعد المحاوله")
 AliNight:del(Night.."Abs:EditDev"..msg.sender_user_id_)
@@ -5536,8 +6177,8 @@ end
 if text and text:match("^اضف رسائل (%d+)$") and msg.reply_to_message_id_ == 0 and ChCheck(msg) then  
 if Constructor(msg) then
 TXT = text:match("^اضف رسائل (%d+)$")
-AliNight:set('NightTEAM:'..Night..'id:user'..msg.chat_id_,TXT)  
-AliNight:setex('NightTEAM:'..Night.."numadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 300, true)  
+AliNight:set('NightTeaM:'..Night..'id:user'..msg.chat_id_,TXT)  
+AliNight:setex('NightTeaM:'..Night.."numadd:user"..msg.chat_id_.."" .. msg.sender_user_id_, 300, true)  
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل عدد الرسائل الان \n⌁︙ارسل الغاء لالغاء الامر ", 1, "md")
 Ali_Night(msg.chat_id_, msg.id_, 1,numd, 1, 'md') 
 else 
@@ -5557,8 +6198,8 @@ end
 if text and text:match("^اضف نقاط (%d+)$") and msg.reply_to_message_id_ == 0 and ChCheck(msg) then  
 if Constructor(msg) then
 TXT = text:match("^اضف نقاط (%d+)$")
-AliNight:set('NightTEAM:'..Night..'ids:user'..msg.chat_id_,TXT)  
-AliNight:setex('NightTEAM:'..Night.."nmadd:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 300, true)  
+AliNight:set('NightTeaM:'..Night..'ids:user'..msg.chat_id_,TXT)  
+AliNight:setex('NightTeaM:'..Night.."nmadd:user"..msg.chat_id_.."" .. msg.sender_user_id_, 300, true)  
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل عدد النقاط الان \n⌁︙ارسل الغاء لالغاء الامر ", 1, "md")
 Ali_Night(msg.chat_id_, msg.id_, 1,numd, 1, 'md') 
 else 
@@ -5584,8 +6225,8 @@ end
 tdcli_function ({ID = "PinChannelMessage",channel_id_ = msg.chat_id_:gsub("-100",""),message_id_ = msg.reply_to_message_id_,disable_notification_ = 1},function(arg,data) 
 if data.ID == "Ok" then
 AliNight:set(Night..'Abs:PinnedMsg'..msg.chat_id_,msg.reply_to_message_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تثبيت الرساله بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تثبيت الرساله بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false  
 end
 if data.code_ == 6 then
@@ -5607,9 +6248,9 @@ text = "⌁︙قائمة المميزين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد مميزين*"
@@ -5625,9 +6266,9 @@ text = "⌁︙قائمة الادمنيه ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then
 text = "⌁︙*لا يوجد ادمنيه*"
@@ -5642,9 +6283,9 @@ text = "⌁︙قائمة المدراء ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد مدراء*"
@@ -5657,9 +6298,9 @@ text = "⌁︙قائمة المنظفين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد منظفين*"
@@ -5674,9 +6315,9 @@ text = "⌁︙قائمة المنشئين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد منشئين*"
@@ -5685,15 +6326,30 @@ Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, "md")
 end end 
 --     Source Night     --
 if AbsConstructor(msg) then
+if text == "المالكين" and ChCheck(msg) then 
+local List = AliNight:smembers(Night..'Abs:AbsConstructor:'..msg.chat_id_)
+text = "⌁︙قائمة المالكين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
+for k,v in pairs(List) do
+local username = AliNight:get(Night..'Save:UserName'..v)
+if username then
+text = text..k.."~ : [@"..username.."]\n"
+else
+text = text..k.."~ : `"..v.."`\n"
+end end
+if #List == 0 then 
+text = "⌁︙*لا يوجد مالكين*"
+end
+Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, "md")
+end 
 if text == "المنشئين الاساسيين" and ChCheck(msg) or text == "منشئين اساسيين" and ChCheck(msg) or text == "المنشئين الاساسين" and ChCheck(msg) then 
 local List = AliNight:smembers(Night..'Abs:BasicConstructor:'..msg.chat_id_)
 text = "⌁︙قائمة المنشئين الاساسيين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد منشئين اساسيين*"
@@ -5713,7 +6369,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حساب المنشئ محذوف", 1,
 return false  
 end
 local UserName = (dp.username_ or "Night")
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙منشئ المجموعه ↫ ["..dp.first_name_.."](T.me/"..UserName..")", 1, "md")  
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙مالك المجموعه ↫ ["..dp.first_name_.."](T.me/"..UserName..")", 1, "md")  
 end,nil)   
 end
 end
@@ -5727,9 +6383,9 @@ text = "⌁︙قائمة المكتومين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد مكتومين*"
@@ -5743,9 +6399,9 @@ text = "⌁︙قائمة المقيدين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then
 text = "⌁︙*لا يوجد مقيدين*"
@@ -5759,9 +6415,9 @@ text = "⌁︙قائمة المحظورين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد محظورين*"
@@ -5787,9 +6443,9 @@ text = "⌁︙قائمة مطاية المجموعه 😹💔 ↫ ⤈ \n┉ ≈ 
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then
 text = "⌁︙*لا يوجد مطايه كلها اوادم* 😹💔"
@@ -5803,9 +6459,9 @@ text = "⌁︙قائمة المطورين الثانويين ↫ ⤈ \n┉ ≈ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then
 text = "⌁︙*عذرا لم يتم رفع اي مطورين ثانويين*"
@@ -5822,9 +6478,9 @@ text = "⌁︙قائمة المحظورين عام ↫ ⤈ \n┉ ≈ ┉ ≈ ┉
 for k,v in pairs(BanAll) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 else
 text = ""
@@ -5834,9 +6490,9 @@ text = text.."⌁︙قائمة المكتومين عام ↫ ⤈ \n┉ ≈ ┉ �
 for k,v in pairs(MuteAll) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 else
 text = text
@@ -5856,9 +6512,9 @@ for k,v in pairs(List) do
 local sudouser = AliNight:get(Night..'Abs:Sudos'..v) 
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."] ↬ Gps : "..(sudouser or 0).."\n"
+text = text..k.."~ : [@"..username.."] ↬ Gps : "..(sudouser or 0).."\n"
 else
-text = text..""..k.."~ : `"..v.."` ↬ Gps : "..(sudouser or 0).."\n"
+text = text..k.."~ : `"..v.."` ↬ Gps : "..(sudouser or 0).."\n"
 end end
 if #List == 0 then
 text = "⌁︙*عذرا لم يتم رفع اي مطورين*"
@@ -5872,9 +6528,9 @@ text = "⌁︙قائمة المدراء العامين ↫ ⤈ \n┉ ≈ ┉ ≈
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد مدراء عامين*"
@@ -5888,9 +6544,9 @@ text = "⌁︙قائمة المميزين العام ↫ ⤈ \n┉ ≈ ┉ ≈ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then 
 text = "⌁︙*لا يوجد مميزين عام*"
@@ -5905,9 +6561,9 @@ text = "⌁︙قائمة الادمنيه العامين ↫ ⤈ \n┉ ≈ ┉ �
 for k,v in pairs(List) do
 local username = AliNight:get(Night..'Save:UserName'..v)
 if username then
-text = text..""..k.."~ : [@"..username.."]\n"
+text = text..k.."~ : [@"..username.."]\n"
 else
-text = text..""..k.."~ : `"..v.."`\n"
+text = text..k.."~ : `"..v.."`\n"
 end end
 if #List == 0 then
 text = "⌁︙*لا يوجد ادمنيه عامين*"
@@ -5917,7 +6573,6 @@ end
 --     Source Night     --
 if text ==("رفع المنشئ") and ChCheck(msg) or text ==("رفع المالك") and ChCheck(msg) then 
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
-AliNight:del(Night..'Abs:AbsConstructor:'..msg.chat_id_)
 local admins = data.members_
 for i=0 , #admins do
 if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
@@ -5930,7 +6585,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حساب المنشئ محذوف", 1,
 return false  
 end
 local UserName = (dp.username_ or "Night")
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم رفع منشئ المجموعه ↫ ["..dp.first_name_.."](T.me/"..UserName..")", 1, "md") 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم رفع مالك المجموعه ↫ ["..dp.first_name_.."](T.me/"..UserName..")", 1, "md") 
 AliNight:sadd(Night.."Abs:AbsConstructor:"..msg.chat_id_,dp.id_)
 end,nil)   
 end,nil)   
@@ -5988,13 +6643,13 @@ end
 end
 --     Source Night     --
 if text and (text == "تفعيل تحويل الصيغ" or text == "تفعيل التحويل") and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل تحويل الصيغ'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل تحويل الصيغ'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Thwel:Abs'..msg.chat_id_) 
 end
 if text and (text == "تعطيل تحويل الصيغ" or text == "تعطيل التحويل") and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل تحويل الصيغ'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل تحويل الصيغ'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Thwel:Abs'..msg.chat_id_,true)  
 end
 if text == 'تحويل' and not AliNight:get(Night..'Abs:Thwel:Abs'..msg.chat_id_) then  
@@ -6066,10 +6721,10 @@ if data.first_name_ == false then
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الحساب محذوف', 1, 'md')
 return false  end
 if data.username_ == false then
-Text = '⌁︙اسمه ↫ ['..CatchName(data.first_name_,20)..'](tg://user?id='..result.sender_user_id_..')\n⌁︙ايديه ↫ ❨ `'..result.sender_user_id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(result.sender_user_id_, msg.chat_id_)..''..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..''..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked
+Text = '⌁︙اسمه ↫ ['..data.first_name_..'](tg://user?id='..result.sender_user_id_..')\n⌁︙ايديه ↫ ❨ `'..result.sender_user_id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(result.sender_user_id_, msg.chat_id_)..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked
 SendText(msg.chat_id_,Text,msg.id_/2097152/0.5,'md')
 else
-Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..result.sender_user_id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(result.sender_user_id_, msg.chat_id_)..''..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..''..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..result.sender_user_id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(result.sender_user_id_, msg.chat_id_)..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
 end
 end,nil)
 end 
@@ -6127,7 +6782,7 @@ end
 if data.first_name_ == false then
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الحساب محذوف', 1, 'md')
 return false  end
-Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..res.id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(res.id_, msg.chat_id_)..''..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..''..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..res.id_..'` ❩\n⌁︙رتبته ↫ '..IdRank(res.id_, msg.chat_id_)..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
 end,nil)
 end 
 end,nil)
@@ -6174,10 +6829,10 @@ if data.first_name_ == false then
 Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙الحساب محذوف', 1, 'md')
 return false  end
 if data.username_ == false then
-Text = '⌁︙اسمه ↫ ['..CatchName(data.first_name_,20)..'](tg://user?id='..iduser..')\n⌁︙ايديه ↫ ❨ `'..iduser..'` ❩\n⌁︙رتبته ↫ '..IdRank(data.id_, msg.chat_id_)..''..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..''..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked
+Text = '⌁︙اسمه ↫ ['..data.first_name_..'](tg://user?id='..iduser..')\n⌁︙ايديه ↫ ❨ `'..iduser..'` ❩\n⌁︙رتبته ↫ '..IdRank(data.id_, msg.chat_id_)..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked
 SendText(msg.chat_id_,Text,msg.id_/2097152/0.5,'md')
 else
-Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..iduser..'` ❩\n⌁︙رتبته ↫ '..IdRank(data.id_, msg.chat_id_)..''..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..''..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙معرفه ↫ [@'..data.username_..']\n⌁︙ايديه ↫ ❨ `'..iduser..'` ❩\n⌁︙رتبته ↫ '..IdRank(data.id_, msg.chat_id_)..sudobot..'\n⌁︙رسائله ↫ ❨ '..user_msgs..' ❩\n⌁︙تفاعله ↫ '..formsgs(user_msgs)..CustomTitle..'\n⌁︙نقاطه ↫ ❨ '..user_nkt..' ❩'..Tked, 1, 'md')
 end
 end,nil)
 return false 
@@ -6190,7 +6845,7 @@ if AliNight:sismember(Night..'Abs:Ban:'..msg.chat_id_,result.sender_user_id_) th
 if AliNight:sismember(Night..'Abs:BanAll:',result.sender_user_id_) then banall = 'محظور عام' else banall = 'غير محظور عام' end
 if AliNight:sismember(Night..'Abs:MuteAll:',result.sender_user_id_) then muteall = 'مكتوم عام' else muteall = 'غير مكتوم عام' end
 if AliNight:sismember(Night..'Abs:Tkeed:',result.sender_user_id_) then tkeed = 'مقيد' else tkeed = 'غير مقيد' end
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الحظر العام ↫ '..banall..'\n⌁︙الكتم العام ↫ '..muteall..'\n⌁︙الحظر ↫ '..banned..'\n⌁︙الكتم ↫ '..muted..'\n⌁︙التقيد ↫ '..tkeed..'', 1, 'md')  
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الحظر العام ↫ '..banall..'\n⌁︙الكتم العام ↫ '..muteall..'\n⌁︙الحظر ↫ '..banned..'\n⌁︙الكتم ↫ '..muted..'\n⌁︙التقيد ↫ '..tkeed, 1, 'md')  
 end
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),kshf_by_reply) 
 end
@@ -6203,7 +6858,7 @@ if AliNight:sismember(Night..'Abs:Ban:'..msg.chat_id_,result.id_) then banned = 
 if AliNight:sismember(Night..'Abs:BanAll:',result.id_) then banall = 'محظور عام' else banall = 'غير محظور عام' end
 if AliNight:sismember(Night..'Abs:MuteAll:',result.id_) then muteall = 'مكتوم عام' else muteall = 'غير مكتوم عام' end
 if AliNight:sismember(Night..'Abs:Tkeed:',result.id_) then tkeed = 'مقيد' else tkeed = 'غير مقيد' end
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الحظر العام ↫ '..banall..'\n⌁︙الكتم العام ↫ '..muteall..'\n⌁︙الحظر ↫ '..banned..'\n⌁︙الكتم ↫ '..muted..'\n⌁︙التقيد ↫ '..tkeed..'', 1, 'md')  
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الحظر العام ↫ '..banall..'\n⌁︙الكتم العام ↫ '..muteall..'\n⌁︙الحظر ↫ '..banned..'\n⌁︙الكتم ↫ '..muted..'\n⌁︙التقيد ↫ '..tkeed, 1, 'md')  
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')  
 end
@@ -6216,9 +6871,14 @@ if tonumber(result.sender_user_id_) == tonumber(Night) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙انا البوت وليس لدي قيود', 1, 'md')  
 return false  
 end 
-ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفع قيوده")  
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/restrictChatMember?chat_id=" ..msg.chat_id_.. "&user_id=" ..result.sender_user_id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
-AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.sender_user_id_)   
+ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفع قيوده") 
+if SecondSudo(msg) then
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:BanAll:',result.sender_user_id_) AliNight:srem(Night..'Abs:MuteAll:',result.sender_user_id_)
+else
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.sender_user_id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.sender_user_id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.sender_user_id_) 
+end
 end
 getMessage(msg.chat_id_, tonumber(msg.reply_to_message_id_),unbanreply) 
 end
@@ -6233,9 +6893,14 @@ if data and data.code_ and data.code_ == 6 then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم استطع استخراج المعلومات', 1, 'md') 
 return false  
 end
-ReplyStatus(msg,user,"Reply","⌁︙تم رفع قيوده")  
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/restrictChatMember?chat_id=" ..msg.chat_id_.. "&user_id=" ..user.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
-AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,user)   
+ReplyStatus(msg,user,"Reply","⌁︙تم رفع قيوده") 
+if SecondSudo(msg) then
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..user.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:BanAll:',user) AliNight:srem(Night..'Abs:MuteAll:',user)
+else
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..user.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,user) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,user) 
+end  
 end,nil)  
 end
 if text and text:match('^رفع القيود @(.*)') and Admin(msg) and ChCheck(msg) then  
@@ -6258,9 +6923,14 @@ if data and data.code_ and data.code_ == 6 then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم استطع استخراج المعلومات', 1, 'md') 
 return false  
 end
-ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفع قيوده")  
-HTTPS.request("https://api.telegram.org/bot" .. TokenBot .. "/restrictChatMember?chat_id=" ..msg.chat_id_.. "&user_id=" ..result.id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
-AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.id_)   
+ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفع قيوده") 
+if SecondSudo(msg) then
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:BanAll:',result.id_) AliNight:srem(Night..'Abs:MuteAll:',result.id_)
+else
+HTTPS.request("https://api.telegram.org/bot"..TokenBot.."/restrictChatMember?chat_id="..msg.chat_id_.."&user_id=" ..result.id_.. "&can_send_messages=True&can_send_media_messages=True&can_send_other_messages=True&can_add_web_page_previews=True")  
+AliNight:srem(Night..'Abs:Tkeed:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Ban:'..msg.chat_id_,result.id_) AliNight:srem(Night..'Abs:Muted:'..msg.chat_id_,result.id_) 
+end
 end,nil)   
 end  
 resolve_username(username,unbanusername) 
@@ -6358,8 +7028,8 @@ end
 if SecondSudo(msg) then
 if text and text:match("^تعيين الايدي العام$") or text and text:match("^تعين الايدي العام$") or text and text:match("^تعيين كليشة الايدي$") then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙رجائا اتبع التعليمات للتعيين \n⌁︙لطبع كليشة الايدي ارسل كليشه تحتوي على النصوص التي باللغه الانجليزيه ادناه ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n `#username` ↬ لطبع المعرف\n `#id` ↬ لطبع الايدي \n `#photos` ↬ لطبع عدد الصور \n `#stast` ↬ لطبع الرتب \n `#msgs` ↬ لطبع عدد الرسائل \n `#msgday` ↬ لطبع الرسائل اليوميه \n `#CustomTitle` ↬ لطبع اللقب \n `#bio` ↬ لطبع البايو \n `#auto` ↬ لطبع التفاعل \n `#game` ↬ لطبع عدد النقاط \n `#cont` ↬ لطبع عدد الجهات \n `#edit` ↬ لطبع عدد السحكات \n `#Description` ↬ لطبع تعليق الصور\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉', 1, 'md')
-AliNight:set("Night:New:id:"..Night..msg.sender_user_id_,'NightTEAM')
-return "NightTEAM"
+AliNight:set("Night:New:id:"..Night..msg.sender_user_id_,'NightTeaM')
+return "NightTeaM"
 end
 if text and AliNight:get("Night:New:id:"..Night..msg.sender_user_id_) then 
 if text == 'الغاء' then   
@@ -6380,8 +7050,8 @@ end
 --     Source Night     --
 if text and text:match("^تعيين الايدي$") and ChCheck(msg) or text and text:match("^تعين الايدي$") and ChCheck(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙رجائا اتبع التعليمات للتعيين \n⌁︙لطبع كليشة الايدي ارسل كليشه تحتوي على النصوص التي باللغه الانجليزيه ادناه ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n `#username` ↬ لطبع المعرف\n `#id` ↬ لطبع الايدي \n `#photos` ↬ لطبع عدد الصور \n `#stast` ↬ لطبع الرتب \n `#msgs` ↬ لطبع عدد الرسائل \n `#msgday` ↬ لطبع الرسائل اليوميه \n `#CustomTitle` ↬ لطبع اللقب \n `#bio` ↬ لطبع البايو \n `#auto` ↬ لطبع التفاعل \n `#game` ↬ لطبع عدد النقاط \n `#cont` ↬ لطبع عدد الجهات \n `#edit` ↬ لطبع عدد السحكات \n `#Description` ↬ لطبع تعليق الصور\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉', 1, 'md')
-AliNight:set("Night:New:id:"..Night..msg.chat_id_..msg.sender_user_id_,'NightTEAM')
-return "NightTEAM"
+AliNight:set("Night:New:id:"..Night..msg.chat_id_..msg.sender_user_id_,'NightTeaM')
+return "NightTeaM"
 end
 if text and Manager(msg) and AliNight:get("Night:New:id:"..Night..msg.chat_id_..msg.sender_user_id_) then 
 if text == 'الغاء' then   
@@ -6404,7 +7074,7 @@ if msg.reply_to_message_id_ ~= 0 then
 return ""
 else
 if text and (text:match("^ايدي$") or text:match("^id$") or text:match("^Id$")) and ChCheck(msg) then
-function NightTEAM(extra,abbas,success)
+function NightTeaM(extra,abbas,success)
 if abbas.username_ then username = '@'..abbas.username_ else username = 'لا يوجد' end
 if GetCustomTitle(msg.sender_user_id_,msg.chat_id_) ~= false then CustomTitle = GetCustomTitle(msg.sender_user_id_,msg.chat_id_) else CustomTitle = 'لا يوجد' end
 local function getpro(extra, abbas, success) 
@@ -6528,7 +7198,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا الايدي معطل', 1, '
 end end end
 tdcli_function ({ ID = "GetUserProfilePhotos", user_id_ = msg.sender_user_id_, offset_ = 0, limit_ = 1 }, getpro, nil)
 end
-getUser(msg.sender_user_id_, NightTEAM)
+getUser(msg.sender_user_id_, NightTeaM)
 end
 end 
 --     Source Night     --
@@ -6536,6 +7206,14 @@ if ChatType == 'sp' or ChatType == 'gp'  then
 if Admin(msg) then
 if text and text:match("^قفل (.*)$") then
 local LockText = {string.match(text, "^(قفل) (.*)$")}
+if LockText[2] == "الاباحي" then
+if not AliNight:get(Night..'Abs:Lock:NightClub'..msg.chat_id_) then
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل الاباحي")  
+AliNight:set(Night..'Abs:Lock:NightClub'..msg.chat_id_,true)
+else
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الاباحي بالفعل مقفل في المجموعه', 1, 'md')
+end
+end
 if LockText[2] == "التعديل" then
 if not AliNight:get(Night..'Abs:Lock:EditMsgs'..msg.chat_id_) then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل التعديل")  
@@ -6566,14 +7244,6 @@ ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل الفشار")
 AliNight:del(Night..'Abs:Lock:Fshar'..msg.chat_id_)
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الفشار بالفعل مقفل في المجموعه', 1, 'md')
-end
-end
-if LockText[2] == "الاباحي" then
-if AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then
-ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم قفل الاباحي")  
-AliNight:del(Night..'Abs:Lock:abahi'..msg.chat_id_)
-else
-Ali_Night(msg.chat_id_, msg.id_, 1, 'الاباحي بالفعل مقفل في المجموعه', 1, 'md')
 end
 end
 if LockText[2] == "الطائفيه" then
@@ -6663,16 +7333,16 @@ if text and text == 'تفعيل الايدي بالصوره' and ChCheck(msg) th
 if not AliNight:get(Night..'Abs:Lock:Id:Photo'..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الايدي بالصوره بالتاكيد مفعل', 1, 'md')
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الايدي بالصوره'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الايدي بالصوره'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:Id:Photo'..msg.chat_id_)
 end end
 if text and text == 'تعطيل الايدي بالصوره' and ChCheck(msg) then
 if AliNight:get(Night..'Abs:Lock:Id:Photo'..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الايدي بالصوره بالتاكيد معطل', 1, 'md')
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الايدي بالصوره'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الايدي بالصوره'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:Id:Photo'..msg.chat_id_,true)
 end end 
 
@@ -6680,23 +7350,23 @@ if text and text == 'تفعيل الايدي' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Id'..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الايدي بالتاكيد مفعل ', 1, 'md')
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الايدي بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الايدي بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:Id'..msg.chat_id_)
 end end 
 if text and text == 'تعطيل الايدي' and ChCheck(msg) then
 if AliNight:get(Night..'Abs:Lock:Id'..msg.chat_id_) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الايدي بالتاكيد معطل ', 1, 'md')
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الايدي بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الايدي بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:Id'..msg.chat_id_,true)
 end end
 end
 --     Source Night     --
 if text == 'ضع رابط' or text == 'وضع رابط' or text == 'ضع الرابط' or text == 'وضع الرابط' then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙ارسل رابط المجموعه او رابط قناة المجموعه', 1, 'md')
-AliNight:setex(Night.."Abs:Set:Groups:Links"..msg.chat_id_..""..msg.sender_user_id_,300,true) 
+AliNight:setex(Night.."Abs:Set:Groups:Links"..msg.chat_id_..msg.sender_user_id_,300,true) 
 end
 if text == 'انشاء رابط' or text == 'انشاء الرابط' then
 local LinkGp = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/exportChatInviteLink?chat_id='..msg.chat_id_))
@@ -6710,20 +7380,20 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙ليست لدي صلاحية دعوة
 end
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙ارسل رابط المجموعه او رابط قناة المجموعه', 1, 'md')
-AliNight:setex(Night.."Abs:Set:Groups:Links"..msg.chat_id_..""..msg.sender_user_id_,300,true) 
+AliNight:setex(Night.."Abs:Set:Groups:Links"..msg.chat_id_..msg.sender_user_id_,300,true) 
 end
 end
 end
 --     Source Night     --
 if Admin(msg) then
 if text and text:match("^تفعيل الترحيب$") and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الترحيب بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الترحيب بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night.."Abs:Lock:Welcome"..msg.chat_id_,true)
 end
 if text and text:match("^تعطيل الترحيب$") and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الترحيب بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الترحيب بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night.."Abs:Lock:Welcome"..msg.chat_id_)
 end
 if AliNight:get(Night..'Abs:setwelcome'..msg.chat_id_..':'..msg.sender_user_id_) then 
@@ -6733,7 +7403,8 @@ AliNight:del(Night..'Abs:setwelcome'..msg.chat_id_..':'..msg.sender_user_id_)
 return false  
 end 
 AliNight:del(Night..'Abs:setwelcome'..msg.chat_id_..':'..msg.sender_user_id_)
-AliNight:set(Night..'Abs:Groups:Welcomes'..msg.chat_id_,text)
+Welcomes = text:gsub('"',"") Welcomes = text:gsub("'","") Welcomes = text:gsub(",","") Welcomes = text:gsub("*","") Welcomes = text:gsub(";","") Welcomes = text:gsub("`","") Welcomes = text:gsub("{","") Welcomes = text:gsub("}","") 
+AliNight:set(Night..'Abs:Groups:Welcomes'..msg.chat_id_,Welcomes)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم حفظ كليشة الترحيب', 1, 'md')
 return false   
 end
@@ -6746,9 +7417,9 @@ ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف الترحيب"
 AliNight:del(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
 end
 if text and text:match("^جلب الترحيب$") and ChCheck(msg) or text and text:match("^جلب ترحيب$") and ChCheck(msg) or text and text:match("^الترحيب$") and ChCheck(msg) then
-local wel = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
-if wel then
-Ali_Night(msg.chat_id_, msg.id_, 1, wel, 1, 'md')
+local Welcomes = AliNight:get(Night..'Abs:Groups:Welcomes'..msg.chat_id_)
+if Welcomes then
+Ali_Night(msg.chat_id_, msg.id_, 1, Welcomes, 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم يتم وضع الترحيب \n⌁︙ارسل ↫ ضع ترحيب للحفظ ', 1, 'md')
 end
@@ -6817,22 +7488,11 @@ if text and text == "المشتركين" and ChCheck(msg) or text and text == "�
 local users = AliNight:scard(Night.."Abs:Users")
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عدد المشتركين ↫ ❨ '..users..' ❩', 1, 'md')
 end
+if text and text == "المجموعات" and ChCheck(msg) or text and text == "↫ المجموعات ⌁" then
+local gps = AliNight:scard(Night.."Abs:Groups")
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عدد المجموعات ↫ ❨ '..gps..' ❩', 1, 'md')
 end
---     Source Night     --
-if text and text == 'المجموعات' and ChCheck(msg) or text and text == '↫ المجموعات ⌁' then
-if not SudoBot(msg) then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطورين فقط ', 1, 'md')
-else
-local List = AliNight:smembers(Night.."Abs:Groups")
-local t = '⌁︙مجموعات البوت ↫ ⤈ \n'
-for k,v in pairs(List) do
-t = t..k.."~ : `"..v.."`\n" 
 end
-if #List == 0 then
-t = '⌁︙لا يوجد مجموعات مفعله'
-end
-Ali_Night(msg.chat_id_, msg.id_, 1,t, 1, 'md')
-end end
 --     Source Night     --
 if text and text:match('^تنظيف (%d+)$') and ChCheck(msg) then  
 if not AliNight:get(Night..'Delete:Time'..msg.chat_id_..':'..msg.sender_user_id_) then  
@@ -6854,8 +7514,7 @@ if text == "تنظيف المشتركين" and SecondSudo(msg) and ChCheck(msg) 
 local pv = AliNight:smembers(Night.."Abs:Users")
 local sendok = 0
 for i = 1, #pv do
-tdcli_function({ID='GetChat',chat_id_ = pv[i]
-},function(arg,dataq)
+tdcli_function({ID='GetChat',chat_id_ = pv[i]},function(arg,dataq)
 tdcli_function ({ ID = "SendChatAction",  
 chat_id_ = pv[i], action_ = {  ID = "SendMessageTypingAction", progress_ = 100} 
 },function(arg,data) 
@@ -6883,8 +7542,7 @@ local group = AliNight:smembers(Night.."Abs:Groups")
 local w = 0
 local q = 0
 for i = 1, #group do
-tdcli_function({ID='GetChat',chat_id_ = group[i]
-},function(arg,data)
+tdcli_function({ID='GetChat',chat_id_ = group[i]},function(arg,data)
 if data and data.type_ and data.type_.channel_ and data.type_.channel_.status_ and data.type_.channel_.status_.ID == "ChatMemberStatusMember" then
 AliNight:srem(Night.."Abs:Groups",group[i]) 
 changeChatMemberStatus(group[i], Night, "Left")
@@ -6918,7 +7576,7 @@ Nightgp1 = ''
 else
 Nightgp1 = '\n⌁︙تم حذف ↫ { '..w..' } مجموعه بسبب تنزيل البوت الى عضو'
 end
-Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙عدد الكروبات الان ↫ { '..#group..' }'..Nightgp1..''..Nightgp2..'\n⌁︙العدد الحقيقي الان  ↫ ( '..Nightgp3..' ) \n ', 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1,'⌁︙عدد الكروبات الان ↫ { '..#group..' }'..Nightgp1..Nightgp2..'\n⌁︙العدد الحقيقي الان  ↫ ( '..Nightgp3..' ) \n ', 1, 'md')
 end end
 end,nil)
 end
@@ -6926,33 +7584,54 @@ return false
 end 
 end
 --     Source Night     --
-if text == "تفعيل امسح" and Constructor(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امسح بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+if text and (text == "تفعيل امسح" or text == "تفعيل المسح التلقائي" or text == "تفعيل الحذف التلقائي") and Constructor(msg) and ChCheck(msg) then
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل امسح مع ميزة الحذف التلقائي للميديا'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:Clean'..msg.chat_id_,true)  
 end
-if text == "تعطيل امسح" and Constructor(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امسح بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+if text and (text == "تعطيل امسح" or text == "تعطيل المسح التلقائي" or text == "تعطيل الحذف التلقائي") and Constructor(msg) and ChCheck(msg) then
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل امسح مع ميزة الحذف التلقائي للميديا'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:Clean'..msg.chat_id_) 
 end
-if Cleaner(msg) then
-if AliNight:get(Night..'Abs:Lock:Clean'..msg.chat_id_) then 
-if text == "الميديا" and ChCheck(msg) or text == "عدد الميديا" and ChCheck(msg) then 
-local M = AliNight:scard(Night.."Abs:cleaner"..msg.chat_id_)
-if M ~= 0 then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙عدد الميديا ↫ "..M, 1, 'md') 
+if text and (text:match("^تعين عدد المسح (%d+)$") or text:match("^تعيين عدد المسح (%d+)$") or text:match("^تعين عدد الحذف (%d+)$") or text:match("^تعيين عدد الحذف (%d+)$")) and Constructor(msg) then   
+local Num = text:match("تعين عدد المسح (%d+)$") or text:match("تعيين عدد المسح (%d+)$") or text:match("تعين عدد الحذف (%d+)$") or text:match("تعيين عدد الحذف (%d+)$")
+if tonumber(Num) < 50 or tonumber(Num) > 200 then
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙قم بتحديد عدد اكبر من 50 واصغر من 200 للحذف التلقائي', 1, 'md')
 else
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لاتوجد ميديا هنا", 1, 'md') 
-end end
-if text == "امسح" and ChCheck(msg) or text == "تنظيف ميديا" and ChCheck(msg) or text == "تنظيف الميديا" and ChCheck(msg) then
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم وضع ↫ *'..Num..'* من الميديا للحذف التلقائي', 1, 'md')
+AliNight:set(Night..'Abs:CleanNum'..msg.chat_id_,Num) 
+end end 
+if msg and AliNight:get(Night..'Abs:Lock:Clean'..msg.chat_id_) then
+if AliNight:get(Night..'Abs:CleanNum'..msg.chat_id_) then CleanNum = AliNight:get(Night..'Abs:CleanNum'..msg.chat_id_) else CleanNum = 200 end
+if AliNight:scard(Night.."Abs:cleaner"..msg.chat_id_) >= tonumber(CleanNum) then 
 local List = AliNight:smembers(Night.."Abs:cleaner"..msg.chat_id_)
 local Del = 0
 for k,v in pairs(List) do
 Del = (Del + 1)
 local Message = v
 DeleteMessage(msg.chat_id_,{[0]=Message})
-Message = Message - 1048576 
+end
+SendText(msg.chat_id_,"⌁︙تم حذف "..Del.." من الميديا تلقائيا",0,'md') 
+AliNight:del(Night.."Abs:cleaner"..msg.chat_id_)
+end 
+end 
+if Cleaner(msg) then
+if AliNight:get(Night..'Abs:Lock:Clean'..msg.chat_id_) then 
+if text == "الميديا" and ChCheck(msg) or text == "عدد الميديا" and ChCheck(msg) then 
+local M = AliNight:scard(Night.."Abs:cleaner"..msg.chat_id_)
+if M ~= 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙عدد الميديا ↫ "..M.."\n⌁︙الحذف التلقائي ↫ "..(AliNight:get(Night..'Abs:CleanNum'..msg.chat_id_) or 200), 1, 'md') 
+else
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لاتوجد ميديا هنا", 1, 'md') 
+end end
+if text == "امسح" and ChCheck(msg) or text == "احذف" and ChCheck(msg) or text == "تنظيف ميديا" and ChCheck(msg) or text == "تنظيف الميديا" and ChCheck(msg) then
+local List = AliNight:smembers(Night.."Abs:cleaner"..msg.chat_id_)
+local Del = 0
+for k,v in pairs(List) do
+Del = (Del + 1)
+local Message = v
+DeleteMessage(msg.chat_id_,{[0]=Message})
 end
 if Del ~= 0 then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف "..Del.." من الميديا", 1, 'md') 
@@ -6989,6 +7668,14 @@ if ChatType == 'sp' or ChatType == 'gp'  then
 if Admin(msg) then
 if text and text:match("^فتح (.*)$") then
 local UnLockText = {string.match(text, "^(فتح) (.*)$")}
+if UnLockText[2] == "الاباحي" then
+if AliNight:get(Night..'Abs:Lock:NightClub'..msg.chat_id_) then
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح الاباحي")  
+AliNight:del(Night..'Abs:Lock:NightClub'..msg.chat_id_)
+else
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الاباحي بالفعل مفتوح في المجموعه', 1, 'md')
+end
+end
 if UnLockText[2] == "التعديل" then
 if AliNight:get(Night..'Abs:Lock:EditMsgs'..msg.chat_id_) then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح التعديل")  
@@ -7019,14 +7706,6 @@ ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح الفشار")
 AliNight:set(Night..'Abs:Lock:Fshar'..msg.chat_id_,true)
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙الفشار بالفعل مفتوح في المجموعه', 1, 'md')
-end
-end
-if UnLockText[2] == "الاباحي" then
-if not AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then
-ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم فتح الاباحي")  
-AliNight:set(Night..'Abs:Lock:abahi'..msg.chat_id_,true)
-else
-Ali_Night(msg.chat_id_, msg.id_, 1, 'الاباحي بالفعل مفتوح في المجموعه', 1, 'md')
 end
 end
 if UnLockText[2] == "الطائفيه" then
@@ -7480,7 +8159,7 @@ if not Constructor(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمنشئين فقط', 1, 'md')
 else
 AliNight:set(Night..'Abs:Lock:Fshar'..msg.chat_id_,true) AliNight:set(Night..'Abs:Lock:Taf'..msg.chat_id_,true) AliNight:set(Night..'Abs:Lock:Kfr'..msg.chat_id_,true) AliNight:hdel(Night.."Abs:Spam:Group:User"..msg.chat_id_ ,"Spam:User") 
-UnLockList ={'Abs:Lock:EditMsgs','Abs:Lock:Text','Abs:Lock:Arabic','Abs:Lock:English','Abs:Lock:Join','Abs:Lock:Bots','Abs:Lock:Farsi','Abs:Lock:FarsiBan','Abs:Lock:TagServr','Abs:Lock:Inline','Abs:Lock:Photo','Abs:Lock:Spam','Abs:Lock:Videos','Abs:Lock:Gifs','Abs:Lock:Music','Abs:Lock:Voice','Abs:Lock:Links','Abs:Lock:Location','Abs:Lock:Tags','Abs:Lock:Stickers','Abs:Lock:Markdown','Abs:Lock:Forwards','Abs:Lock:Document','Abs:Lock:Contact','Abs:Lock:Hashtak','Abs:Lock:WebLinks'}
+UnLockList ={'Abs:Lock:NightClub','Abs:Lock:EditMsgs','Abs:Lock:Text','Abs:Lock:Arabic','Abs:Lock:English','Abs:Lock:Join','Abs:Lock:Bots','Abs:Lock:Farsi','Abs:Lock:FarsiBan','Abs:Lock:TagServr','Abs:Lock:Inline','Abs:Lock:Photo','Abs:Lock:Spam','Abs:Lock:Videos','Abs:Lock:Gifs','Abs:Lock:Music','Abs:Lock:Voice','Abs:Lock:Links','Abs:Lock:Location','Abs:Lock:Tags','Abs:Lock:Stickers','Abs:Lock:Markdown','Abs:Lock:Forwards','Abs:Lock:Document','Abs:Lock:Contact','Abs:Lock:Hashtak','Abs:Lock:WebLinks'}
 for i,UnLock in pairs(UnLockList) do
 AliNight:del(Night..UnLock..msg.chat_id_)
 end
@@ -7653,6 +8332,18 @@ if txts[2] == 'المدراء العامين' or txts[2] == 'المدراء ال
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المدراء العامين")  
 AliNight:del(Night..'Abs:ManagerAll:')
 end
+if txts[2] == 'المالكين' or txtss[2] == 'المالكين' then
+AliNight:del(Night..'Abs:AbsConstructor:'..msg.chat_id_)
+tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,dp) 
+local admins = dp.members_
+for i=0 , #admins do
+if dp.members_[i].status_.ID == "ChatMemberStatusCreator" then
+AliNight:sadd(Night.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
+end 
+end  
+end,nil)
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المالكين")  
+end
 end
 if AbsConstructor(msg) then
 if txts[2] == 'المنشئين الاساسيين' or txtss[2] == 'المنشئين الاساسيين' then
@@ -7679,6 +8370,10 @@ if txts[2] == 'الادمنيه' or txtss[2] == 'الادمنيه' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف الادمنيه")  
 AliNight:del(Night..'Abs:Admins:'..msg.chat_id_)
 end
+end
+if txts[2] == 'قوانين' or txtss[2] == 'قوانين' then
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف القوانين")  
+AliNight:del(Night..'Abs:rules'..msg.chat_id_)
 end
 if txts[2] == 'المطايه' or txtss[2] == 'المطايه' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المطايه")  
@@ -7740,7 +8435,7 @@ end end
 --     Source Night     --
 if text and text:match("^حذف جميع الرتب$") and ChCheck(msg) or text and text:match("^مسح جميع الرتب$") and ChCheck(msg) or text and text:match("^تنزيل جميع الرتب$") and ChCheck(msg) then
 if not AbsConstructor(msg) then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لمنشئ المجموعه فقط', 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمالكين فقط', 1, 'md')
 else
 local basicconstructor = AliNight:smembers(Night..'Abs:BasicConstructor:'..msg.chat_id_)
 local constructor = AliNight:smembers(Night..'Abs:Constructor:'..msg.chat_id_)
@@ -7761,7 +8456,7 @@ AliNight:del(Night..'Abs:Managers:'..msg.chat_id_)
 AliNight:del(Night..'Abs:Admins:'..msg.chat_id_)
 AliNight:del(Night..'Abs:VipMem:'..msg.chat_id_)
 AliNight:del(Night..'User:Donky:'..msg.chat_id_)
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف جميع الرتب التاليه ↫ ❨ "..basicconstructort..''..constructort..''..Managerst..''..adminst..''..vipmemt..''..donkyt.." ❩ بنجاح \n ✓", 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف جميع الرتب التاليه ↫ ❨ "..basicconstructort..constructort..Managerst..adminst..vipmemt..donkyt.." ❩ بنجاح \n ✓", 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لاتوجد رتب هنا", 1, 'md')
 end 
@@ -7806,6 +8501,7 @@ if AliNight:get(Night..'Abs:Lock:Music'..msg.chat_id_) then mute_music = 'مقف
 if AliNight:get(Night..'Abs:Lock:Inline'..msg.chat_id_) then mute_in = 'مقفله' else mute_in = 'مفتوحه' end
 if AliNight:get(Night..'Abs:Lock:Voice'..msg.chat_id_) then mute_voice = 'مقفله' else mute_voice = 'مفتوحه' end
 if AliNight:get(Night..'Abs:Lock:EditMsgs'..msg.chat_id_) then mute_edit = 'مقفله' else mute_edit = 'مفتوحه' end
+if AliNight:get(Night..'Abs:Lock:NightClub'..msg.chat_id_) then mute_nightclub = 'مقفل' else mute_nightclub = 'مفتوح' end
 if AliNight:get(Night..'Abs:Lock:Links'..msg.chat_id_) then mute_links = 'مقفله' else mute_links = 'مفتوحه' end
 if AliNight:get(Night..'Abs:Lock:Pin'..msg.chat_id_) then lock_pin = 'مقفله' else lock_pin = 'مفتوحه' end
 if AliNight:get(Night..'Abs:Lock:Stickers'..msg.chat_id_) then lock_sticker = 'مقفله' else lock_sticker = 'مفتوحه' end
@@ -7847,6 +8543,7 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙الماركداون ↫ "..markdown.."\n"
 .."⌁︙الهاشتاك ↫ "..lock_htag.."\n"
 .."⌁︙التعديل ↫ "..mute_edit.."\n"
+.."⌁︙الاباحي ↫ "..mute_nightclub.."\n"
 .."⌁︙التثبيت ↫ "..lock_pin.."\n"
 .."⌁︙الاشعارات ↫ "..lock_tgservice.."\n"
 .."⌁︙الكلايش ↫ "..lock_spam.."\n"
@@ -7854,7 +8551,6 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙الشبكات ↫ "..lock_wp.."\n"
 .."⌁︙المواقع ↫ "..lock_location.."\n"
 .."⌁︙الفشار ↫ "..lock_fshar.."\n"
-.."⌁︙الاباحي ↫ "..lock_abahi.."\n"
 .."⌁︙الكفر ↫ "..lock_kaf.."\n"
 .."⌁︙الطائفيه ↫ "..lock_taf.."\n"
 .."⌁︙العربيه ↫ "..lock_arabic.."\n"
@@ -7863,7 +8559,7 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙التكرار ↫ "..flood.."\n"
 .."⌁︙عدد التكرار ↫ "..Flood_Num.."\n"
 .."⌁︙عدد السبام ↫ "..spam_c.."\n"
-.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/sheserlo0)\n"
+.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/YV9YV)\n"
 Ali_Night(msg.chat_id_, msg.id_, 1, TXTE, 1, 'md')
 end
 end
@@ -7872,6 +8568,25 @@ if text and text:match("^كول (.*)$") then
 local txt = {string.match(text, "^(كول) (.*)$")}
 Ali_Night(msg.chat_id_,0, 1, txt[2], 1, 'md')
 DeleteMessage(msg.chat_id_,{[0] = msg.id_})
+end
+if text == "تفعيل انطق" and Manager(msg) and ChCheck(msg) then
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل ميزة انطق'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:del(Night..'Abs:Antk:Abs'..msg.chat_id_) 
+end
+if text == "تعطيل انطق" and Manager(msg) and ChCheck(msg) then
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل ميزة انطق'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:set(Night..'Abs:Antk:Abs'..msg.chat_id_,true)  
+end
+if text and text:match("^انطق (.*)$") and not AliNight:get(Night..'Abs:Antk:Abs'..msg.chat_id_) then
+local UrlAntk = https.request('https://apiabs.ml/Antk.php?abs='..URL.escape(text:match("^انطق (.*)$")))
+Antk = JSON.decode(UrlAntk)
+if UrlAntk.ok ~= false then
+download_to_file("https://translate"..Antk.result.google..Antk.result.code.."UTF-8"..Antk.result.utf..Antk.result.translate.."&tl=ar-IN",Antk.result.translate..'.mp3') 
+sendAudio(msg.chat_id_, msg.id_, 0, 1,nil, './'..Antk.result.translate..'.mp3')  
+os.execute('rm -rf ./'..Antk.result.translate..'.mp3') 
+end
 end
 --     Source Night     --
 if AliNight:get(Night..'Abs:setrules'..msg.chat_id_..':'..msg.sender_user_id_) then 
@@ -7895,20 +8610,31 @@ local rules = AliNight:get(Night..'Abs:rules'..msg.chat_id_)
 Ali_Night(msg.chat_id_, msg.id_, 1, rules, 1, nil)
 end
 --     Source Night     --
+if text == 'رقمي' then
+tdcli_function({ID="GetUser",user_id_=msg.sender_user_id_},function(extra,result,success)
+if result.phone_number_  then
+MyNumber = "⌁︙رقمك ↫ +"..result.phone_number_
+else
+MyNumber = "⌁︙رقمك موضوع لجهات اتصالك فقط"
+end
+send(msg.chat_id_, msg.id_,MyNumber)
+end,nil)
+end
+--     Source Night     --
 if text == "تفعيل الزخرفه" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الزخرفه بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الزخرفه بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Zrf:Abs'..msg.chat_id_) 
 end
 if text == "تعطيل الزخرفه" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الزخرفه بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الزخرفه بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Zrf:Abs'..msg.chat_id_,true)  
 end
-if AliNight:get(Night..'Zrf:Abs'..msg.chat_id_..''..msg.sender_user_id_) then 
+if AliNight:get(Night..'Zrf:Abs'..msg.chat_id_..msg.sender_user_id_) then 
 if text and text == 'الغاء' then 
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم الغاء امر الزخرفه', 1, 'md')
-AliNight:del(Night..'Zrf:Abs'..msg.chat_id_..''..msg.sender_user_id_)
+AliNight:del(Night..'Zrf:Abs'..msg.chat_id_..msg.sender_user_id_)
 return false  
 end 
 UrlZrf = https.request('https://apiabs.ml/zrf.php?abs='..URL.escape(text)) 
@@ -7920,12 +8646,12 @@ i = i + 1
 t = t..i.."~ `"..v.."` \n"
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, t, 1, 'md')
-AliNight:del(Night..'Zrf:Abs'..msg.chat_id_..''..msg.sender_user_id_)
+AliNight:del(Night..'Zrf:Abs'..msg.chat_id_..msg.sender_user_id_)
 return false   
 end
 if not AliNight:get(Night..'Abs:Zrf:Abs'..msg.chat_id_) then
 if text == 'زخرفه' and ChCheck(msg) or text == 'الزخرفه' and ChCheck(msg) then  
-AliNight:setex(Night.."Zrf:Abs"..msg.chat_id_..""..msg.sender_user_id_,300,true)
+AliNight:setex(Night.."Zrf:Abs"..msg.chat_id_..msg.sender_user_id_,300,true)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙ارسل لي الكلمه لزخرفتها \nيمكنك الزخرفة باللغه { en } ~ { ar } ', 1, 'md')
 end
 end
@@ -7945,13 +8671,13 @@ end
 end
 --     Source Night     --
 if text == "تفعيل الابراج" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الابراج بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الابراج بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Brg:Abs'..msg.chat_id_) 
 end
 if text == "تعطيل الابراج" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الابراج بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الابراج بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Brg:Abs'..msg.chat_id_,true)  
 end
 if not AliNight:get(Night..'Abs:Brg:Abs'..msg.chat_id_) then
@@ -7965,13 +8691,13 @@ end
 end
 --     Source Night     --
 if text and (text == "تفعيل اوامر النسب" or text == "تفعيل نسبه الحب" or text == "تفعيل نسبه الكره" or text == "تفعيل نسبه الرجوله" or text == "تفعيل نسبه الانوثه" or text == "تفعيل نسبه الغباء") and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل اوامر النسب'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل اوامر النسب'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Nsba:Abs'..msg.chat_id_) 
 end
 if text and (text == "تعطيل اوامر النسب" or text == "تعطيل نسبه الحب" or text == "تعطيل نسبه الكره" or text == "تعطيل نسبه الرجوله" or text == "تعطيل نسبه الانوثه" or text == "تعطيل نسبه الغباء") and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل اوامر النسب'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل اوامر النسب'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Nsba:Abs'..msg.chat_id_,true)  
 end
 if not AliNight:get(Night..'Abs:Nsba:Abs'..msg.chat_id_) then
@@ -8061,13 +8787,13 @@ return false
 end
 --     Source Night     --
 if text == "تفعيل حساب العمر" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل حساب العمر'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل حساب العمر'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Age:Abs'..msg.chat_id_) 
 end
 if text == "تعطيل حساب العمر" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل حساب العمر'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل حساب العمر'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Age:Abs'..msg.chat_id_,true)  
 end
 if not AliNight:get(Night..'Abs:Age:Abs'..msg.chat_id_) then
@@ -8081,13 +8807,13 @@ end
 end
 --     Source Night     --
 if text == "تفعيل معاني الاسماء" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل معاني الاسماء'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل معاني الاسماء'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Mean:Abs'..msg.chat_id_) 
 end
 if text == "تعطيل معاني الاسماء" and Manager(msg) and ChCheck(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل معاني الاسماء'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل معاني الاسماء'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Mean:Abs'..msg.chat_id_,true)  
 end
 if not AliNight:get(Night..'Abs:Mean:Abs'..msg.chat_id_) then
@@ -8111,105 +8837,115 @@ keyboard.inline_keyboard = {
 {{text = '⌁ Night TeAM .',url="t.me/Night"}},
 }
 local msg_id = msg.id_/2097152/0.5
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice='..URL.escape(Audios.info)..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id='..msg.chat_id_..'&voice='..URL.escape(Audios.info)..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
 end
 end
 --     Source Night     --
 if Admin(msg) then
 if AliNight:get(Night..'Abs:LockSettings'..msg.chat_id_) then 
-if text == "الروابط" then if AliNight:get(Night..'Abs:Lock:Links'..msg.chat_id_) then mute_links = 'مقفله' else mute_links = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الروابط ↫ "..mute_links.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "المعرف" or text == "المعرفات" then if AliNight:get(Night..'Abs:Lock:Tags'..msg.chat_id_) then lock_tag = 'مقفوله' else lock_tag = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙المعرف ↫ "..lock_tag.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "المتحركه" or text == "الملصقات المتحركه" then if AliNight:get(Night..'Abs:Lock:Gifs'..msg.chat_id_) then mute_gifs = 'مقفوله' else mute_gifs = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙المتحركه ↫ "..mute_gifs.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الملصقات" then if AliNight:get(Night..'Abs:Lock:Stickers'..msg.chat_id_) then lock_sticker = 'مقفوله' else lock_sticker = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الملصقات ↫ "..lock_sticker.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الصور" then if AliNight:get(Night..'Abs:Lock:Photo'..msg.chat_id_) then mute_photo = 'مقفوله' else mute_photo = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الصور ↫ "..mute_photo.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الفيديو" or text == "الفيديوهات" then if AliNight:get(Night..'Abs:Lock:Videos'..msg.chat_id_) then mute_video = 'مقفوله' else mute_video = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الفيديو ↫ "..mute_video.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الاونلاين" then if AliNight:get(Night..'Abs:Lock:Inline'..msg.chat_id_) then mute_in = 'مقفل' else mute_in = 'مفتوح' end local NightTEAM = "\n" .."⌁︙الاونلاين ↫ "..mute_in.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الدردشه" then if AliNight:get(Night..'Abs:Lock:Text'..msg.chat_id_) then mute_text = 'مقفله' else mute_text = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الدردشه ↫ "..mute_text.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "التوجيه" or text == "اعاده التوجيه" then if AliNight:get(Night..'Abs:Lock:Forwards'..msg.chat_id_) then lock_forward = 'مقفل' else lock_forward = 'مفتوح' end local NightTEAM = "\n" .."⌁︙التوجيه ↫ "..lock_forward.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الاغاني" then if AliNight:get(Night..'Abs:Lock:Music'..msg.chat_id_) then mute_music = 'مقفوله' else mute_music = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الاغاني ↫ "..mute_music.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الصوت" or text == "الصوتيات" then if AliNight:get(Night..'Abs:Lock:Voice'..msg.chat_id_) then mute_voice = 'مقفول' else mute_voice = 'مفتوح' end local NightTEAM = "\n" .."⌁︙الصوت ↫ "..mute_voice.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الجهات" or text == "جهات الاتصال" then if AliNight:get(Night..'Abs:Lock:Contact'..msg.chat_id_) then lock_contact = 'مقفوله' else lock_contact = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الجهات ↫ "..lock_contact.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الماركداون" then if AliNight:get(Night..'Abs:Lock:Markdown'..msg.chat_id_) then markdown = 'مقفل' else markdown = 'مفتوح' end local NightTEAM = "\n" .."⌁︙الماركداون ↫ "..markdown.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الهاشتاك" then if AliNight:get(Night..'Abs:Lock:Hashtak'..msg.chat_id_) then lock_htag = 'مقفل' else lock_htag = 'مفتوح' end local NightTEAM = "\n" .."⌁︙الهاشتاك ↫ "..lock_htag.."\n"Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "التعديل" then if AliNight:get(Night..'Abs:Lock:EditMsgs'..msg.chat_id_) then mute_edit = 'مقفل' else mute_edit = 'مفتوح' end local NightTEAM = "\n" .."⌁︙التعديل ↫ "..mute_edit.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "التثبيت" then if AliNight:get(Night..'Abs:Lock:Pin'..msg.chat_id_) then lock_pin = 'مقفل' else lock_pin = 'مفتوح' end local NightTEAM = "\n" .."⌁︙التثبيت ↫ "..lock_pin.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الاشعارات" then if AliNight:get(Night..'Abs:Lock:TagServr'..msg.chat_id_) then lock_tgservice = 'مقفوله' else lock_tgservice = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الاشعارات ↫ "..lock_tgservice.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الكلايش" then if AliNight:get(Night..'Abs:Lock:Spam'..msg.chat_id_) then lock_spam = 'مقفوله' else lock_spam = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الكلايش ↫ "..lock_spam.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الدخول" then if AliNight:get(Night..'Abs:Lock:Join'..msg.chat_id_) then lock_Join = 'مقفول' else lock_Join = 'مفتوح' end local NightTEAM = "\n" .."⌁︙الدخول ↫ "..lock_Join.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الشبكات" then if AliNight:get(Night..'Abs:Lock:WebLinks'..msg.chat_id_) then lock_wp = 'مقفوله' else lock_wp = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الشبكات ↫ "..lock_wp.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "المواقع" then if AliNight:get(Night..'Abs:Lock:Location'..msg.chat_id_) then lock_location = 'مقفوله' else lock_location = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙المواقع ↫ "..lock_location.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "العربيه" then if AliNight:get(Night..'Abs:Lock:Arabic'..msg.chat_id_) then lock_arabic = 'مقفوله' else lock_arabic = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙العربيه ↫ "..lock_arabic.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الانكليزيه" then if AliNight:get(Night..'Abs:Lock:English'..msg.chat_id_) then lock_english = 'مقفوله' else lock_english = 'مفتوحه' end local NightTEAM = "\n" .."⌁︙الانكليزيه ↫ "..lock_english.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الكفر" then if AliNight:get(Night..'Abs:Lock:Kfr'..msg.chat_id_) then lock_kaf = 'مفتوح' else lock_kaf = 'مقفل' end local NightTEAM = "\n" .."⌁︙الكفر ↫ "..lock_kaf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الفشار" then if AliNight:get(Night..'Abs:Lock:Fshar'..msg.chat_id_) then lock_fshar = 'مفتوح' else lock_fshar = 'مقفل' end local NightTEAM = "\n" .."⌁︙الفشار ↫ "..lock_fshar.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الاباحي" then if AliNight:get(Night..'Abs:Lock:abahi'..msg.chat_id_) then lock_abahi = 'مفتوح' else lock_abahi = 'مقفل' end local NightTEAM = "\n" .."⌁︙الاباحي ↫ "..lock_fshar.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
-if text == "الطائفيه" then if AliNight:get(Night..'Abs:Lock:Taf'..msg.chat_id_) then lock_taf = 'مفتوحه' else lock_taf = 'مقفله' end local NightTEAM = "\n" .."⌁︙الطائفيه ↫ "..lock_taf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM, 1, 'md') end
+if text == "الروابط" then if AliNight:get(Night..'Abs:Lock:Links'..msg.chat_id_) then mute_links = 'مقفله' else mute_links = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الروابط ↫ "..mute_links.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "المعرف" or text == "المعرفات" then if AliNight:get(Night..'Abs:Lock:Tags'..msg.chat_id_) then lock_tag = 'مقفوله' else lock_tag = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙المعرف ↫ "..lock_tag.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "المتحركه" or text == "الملصقات المتحركه" then if AliNight:get(Night..'Abs:Lock:Gifs'..msg.chat_id_) then mute_gifs = 'مقفوله' else mute_gifs = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙المتحركه ↫ "..mute_gifs.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الملصقات" then if AliNight:get(Night..'Abs:Lock:Stickers'..msg.chat_id_) then lock_sticker = 'مقفوله' else lock_sticker = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الملصقات ↫ "..lock_sticker.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الصور" then if AliNight:get(Night..'Abs:Lock:Photo'..msg.chat_id_) then mute_photo = 'مقفوله' else mute_photo = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الصور ↫ "..mute_photo.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الفيديو" or text == "الفيديوهات" then if AliNight:get(Night..'Abs:Lock:Videos'..msg.chat_id_) then mute_video = 'مقفوله' else mute_video = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الفيديو ↫ "..mute_video.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الاونلاين" then if AliNight:get(Night..'Abs:Lock:Inline'..msg.chat_id_) then mute_in = 'مقفل' else mute_in = 'مفتوح' end local NightTeaM = "\n" .."⌁︙الاونلاين ↫ "..mute_in.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الدردشه" then if AliNight:get(Night..'Abs:Lock:Text'..msg.chat_id_) then mute_text = 'مقفله' else mute_text = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الدردشه ↫ "..mute_text.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "التوجيه" or text == "اعاده التوجيه" then if AliNight:get(Night..'Abs:Lock:Forwards'..msg.chat_id_) then lock_forward = 'مقفل' else lock_forward = 'مفتوح' end local NightTeaM = "\n" .."⌁︙التوجيه ↫ "..lock_forward.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الاغاني" then if AliNight:get(Night..'Abs:Lock:Music'..msg.chat_id_) then mute_music = 'مقفوله' else mute_music = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الاغاني ↫ "..mute_music.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الصوت" or text == "الصوتيات" then if AliNight:get(Night..'Abs:Lock:Voice'..msg.chat_id_) then mute_voice = 'مقفول' else mute_voice = 'مفتوح' end local NightTeaM = "\n" .."⌁︙الصوت ↫ "..mute_voice.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الجهات" or text == "جهات الاتصال" then if AliNight:get(Night..'Abs:Lock:Contact'..msg.chat_id_) then lock_contact = 'مقفوله' else lock_contact = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الجهات ↫ "..lock_contact.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الماركداون" then if AliNight:get(Night..'Abs:Lock:Markdown'..msg.chat_id_) then markdown = 'مقفل' else markdown = 'مفتوح' end local NightTeaM = "\n" .."⌁︙الماركداون ↫ "..markdown.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الهاشتاك" then if AliNight:get(Night..'Abs:Lock:Hashtak'..msg.chat_id_) then lock_htag = 'مقفل' else lock_htag = 'مفتوح' end local NightTeaM = "\n" .."⌁︙الهاشتاك ↫ "..lock_htag.."\n"Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "التعديل" then if AliNight:get(Night..'Abs:Lock:EditMsgs'..msg.chat_id_) then mute_edit = 'مقفل' else mute_edit = 'مفتوح' end local NightTeaM = "\n" .."⌁︙التعديل ↫ "..mute_edit.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "التثبيت" then if AliNight:get(Night..'Abs:Lock:Pin'..msg.chat_id_) then lock_pin = 'مقفل' else lock_pin = 'مفتوح' end local NightTeaM = "\n" .."⌁︙التثبيت ↫ "..lock_pin.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الاشعارات" then if AliNight:get(Night..'Abs:Lock:TagServr'..msg.chat_id_) then lock_tgservice = 'مقفوله' else lock_tgservice = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الاشعارات ↫ "..lock_tgservice.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الكلايش" then if AliNight:get(Night..'Abs:Lock:Spam'..msg.chat_id_) then lock_spam = 'مقفوله' else lock_spam = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الكلايش ↫ "..lock_spam.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الدخول" then if AliNight:get(Night..'Abs:Lock:Join'..msg.chat_id_) then lock_Join = 'مقفول' else lock_Join = 'مفتوح' end local NightTeaM = "\n" .."⌁︙الدخول ↫ "..lock_Join.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الشبكات" then if AliNight:get(Night..'Abs:Lock:WebLinks'..msg.chat_id_) then lock_wp = 'مقفوله' else lock_wp = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الشبكات ↫ "..lock_wp.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "المواقع" then if AliNight:get(Night..'Abs:Lock:Location'..msg.chat_id_) then lock_location = 'مقفوله' else lock_location = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙المواقع ↫ "..lock_location.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "العربيه" then if AliNight:get(Night..'Abs:Lock:Arabic'..msg.chat_id_) then lock_arabic = 'مقفوله' else lock_arabic = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙العربيه ↫ "..lock_arabic.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الانكليزيه" then if AliNight:get(Night..'Abs:Lock:English'..msg.chat_id_) then lock_english = 'مقفوله' else lock_english = 'مفتوحه' end local NightTeaM = "\n" .."⌁︙الانكليزيه ↫ "..lock_english.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الكفر" then if AliNight:get(Night..'Abs:Lock:Kfr'..msg.chat_id_) then lock_kaf = 'مفتوح' else lock_kaf = 'مقفل' end local NightTeaM = "\n" .."⌁︙الكفر ↫ "..lock_kaf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الفشار" then if AliNight:get(Night..'Abs:Lock:Fshar'..msg.chat_id_) then lock_fshar = 'مفتوح' else lock_fshar = 'مقفل' end local NightTeaM = "\n" .."⌁︙الفشار ↫ "..lock_fshar.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
+if text == "الطائفيه" then if AliNight:get(Night..'Abs:Lock:Taf'..msg.chat_id_) then lock_taf = 'مفتوحه' else lock_taf = 'مقفله' end local NightTeaM = "\n" .."⌁︙الطائفيه ↫ "..lock_taf.."\n" Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM, 1, 'md') end
 end
 --     Source Night     --
 if text == 'تفعيل كشف الاعدادات' and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل كشف الاعدادات'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل كشف الاعدادات'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:LockSettings'..msg.chat_id_,true)  
 end
 if text == 'تعطيل كشف الاعدادات' and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل كشف الاعدادات'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل كشف الاعدادات'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:LockSettings'..msg.chat_id_) 
 end
 --     Source Night     --
 if text == 'تفعيل اوامر التحشيش' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل اوامر التحشيش'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل اوامر التحشيش'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:Stupid'..msg.chat_id_)
 end
 if text == 'تعطيل اوامر التحشيش' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل اوامر التحشيش'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل اوامر التحشيش'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:Stupid'..msg.chat_id_,true)
 end
 --     Source Night     --
+if text and (text == 'تعطيل التحقق' or text == 'قفل التحقق' or text == 'تعطيل تنبيه الدخول') and Manager(msg) and ChCheck(msg) then 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل التحقق بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:del(Night..'Abs:Lock:Robot'..msg.chat_id_)
+end
+if text and (text == 'تفعيل التحقق' or text == 'فتح التحقق' or text == 'تفعيل تنبيه الدخول') and Manager(msg) and ChCheck(msg) then 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل التحقق بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
+AliNight:set(Night..'Abs:Lock:Robot'..msg.chat_id_,true)
+end
+--     Source Night     --
 if text == 'تفعيل ردود المدير' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل ردود المدير'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل ردود المدير'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:GpRed'..msg.chat_id_)
 end
 if text == 'تعطيل ردود المدير' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل ردود المدير'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل ردود المدير'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:GpRed'..msg.chat_id_,true)
 end
 --     Source Night     --
 if text == 'تفعيل ردود المطور' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل ردود المطور'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل ردود المطور'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:AllRed'..msg.chat_id_)
 end
 if text == 'تعطيل ردود المطور' and Manager(msg) and ChCheck(msg) then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل ردود المطور'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل ردود المطور'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:AllRed'..msg.chat_id_,true)
 end
 --     Source Night     --
 if SecondSudo(msg) then
 if text == 'تفعيل المغادره' or text == '↫ تفعيل المغادره ⌁' then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل المغادره بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل المغادره بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night.."Abs:Left:Bot"..Night)
 end
 if text == 'تعطيل المغادره' or text == '↫ تعطيل المغادره ⌁' then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل المغادره بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل المغادره بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night.."Abs:Left:Bot"..Night,true) 
 end 
 if text == 'تفعيل الاذاعه' or text == '↫ تفعيل الاذاعه ⌁' then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الاذاعه بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الاذاعه بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night.."Abs:Send:Bot"..Night)
 end
 if text == 'تعطيل الاذاعه' or text == '↫ تعطيل الاذاعه ⌁' then 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الاذاعه بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الاذاعه بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night.."Abs:Send:Bot"..Night,true) 
 end
 end
@@ -8224,8 +8960,8 @@ end
 if data.message_ == "CHAT_ADMIN_REQUIRED" then
 send(msg.chat_id_,msg.id_,"⌁︙ليست لدي صلاحية تغير معلومات المجموعه يرجى التحقق من الصلاحيات")  
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تغير اسم المجموعه'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تغير اسم المجموعه'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 end,nil) 
 end
@@ -8246,8 +8982,8 @@ if data.message_ == "CHAT_ADMIN_REQUIRED" then
 send(msg.chat_id_, msg.id_,"⌁︙ليست لدي صلاحية تغير معلومات المجموعه يرجى التحقق من الصلاحيات") 
 AliNight:del(Night..'Abs:SetPhoto'..msg.chat_id_..':'..msg.sender_user_id_)
 else
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تغير صورة المجموعه'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تغير صورة المجموعه'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end
 end,nil) 
 AliNight:del(Night..'Abs:SetPhoto'..msg.chat_id_..':'..msg.sender_user_id_)
@@ -8273,8 +9009,8 @@ end
 tdcli_function({ID="UnpinChannelMessage",channel_id_ = msg.chat_id_:gsub("-100","")},function(arg,data) 
 if data.ID == "Ok" then
 AliNight:del(Night..'Abs:PinnedMsg'..msg.chat_id_)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم الغاء تثبيت الرساله'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم الغاء تثبيت الرساله'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false  
 end
 if data.code_ == 6 then
@@ -8295,8 +9031,8 @@ return false
 end
 tdcli_function({ID="UnpinChannelMessage",channel_id_ = msg.chat_id_:gsub("-100","")},function(arg,data) 
 if data.ID == "Ok" then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم الغاء تثبيت الكل'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم الغاء تثبيت الكل'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 https.request('https://api.telegram.org/bot'..TokenBot..'/unpinAllChatMessages?chat_id='..msg.chat_id_)
 AliNight:del(Night.."Abs:PinnedMsg"..msg.chat_id_)
 return false  
@@ -8317,11 +9053,11 @@ if AliNight:sismember(Night.."Abs:Lock:Pinpin",msg.chat_id_) and not BasicConstr
 Ali_Night(msg.chat_id_,msg.id_, 1, "⌁︙التثبيت والغاء واعادة التثبيت تم قفله من قبل المنشئين الاساسيين", 1, 'md')
 return false  
 end
-local pin_id = AliNight:get(Night..'Abs:PinnedMsg'..msg.chat_id_)
-if pin_id then
-pin(msg.chat_id_,pin_id,0)
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم اعادة تثبيت الرساله'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local PinId = AliNight:get(Night..'Abs:PinnedMsg'..msg.chat_id_)
+if PinId then
+Pin(msg.chat_id_,PinId,0)
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم اعادة تثبيت الرساله'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end end
 end
 --     Source Night     --
@@ -8430,46 +9166,46 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم وضع عدد الاعضاء ↫
 end
 --     Source Night     --
 if text == 'تفعيل البوت الخدمي' then 
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط', 1, 'md')
 else 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل البوت الخدمي'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل البوت الخدمي'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:FreeBot'..Night) 
 end 
 end
 if text == 'تعطيل البوت الخدمي' then 
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط', 1, 'md')
 else 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل البوت الخدمي'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل البوت الخدمي'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:FreeBot'..Night,true) 
 end 
 end
 if ChatType == 'sp' or ChatType == 'gp'  then
 if text == 'تفعيل الالعاب' and Manager(msg) and ChCheck(msg) or text == 'تفعيل اللعبه' and Manager(msg) and ChCheck(msg) then   
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الالعاب بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل الالعاب بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night..'Abs:Lock:Games'..msg.chat_id_) 
 end
 if text == 'تعطيل الالعاب' and Manager(msg) and ChCheck(msg) or text == 'تعطيل اللعبه' and Manager(msg) and ChCheck(msg) then  
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الالعاب بنجاح'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل الالعاب بنجاح'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night..'Abs:Lock:Games'..msg.chat_id_,true)  
 end
 if text == "تفعيل الرابط" or text == "تفعيل جلب الرابط" then 
 if Admin(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل جلب رابط المجموعه'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تفعيل جلب رابط المجموعه'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:del(Night.."Abs:Lock:GpLinks"..msg.chat_id_)
 return false  
 end
 end
 if text == "تعطيل الرابط" or text == "تعطيل جلب الرابط" then 
 if Admin(msg) then
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل جلب رابط المجموعه'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم تعطيل جلب رابط المجموعه'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 AliNight:set(Night.."Abs:Lock:GpLinks"..msg.chat_id_,"ok")
 return false  
 end
@@ -8491,7 +9227,6 @@ return false
 end
 tdcli_function ({ID = "GetUser",user_id_ = msg.sender_user_id_},function(extra,result,success)
 tdcli_function({ID ="GetChat",chat_id_=msg.chat_id_},function(arg,dp) 
-AliNight:del(Night..'Abs:AbsConstructor:'..msg.chat_id_)
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,abbas) 
 local admins = abbas.members_
 for i=0 , #admins do
@@ -8617,64 +9352,63 @@ local NameChat = NameChat:gsub("}","")
 local LinkGp = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/exportChatInviteLink?chat_id='..msg.chat_id_))
 if LinkGp.ok == true then 
 LinkGroup = LinkGp.result
+LinkGroup = "⌁︙رابط المجموعه ↫ ⤈\n❨ ["..LinkGroup.."] ❩"
 else
-LinkGroup = 'لا يوجد'
+LinkGroup = '⌁︙ليست لدي صلاحية الدعوه لهذه المجموعه !'
 end
 if not Sudo(msg) then
-SendText(DevId,"⌁︙هناك من بحاجه الى مساعده ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙الشخص ↫ "..Name.."\n⌁︙اسم المجموعه ↫ ["..NameChat.."]\n⌁︙ايدي المجموعه ↫ ⤈ \n❨ `"..msg.chat_id_.."` ❩\n⌁︙رابط المجموعه ↫ ⤈\n❨ ["..LinkGroup.."] ❩\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙الوقت ↫ "..os.date("%I:%M%p").."\n⌁︙التاريخ ↫ "..os.date("%Y/%m/%d").."",0,'md')
+SendText(DevId,"⌁︙هناك من بحاجه الى مساعده ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙الشخص ↫ "..Name.."\n⌁︙اسم المجموعه ↫ ["..NameChat.."]\n⌁︙ايدي المجموعه ↫ ⤈ \n❨ `"..msg.chat_id_.."` ❩\n"..LinkGroup.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙الوقت ↫ "..os.date("%I:%M%p").."\n⌁︙التاريخ ↫ "..os.date("%Y/%m/%d").."",0,'md')
 end
 end,nil)
 end,nil)
 end
 --     Source Night     --
 if text == 'جلب نسخه السورس' then
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-sendDocument(DevId, 0, 0, 1, nil, './Night.lua', dl_cb, nil)
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عزيزي المطور تم ارسال نسخة ملف السورس الى الخاص', 1, 'md')
+sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './Night.lua', '⌁︙نسخة ملف سورس جيسون',dl_cb, nil)
 end end
 --     Source Night     --
 if text == 'روابط الكروبات' or text == 'روابط المجموعات' then
-if not SecondSudo(msg) then
+if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
 local List = AliNight:smembers(Night.."Abs:Groups")
 if #List == 0 then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا يوجد مجموعات مفعله', 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لا توجد مجموعات مفعله', 1, 'md')
 else
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري ارسال نسخه تحتوي على '..#List..' مجموعه', 1, 'md')
-local text = "⌁︙Source Night\n⌁︙File Bot Groups\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري ارسال نسخه تحتوي على ↫ '..#List..' مجموعه', 1, 'md')
+local Text = "⌁︙Source Night\n⌁︙File Bot Groups\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local GroupsManagers = AliNight:scard(Night.."Abs:Managers:"..v) or 0
 local GroupsAdmins = AliNight:scard(Night.."Abs:Admins:"..v) or 0
 local Groupslink = AliNight:get(Night.."Abs:Groups:Links" ..v)
-text = text..k.." ↬ ⤈ \n⌁︙Group ID ↬ "..v.."\n⌁︙Group Link ↬ "..(Groupslink or "Not Found").."\n⌁︙Group Managers ↬ "..GroupsManagers.."\n⌁︙Group Admins ↬ "..GroupsAdmins.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
+Text = Text..k.." ↬ ⤈ \n⌁︙Group ID ↬ "..v.."\n⌁︙Group Link ↬ "..(Groupslink or "Not Found").."\n⌁︙Group Managers ↬ "..GroupsManagers.."\n⌁︙Group Admins ↬ "..GroupsAdmins.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 end
 local File = io.open('GroupsBot.txt', 'w')
-File:write(text)
+File:write(Text)
 File:close()
-local abbas = 'https://api.telegram.org/bot' .. TokenBot .. '/sendDocument'
-local curl = 'curl "' .. abbas .. '" -F "chat_id=' .. msg.chat_id_ .. '" -F "document=@' .. 'GroupsBot.txt' .. '"'
-io.popen(curl)
+sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './GroupsBot.txt',dl_cb, nil)
+io.popen('rm -rf ./GroupsBot.txt')
 end
 end
 end
 --     Source Night     --
-if text == "اذاعه بالخاص" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه خاص ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
+if text == "اذاعه خاص" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه خاص ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
 if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then 
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
 end
-AliNight:setex(Night.."Abs:Send:Pv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:setex(Night.."Abs:Send:Pv"..msg.chat_id_..":" .. msg.sender_user_id_, 600, true) 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false
 end 
-if AliNight:get(Night.."Abs:Send:Pv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."Abs:Send:Pv"..msg.chat_id_..":" .. msg.sender_user_id_) then 
 if text == 'الغاء' then   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء امر الاذاعه بنجاح", 1, 'md')
-AliNight:del(Night.."Abs:Send:Pv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Pv"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false
 end 
 List = AliNight:smembers(Night..'Abs:Users') 
@@ -8725,7 +9459,7 @@ sendSticker(v, 0, 0, 1, nil, msg.content_.sticker_.sticker_.persistent_id_)
 end 
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اذاعة "..AbsText.." بنجاح \n⌁︙‏الى ↫ ❨ "..#List.." ❩ مشترك \n ✓", 1, 'md')
-AliNight:del(Night.."Abs:Send:Pv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Pv"..msg.chat_id_..":" .. msg.sender_user_id_) 
 end
 --     Source Night     --
 if text == "اذاعه" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه عام ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
@@ -8733,15 +9467,15 @@ if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
 end
-AliNight:setex(Night.."Abs:Send:Gp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:setex(Night.."Abs:Send:Gp"..msg.chat_id_..":" .. msg.sender_user_id_, 600, true) 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false
 end 
-if AliNight:get(Night.."Abs:Send:Gp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."Abs:Send:Gp"..msg.chat_id_..":" .. msg.sender_user_id_) then 
 if text == 'الغاء' then   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء امر الاذاعه بنجاح", 1, 'md')
-AliNight:del(Night.."Abs:Send:Gp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Gp"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false
 end 
 List = AliNight:smembers(Night..'Abs:Groups') 
@@ -8792,7 +9526,7 @@ sendSticker(v, 0, 0, 1, nil, msg.content_.sticker_.sticker_.persistent_id_)
 end 
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اذاعة "..AbsText.." بنجاح \n⌁︙‏في ↫ ❨ "..#List.." ❩ مجموعه \n ✓", 1, 'md')
-AliNight:del(Night.."Abs:Send:Gp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Gp"..msg.chat_id_..":" .. msg.sender_user_id_) 
 end
 --     Source Night     --
 if text == "اذاعه بالتوجيه" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه عام بالتوجيه ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
@@ -8800,15 +9534,15 @@ if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
 end
-AliNight:setex(Night.."Abs:Send:FwdGp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل الرساله الان لتوجيها \n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:setex(Night.."Abs:Send:FwdGp"..msg.chat_id_..":" .. msg.sender_user_id_, 600, true) 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل الرساله الان لتوجيها \n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false
 end 
-if AliNight:get(Night.."Abs:Send:FwdGp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."Abs:Send:FwdGp"..msg.chat_id_..":" .. msg.sender_user_id_) then 
 if text == 'الغاء' then   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء امر الاذاعه بنجاح", 1, 'md')
-AliNight:del(Night.."Abs:Send:FwdGp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:FwdGp"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false  
 end 
 local List = AliNight:smembers(Night..'Abs:Groups')   
@@ -8816,7 +9550,7 @@ for k,v in pairs(List) do
 tdcli_function({ID="ForwardMessages", chat_id_ = v, from_chat_id_ = msg.chat_id_, message_ids_ = {[0] = msg.id_}, disable_notification_ = 0, from_background_ = 1},function(a,t) end,nil) 
 end   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اذاعة رسالتك بالتوجيه \n⌁︙‏في ↫ ❨ "..#List.." ❩ مجموعه \n ✓", 1, 'md')
-AliNight:del(Night.."Abs:Send:FwdGp" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:FwdGp"..msg.chat_id_..":" .. msg.sender_user_id_) 
 end
 --     Source Night     --
 if text == "اذاعه خاص بالتوجيه" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه خاص بالتوجيه ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
@@ -8824,15 +9558,15 @@ if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
 end
-AliNight:setex(Night.."Abs:Send:FwdPv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل الرساله الان لتوجيها \n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:setex(Night.."Abs:Send:FwdPv"..msg.chat_id_..":" .. msg.sender_user_id_, 600, true) 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل الرساله الان لتوجيها \n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false
 end 
-if AliNight:get(Night.."Abs:Send:FwdPv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."Abs:Send:FwdPv"..msg.chat_id_..":" .. msg.sender_user_id_) then 
 if text == 'الغاء' then   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء امر الاذاعه بنجاح", 1, 'md')
-AliNight:del(Night.."Abs:Send:FwdPv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:FwdPv"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false  
 end 
 local List = AliNight:smembers(Night..'Abs:Users')   
@@ -8840,7 +9574,7 @@ for k,v in pairs(List) do
 tdcli_function({ID="ForwardMessages", chat_id_ = v, from_chat_id_ = msg.chat_id_, message_ids_ = {[0] = msg.id_}, disable_notification_ = 0, from_background_ = 1},function(a,t) end,nil) 
 end   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اذاعة رسالتك بالتوجيه \n⌁︙‏الى ↫ ❨ "..#List.." ❩ مشترك \n ✓", 1, 'md')
-AliNight:del(Night.."Abs:Send:FwdPv" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:FwdPv"..msg.chat_id_..":" .. msg.sender_user_id_) 
 end
 --     Source Night     --
 if text == "اذاعه بالتثبيت" and msg.reply_to_message_id_ == 0 and SudoBot(msg) or text == "↫ اذاعه بالتثبيت ⌁" and msg.reply_to_message_id_ == 0 and SudoBot(msg) then 
@@ -8848,15 +9582,15 @@ if AliNight:get(Night.."Abs:Send:Bot"..Night) and not SecondSudo(msg) then
 send(msg.chat_id_, msg.id_,"⌁︙الاذاعه معطله من قبل المطور الاساسي")
 return false
 end
-AliNight:setex(Night.."Abs:Send:Gp:Pin" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 600, true) 
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+AliNight:setex(Night.."Abs:Send:Gp:Pin"..msg.chat_id_..":" .. msg.sender_user_id_, 600, true) 
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙ارسل لي سواء ↫ ⤈ \n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙للخروج ارسل ↫ ( الغاء ) \n ✓'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 return false
 end 
-if AliNight:get(Night.."Abs:Send:Gp:Pin" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."Abs:Send:Gp:Pin"..msg.chat_id_..":" .. msg.sender_user_id_) then 
 if text == "الغاء" then   
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء امر الاذاعه بنجاح", 1, 'md')
-AliNight:del(Night.."Abs:Send:Gp:Pin" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Gp:Pin"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false
 end 
 local List = AliNight:smembers(Night.."Abs:Groups") 
@@ -8915,33 +9649,113 @@ AliNight:set(Night..'Abs:PinnedMsgs'..v,msg.content_.sticker_.sticker_.persisten
 end 
 end
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم اذاعة "..AbsText.." بالتثبيت \n⌁︙‏في ↫ ❨ "..#List.." ❩ مجموعه \n ✓", 1, 'md')
-AliNight:del(Night.."Abs:Send:Gp:Pin" .. msg.chat_id_ .. ":" .. msg.sender_user_id_) 
+AliNight:del(Night.."Abs:Send:Gp:Pin"..msg.chat_id_..":" .. msg.sender_user_id_) 
 return false
 end
 --     Source Night     --
+if text == 'حذف رد من متعدد' and Manager(msg) and ChCheck(msg) or text == 'مسح رد من متعدد' and Manager(msg) and ChCheck(msg) then
+local List = AliNight:smembers(Night..'Abs:Manager:GpRedod'..msg.chat_id_)
+if #List == 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود متعدده مضافه" ,  1, "md")
+return false
+end
+AliNight:set(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_,'DelGpRedRedod')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل كلمة الرد اولا" ,  1, "md")
+return false
+end
+if text and text:match("^(.*)$") then
+local DelGpRedRedod = AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+if DelGpRedRedod == 'DelGpRedRedod' then
+if text == "الغاء" then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر" ,  1, "md")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+return false
+end
+if not AliNight:sismember(Night..'Abs:Manager:GpRedod'..msg.chat_id_,text) then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لايوجد رد متعدد لهذه الكلمه ↫ "..text ,  1, "md")
+return false
+end
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙قم بارسال الرد المتعدد الذي تريد حذفه من الكلمه ↫ "..text ,  1, "md")
+AliNight:set(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_,'DelGpRedRedods')
+AliNight:set(Night..'Abs:Add:GpTexts'..msg.sender_user_id_..msg.chat_id_,text)
+return false
+end end
+if text == 'حذف رد متعدد' and Manager(msg) and ChCheck(msg) or text == 'مسح رد متعدد' and Manager(msg) and ChCheck(msg) then
+local List = AliNight:smembers(Night..'Abs:Manager:GpRedod'..msg.chat_id_)
+if #List == 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود متعدده مضافه" ,  1, "md")
+return false
+end
+AliNight:set(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_,'DelGpRedod')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل الكلمه لحذفها" ,  1, "md")
+return false
+end
+if text == 'اضف رد متعدد' and Manager(msg) and ChCheck(msg) then
+AliNight:set(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_,'SetGpRedod')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل الكلمه الان" ,  1, "md")
+return false
+end
+if text and text:match("^(.*)$") then
+local SetGpRedod = AliNight:get(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+if SetGpRedod == 'SetGpRedod' then
+if text == "الغاء" then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر" ,  1, "md")
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+return false
+end
+if AliNight:sismember(Night..'Abs:Manager:GpRedod'..msg.chat_id_,text) then
+local Abs = "⌁︙لاتستطيع اضافة رد بالتاكيد مضاف في القائمه قم بحذفه اولا !"
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="حذف الرد ↫ "..text,callback_data="/DelRed:"..msg.sender_user_id_..text}}} 
+Msg_id = msg.id_/2097152/0.5
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Abs).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+AliNight:del(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_)
+return false
+end
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الامر ارسل الرد الاول\n⌁︙للخروج ارسل ↫ ( الغاء )" ,  1, "md")
+AliNight:set(Night..'Abs:Add:GpRedod'..msg.sender_user_id_..msg.chat_id_,'SaveGpRedod')
+AliNight:set(Night..'Abs:Add:GpTexts'..msg.sender_user_id_..msg.chat_id_,text)
+AliNight:sadd(Night..'Abs:Manager:GpRedod'..msg.chat_id_,text)
+return false
+end end
+--     Source Night     --
 if text == 'حذف رد' and Manager(msg) and ChCheck(msg) or text == 'مسح رد' and  Manager(msg) and ChCheck(msg) then
-AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_,'DelGpRed')
+local List = AliNight:smembers(Night..'Abs:Manager:GpRed'..msg.chat_id_)
+if #List == 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود مضافه" ,  1, "md")
+return false
+end
+AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_,'DelGpRed')
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل الكلمه لحذفها " ,  1, "md")
 return false
 end
 if text == 'اضف رد' and Manager(msg) and ChCheck(msg) then
-AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_,'SetGpRed')
+AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_,'SetGpRed')
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل الكلمه الان " ,  1, "md")
 return false
 end
 if text and text:match("^(.*)$") then
-local SetGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'')
+local SetGpRed = AliNight:get(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
 if SetGpRed == 'SetGpRed' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل لي الرد سواء كان ↫ ⤈\n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙يمكنك اضافة الى النص ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n `#username` ↬ معرف المستخدم\n `#msgs` ↬ عدد الرسائل\n `#name` ↬ اسم المستخدم\n `#id` ↬ ايدي المستخدم\n `#stast` ↬ رتبة المستخدم\n `#edit` ↬ عدد السحكات\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙للخروج ارسل ↫ ( الغاء )\n ✓" ,  1, "md")
-AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..''..msg.chat_id_..'','SaveGpRed')
-AliNight:set(Night..'Abs:Add:GpText'..msg.sender_user_id_..''..msg.chat_id_..'',text)
-AliNight:sadd(Night..'Abs:Manager:GpRed'..msg.chat_id_..'',text)
-AliNight:set(Night..'DelManagerRep'..msg.chat_id_..'',text)
+if text == "الغاء" then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر" ,  1, "md")
+AliNight:del(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_)
 return false
 end
-end
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل لي الرد سواء كان ↫ ⤈\n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙يمكنك اضافة الى النص ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n `#username` ↬ معرف المستخدم\n `#msgs` ↬ عدد الرسائل\n `#name` ↬ اسم المستخدم\n `#id` ↬ ايدي المستخدم\n `#stast` ↬ رتبة المستخدم\n `#edit` ↬ عدد السحكات\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙للخروج ارسل ↫ ( الغاء )\n ✓" ,  1, "md")
+AliNight:set(Night..'Abs:Add:GpRed'..msg.sender_user_id_..msg.chat_id_,'SaveGpRed')
+AliNight:set(Night..'Abs:Add:GpText'..msg.sender_user_id_..msg.chat_id_,text)
+AliNight:sadd(Night..'Abs:Manager:GpRed'..msg.chat_id_,text)
+AliNight:set(Night..'DelManagerRep'..msg.chat_id_,text)
+return false
+end end
 --     Source Night     --
 if text == 'حذف رد عام' and SecondSudo(msg) or text == '↫ حذف رد عام ⌁' and SecondSudo(msg) or text == 'مسح رد عام' and SecondSudo(msg) then
+local List = AliNight:smembers(Night.."Abs:Sudo:AllRed")
+if #List == 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود مضافه" ,  1, "md")
+return false
+end
 AliNight:set(Night.."Abs:Add:AllRed"..msg.sender_user_id_,'DelAllRed')
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙حسنا ارسل الكلمه لحذفها " ,  1, "md")
 return false
@@ -8954,6 +9768,11 @@ end
 if text and text:match("^(.*)$") then
 local SetAllRed = AliNight:get(Night.."Abs:Add:AllRed"..msg.sender_user_id_)
 if SetAllRed == 'SetAllRed' then
+if text == "الغاء" then 
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر" ,  1, "md")
+AliNight:del(Night..'Abs:Add:AllRed'..msg.sender_user_id_)
+return false
+end
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل لي الرد سواء كان ↫ ⤈\n❨ ملف • ملصق • متحركه • صوره\n • فيديو • بصمه • صوت • رساله ❩\n⌁︙يمكنك اضافة الى النص ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n `#username` ↬ معرف المستخدم\n `#msgs` ↬ عدد الرسائل\n `#name` ↬ اسم المستخدم\n `#id` ↬ ايدي المستخدم\n `#stast` ↬ رتبة المستخدم\n `#edit` ↬ عدد السحكات\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙للخروج ارسل ↫ ( الغاء )\n ✓" ,  1, "md")
 AliNight:set(Night.."Abs:Add:AllRed"..msg.sender_user_id_,'SaveAllRed')
 AliNight:set(Night.."Abs:Add:AllText"..msg.sender_user_id_, text)
@@ -8962,8 +9781,33 @@ AliNight:set(Night.."DelSudoRep",text)
 return false 
 end end
 --     Source Night     --
+if text == 'الردود المتعدده' and Manager(msg) and ChCheck(msg) then
+local redod = AliNight:smembers(Night..'Abs:Manager:GpRedod'..msg.chat_id_)
+MsgRep = '⌁︙قائمة الردود المتعدده ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n'
+for k,v in pairs(redod) do
+MsgRep = MsgRep..k..'~ (`'..v..'`) • {*العدد ↫ '..#AliNight:smembers(Night..'Abs:Text:GpTexts'..v..msg.chat_id_)..'*}\n' 
+end
+if #redod == 0 then
+MsgRep = '⌁︙لا توجد ردود متعدده مضافه'
+end
+send(msg.chat_id_,msg.id_,MsgRep)
+end
+if text == 'حذف الردود المتعدده' and Manager(msg) and ChCheck(msg) or text == 'مسح الردود المتعدده' and Manager(msg) and ChCheck(msg) then
+local redod = AliNight:smembers(Night..'Abs:Manager:GpRedod'..msg.chat_id_)
+if #redod == 0 then
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود متعدده مضافه" ,  1, "md")
+else
+for k,v in pairs(redod) do
+AliNight:del(Night..'Abs:Text:GpTexts'..v..msg.chat_id_)
+AliNight:del(Night..'Abs:Manager:GpRedod'..msg.chat_id_)
+end
+ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف الردود المتعدده")  
+return false
+end
+end
+--     Source Night     --
 if text == 'الردود' and Manager(msg) and ChCheck(msg) or text == 'ردود المدير' and Manager(msg) and ChCheck(msg) then
-local redod = AliNight:smembers(Night..'Abs:Manager:GpRed'..msg.chat_id_..'')
+local redod = AliNight:smembers(Night..'Abs:Manager:GpRed'..msg.chat_id_)
 MsgRep = '⌁︙ردود المدير ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n'
 for k,v in pairs(redod) do
 if AliNight:get(Night.."Abs:Gif:GpRed"..v..msg.chat_id_) then
@@ -8983,16 +9827,15 @@ dp = 'ملف 📁'
 elseif AliNight:get(Night.."Abs:Audio:GpRed"..v..msg.chat_id_) then
 dp = 'اغنيه 🎶'
 end
-MsgRep = MsgRep..''..k..'~ (`'..v..'`) ↫ {*'..dp..'*}\n' 
+MsgRep = MsgRep..k..'~ (`'..v..'`) ↫ {*'..dp..'*}\n' 
 end
 if #redod == 0 then
 MsgRep = '⌁︙لا توجد ردود مضافه'
 end
 send(msg.chat_id_,msg.id_,MsgRep)
 end
---     Source Night     --
 if text == 'حذف الردود' and Manager(msg) and ChCheck(msg) or text == 'مسح الردود' and Manager(msg) and ChCheck(msg) or text == 'حذف ردود المدير' and Manager(msg) and ChCheck(msg) or text == 'مسح ردود المدير' and Manager(msg) and ChCheck(msg) then
-local redod = AliNight:smembers(Night..'Abs:Manager:GpRed'..msg.chat_id_..'')
+local redod = AliNight:smembers(Night..'Abs:Manager:GpRed'..msg.chat_id_)
 if #redod == 0 then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙لا توجد ردود مضافه" ,  1, "md")
 else
@@ -9033,14 +9876,13 @@ dp = 'ملف 📁'
 elseif AliNight:get(Night.."Abs:Audio:AllRed"..v) then
 dp = 'اغنيه 🎶'
 end
-MsgRep = MsgRep..''..k..'~ (`'..v..'`) ↫ {*'..dp..'*}\n' 
+MsgRep = MsgRep..k..'~ (`'..v..'`) ↫ {*'..dp..'*}\n' 
 end
 if #redod == 0 then
 MsgRep = '⌁︙لا توجد ردود مضافه'
 end
 send(msg.chat_id_,msg.id_,MsgRep)
 end
---     Source Night     --
 if text == "حذف ردود المطور" and SecondSudo(msg) or text == "حذف ردود العام" and SecondSudo(msg) or text == "مسح ردود المطور" and SecondSudo(msg) then
 local redod = AliNight:smembers(Night.."Abs:Sudo:AllRed")
 if #redod == 0 then
@@ -9068,7 +9910,7 @@ if not SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل لي اسم البوت الان" ,  1, "md") 
-AliNight:set(Night..'Abs:NameBot'..msg.sender_user_id_..'', 'msg')
+AliNight:set(Night..'Abs:NameBot'..msg.sender_user_id_, 'msg')
 return false 
 end
 end
@@ -9077,8 +9919,8 @@ if not SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
 AliNight:del(Night..'Abs:NameBot')
-local NightTEAM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم حذف اسم البوت'
-absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTEAM, 14, string.len(msg.sender_user_id_))
+local NightTeaM = '⌁︙اهلا عزيزي ↫ '..AbsRank(msg)..' \n⌁︙تم حذف اسم البوت'
+absmoned(msg.chat_id_, msg.sender_user_id_, msg.id_, NightTeaM, 14, string.len(msg.sender_user_id_))
 end end 
 --     Source Night     --
 if text and text:match("^استعاده الاوامر$") and SecondSudo(msg) or text and text:match("^استعادة كلايش الاوامر$") and SecondSudo(msg) then
@@ -9093,20 +9935,17 @@ Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (الاوامر) 
 AliNight:set(Night..'Abs:Help0'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help0'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help0'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help0'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
 return false end
 end
 if text == "الاوامر" or text == "اوامر" or text == "مساعده" then
-if not Admin(msg) then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر يخص الرتب الاعلى فقط\n⌁︙ارسل ↫ (م6) لعرض اوامر الاعضاء', 1, 'md')
-else
 local Help = AliNight:get(Night..'Abs:Help')
-local text =  [[
+local Text = [[
 ⌁︙اهلا بك في قائمة الاوامر ↫ ⤈ 
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙م1 ↫ اوامر الحمايه
@@ -9116,22 +9955,24 @@ local text =  [[
 ⌁︙م5 ↫ اوامر المطورين
 ⌁︙م6 ↫ اوامر الاعضاء
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]] 
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
-end
+keyboard = {} 
+keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..msg.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..msg.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..msg.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..msg.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..msg.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..msg.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..msg.sender_user_id_}}}
+Msg_id = msg.id_/2097152/0.5
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Help or Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
 if text == "تعيين امر م1" and SecondSudo(msg) or text == "تعيين امر م١" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م1) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help01'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help01'..msg.sender_user_id_)
-if NightTEAM == 'msg' then 
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help01'..msg.sender_user_id_)
+if NightTeaM == 'msg' then 
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help01'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help1', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
 return false end
 end
 if text == "م1" or text == "م١" or text == "اوامر1" or text == "اوامر١" then
@@ -9139,7 +9980,7 @@ if not Admin(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر يخص الرتب الاعلى فقط\n⌁︙ارسل ↫ (م6) لعرض اوامر الاعضاء', 1, 'md')
 else
 local Help = AliNight:get(Night..'Abs:Help1')
-local text =  [[
+local Text = [[
 ⌁︙اوامر حماية المجموعه ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙قفل • فتح ↫ الروابط
@@ -9160,6 +10001,7 @@ local text =  [[
 ⌁︙قفل • فتح ↫ التكرار
 ⌁︙قفل • فتح ↫ الهاشتاك
 ⌁︙قفل • فتح ↫ التعديل
+⌁︙قفل • فتح ↫ الاباحي
 ⌁︙قفل • فتح ↫ التثبيت
 ⌁︙قفل • فتح ↫ الاشعارات
 ⌁︙قفل • فتح ↫ الكلايش
@@ -9167,7 +10009,6 @@ local text =  [[
 ⌁︙قفل • فتح ↫ الشبكات
 ⌁︙قفل • فتح ↫ المواقع
 ⌁︙قفل • فتح ↫ الفشار
-⌁︙قفل • فتح ↫ الاباحي
 ⌁︙قفل • فتح ↫ الكفر
 ⌁︙قفل • فتح ↫ الطائفيه
 ⌁︙قفل • فتح ↫ الكل
@@ -9186,21 +10027,21 @@ local text =  [[
 ⌁︙البوتات بالطرد
 ⌁︙البوتات بالتقيد
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
 if text == "تعيين امر م2" and SecondSudo(msg) or text == "تعيين امر م٢" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م2) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help21'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help21'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help21'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help21'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help2', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
 return false end
 end
 if text == "م2" or text == "م٢" or text == "اوامر2" or text == "اوامر٢" then
@@ -9208,7 +10049,7 @@ if not Admin(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر يخص الرتب الاعلى فقط\n⌁︙ارسل ↫ (م6) لعرض اوامر الاعضاء', 1, 'md')
 else
 local Help = AliNight:get(Night..'Abs:Help2')
-local text =  [[
+local Text = [[
 ⌁︙اوامر الادمنيه ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙الاعدادت
@@ -9245,6 +10086,7 @@ local text =  [[
 ⌁︙تفعيل • تعطيل ↫ الرابط
 ⌁︙تفعيل • تعطيل ↫ الالعاب
 ⌁︙تفعيل • تعطيل ↫ الترحيب
+⌁︙تفعيل • تعطيل ↫ التاك للكل
 ⌁︙تفعيل • تعطيل ↫ كشف الاعدادات
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙طرد المحذوفين
@@ -9261,21 +10103,21 @@ local text =  [[
 ⌁︙تقييد يوم + عدد الايام
 ⌁︙الغاء تقييد ↫ لالغاء التقييد بالوقت
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
 if text == "تعيين امر م3" and SecondSudo(msg) or text == "تعيين امر م٣" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م3) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help31'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help31'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help31'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help31'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help3', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
 return false end
 end
 if text == "م3" or text == "م٣" or text == "اوامر3" or text == "اوامر٣" then
@@ -9283,7 +10125,7 @@ if not Admin(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر يخص الرتب الاعلى فقط\n⌁︙ارسل ↫ (م6) لعرض اوامر الاعضاء', 1, 'md')
 else
 local Help = AliNight:get(Night..'Abs:Help3')
-local text =  [[
+local Text = [[
 ⌁︙اوامر المدراء ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙فحص البوت
@@ -9291,6 +10133,10 @@ local text =  [[
 ⌁︙اضف • حذف ↫ رد
 ⌁︙ردود المدير
 ⌁︙حذف ردود المدير
+⌁︙اضف • حذف ↫ رد متعدد
+⌁︙حذف رد من متعدد
+⌁︙الردود المتعدده
+⌁︙حذف الردود المتعدده
 ⌁︙حذف قوائم المنع
 ⌁︙منع ↫ بالرد على ( ملصق • صوره • متحركه )
 ⌁︙حذف قائمه منع + ↫ ⤈
@@ -9317,26 +10163,26 @@ local text =  [[
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙تفعيل • تعطيل + الامر ↫ ⤈
 ⌁︙اطردني • الايدي بالصوره • الابراج
-⌁︙معاني الاسماء • اوامر النسب
+⌁︙معاني الاسماء • اوامر النسب • انطق
 ⌁︙الايدي • تحويل الصيغ • اوامر التحشيش
-⌁︙ردود المدير • ردود المطور
+⌁︙ردود المدير • ردود المطور • التحقق
 ⌁︙ضافني • حساب العمر • الزخرفه
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
 if text == "تعيين امر م4" and SecondSudo(msg) or text == "تعيين امر م٤" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م4) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help41'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help41'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده" ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help41'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help41'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help4', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده" ,  1, "md")
 return false end
 end
 if text == "م٤" or text == "م4" or text == "اوامر4" or text == "اوامر٤" then
@@ -9344,11 +10190,13 @@ if not Admin(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر يخص الرتب الاعلى فقط\n⌁︙ارسل ↫ (م6) لعرض اوامر الاعضاء', 1, 'md')
 else
 local Help = AliNight:get(Night..'Abs:Help4')
-local text =  [[
+local Text = [[
 ⌁︙اوامر المنشئين ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙تنزيل الكل
 ⌁︙الميديا • امسح
+⌁︙تعين عدد الحذف
+⌁︙ترتيب الاوامر
 ⌁︙اضف • حذف ↫ امر
 ⌁︙حذف الاوامر المضافه
 ⌁︙الاوامر المضافه
@@ -9372,28 +10220,28 @@ local text =  [[
 ⌁︙رفع بكل الصلاحيات
 ⌁︙حذف القوائم
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙اوامر منشئ المجموعه ↫ ⤈
+⌁︙اوامر المالكين ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙رفع • تنزيل ↫ منشئ اساسي
 ⌁︙حذف المنشئين الاساسيين 
 ⌁︙المنشئين الاساسيين 
 ⌁︙حذف جميع الرتب
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
 if text == "تعيين امر م5" and SecondSudo(msg) or text == "تعيين امر م٥" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م5) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help51'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help51'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help51'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help51'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help5', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده " ,  1, "md")
 return false end
 end
 if text == "م٥" or text == "م5" or text == "اوامر5" or text == "اوامر٥" then
@@ -9401,7 +10249,7 @@ if not SudoBot(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙هذا الامر للمطورين فقط', 1, 'md')
 else
 local Help = AliNight:get(Night..'Abs:Help5')
-local text =  [[
+local Text = [[
 ⌁︙اوامر المطورين ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙الكروبات
@@ -9412,6 +10260,8 @@ local text =  [[
 ⌁︙اسم البوت + غادر
 ⌁︙اسم البوت + تعطيل
 ⌁︙كشف + -ايدي المجموعه
+⌁︙رفع مالك • تنزيل مالك
+⌁︙المالكين • حذف المالكين
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙رفع • تنزيل ↫ مدير عام
 ⌁︙حذف • المدراء العامين 
@@ -9463,31 +10313,32 @@ local text =  [[
 ⌁︙ترحيب البوت • المغادره
 ⌁︙البوت الخدمي • التواصل
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
 if text == "تعيين امر م6" and SecondSudo(msg) or text == "تعيين امر م٦" and SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة (م6) الان " ,  1, "md")
 AliNight:set(Night..'Abs:Help61'..msg.sender_user_id_, 'msg')
 return false end
 if text and text:match("^(.*)$") then
-local NightTEAM =  AliNight:get(Night..'Abs:Help61'..msg.sender_user_id_)
-if NightTEAM == 'msg' then
-Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده" ,  1, "md")
+local NightTeaM =  AliNight:get(Night..'Abs:Help61'..msg.sender_user_id_)
+if NightTeaM == 'msg' then
+Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
 AliNight:del(Night..'Abs:Help61'..msg.sender_user_id_)
 AliNight:set(Night..'Abs:Help6', text)
-Ali_Night(msg.chat_id_, msg.id_, 1, text , 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حفظ الكليشه الجديده" ,  1, "md")
 return false end
 end
 if text == "م٦" or text == "م6" or text == "اوامر6" or text == "اوامر٦" then
 local Help = AliNight:get(Night..'Abs:Help6')
-local text =  [[
+local Text = [[
 ⌁︙اوامر الاعضاء ↫ ⤈
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙السورس • موقعي • رتبتي • معلوماتي
+⌁︙السورس • موقعي • رتبتي • معلوماتي 
+⌁︙رقمي • لقبي • نبذتي • صلاحياتي • غنيلي
 ⌁︙رسائلي • حذف رسائلي • اسمي • معرفي 
-⌁︙ايدي •ايديي • جهاتي • غنيلي • الالعاب 
+⌁︙ايدي •ايديي • جهاتي • راسلني • الالعاب 
 ⌁︙نقاطي • بيع نقاطي • القوانين • زخرفه 
 ⌁︙رابط الحذف • نزلني • اطردني • المطور 
 ⌁︙منو ضافني • مشاهدات المنشور • الرابط 
@@ -9495,34 +10346,35 @@ local text =  [[
 ⌁︙نسبه الحب • نسبه الكره • نسبه الغباء 
 ⌁︙نسبه الرجوله • نسبه الانوثه • التفاعل
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙صلاحياتي
+⌁︙لقبه + بالرد
 ⌁︙كول + الكلمه
 ⌁︙زخرفه + اسمك
 ⌁︙برج + نوع البرج
 ⌁︙معنى اسم + الاسم
-⌁︙احسب + تاريخ ميلادك
 ⌁︙بوسه • بوسها ↫ بالرد
-⌁︙رفع مطي • تنزيل مطي •المطايه
+⌁︙احسب + تاريخ ميلادك
+⌁︙رفع مطي • تنزيل مطي • المطايه
 ⌁︙هينه • هينها ↫ بالرد • بالمعرف
 ⌁︙صيحه • صيحها ↫ بالرد • بالمعرف
 ⌁︙صلاحياته ↫ بالرد • بالمعرف • بالايدي
 ⌁︙ايدي • كشف  ↫ بالرد • بالمعرف • بالايدي
 ⌁︙تحويل + بالرد ↫ صوره • ملصق • صوت • بصمه
+⌁︙انطق + الكلام تدعم جميع اللغات مع الترجمه للعربي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/sheserlo0)
+⌁︙[Source Channel](https://t.me/YV9YV)
 ]]
-Ali_Night(msg.chat_id_, msg.id_, 1, (Help or text), 1, 'md')
+Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end
 --     Source Night     --
 if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس نايت', 1, 'md') 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس جيسون', 1, 'md') 
 os.execute('rm -rf Night.lua') 
-os.execute('wget https://raw.githubusercontent.com/aliNightTeaM/Night/main/Night.lua') 
+os.execute('wget https://raw.githubusercontent.com/NightTeaM/Night/main/Night.lua') 
 dofile('Night.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم التحديث الى الاصدار الجديد', 1, 'md') 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم التحديث الى الاصدار 1.0', 1, 'md') 
 end
 if text == 'تحديث' or text == 'تحديث البوت' or text == '↫ تحديث ⌁' then  
 dofile('Night.lua') 
@@ -9530,6 +10382,14 @@ io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n        ( تم تحديث ملفات البوت )        \n\27[0;34;49m\n") 
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم تحديث ملفات البوت", 1, "md")
 end 
+if AliNight:get(Night.."AliNight2") then
+AliNight:set(Night.."Abs:ChId",AliNight:get(Night.."AliNight2"))
+AliNight:del(Night.."AliNight2")
+end
+if AliNight:get(Night.."Abs:textch:user") then
+AliNight:set(Night.."Abs:ChText",AliNight:get(Night.."Abs:textch:user"))
+AliNight:del(Night.."Abs:textch:user")
+end
 --     Source Night     --
 if text == 'الملفات' then
 Files = '\n⌁︙الملفات المفعله في البوت ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n'
@@ -9546,12 +10406,12 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
 if Get_info then
-local TextS = "\n⌁︙قائمة ملفات متجر سورس نايت\n⌁︙الملفات المتوفره حاليا ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
+local TextS = "\n⌁︙قائمة ملفات متجر سورس جيسون\n⌁︙الملفات المتوفره حاليا ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 local TextE = "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙علامة ↫ (✔) تعني الملف مفعل\n⌁︙علامة ↫ (✖️) تعني الملف معطل\n"
 local NumFile = 0
 for name,Info in pairs(res.plugins_) do
@@ -9578,7 +10438,7 @@ end
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 os.execute("rm -fr Files/"..FileName)
 send(msg.chat_id_, msg.id_,"\n⌁︙الملف ↫ *"..FileName.."*\n⌁︙تم تعطيله وحذفه من البوت بنجاح") 
@@ -9590,7 +10450,7 @@ end
 if text and text:match("^(تفعيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تفعيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 local ChekAuto = io.open("Files/"..FileName,'w+')
 ChekAuto:write(GetJson)
@@ -9657,7 +10517,7 @@ if not SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙ارسل كليشة المطور الان ", 1, "md")
-AliNight:setex(Night.."Abs:DevText" .. msg.chat_id_ .. ":" .. msg.sender_user_id_, 300, true)
+AliNight:setex(Night.."Abs:DevText"..msg.chat_id_..":" .. msg.sender_user_id_, 300, true)
 end end
 if text and text:match("^مسح كليشه المطور$") or text and text:match("^حذف كليشه المطور$") then
 if not SecondSudo(msg) then
@@ -9667,18 +10527,18 @@ Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف كليشة المطور",
 AliNight:del(Night.."DevText")
 end end
 --     Source Night     --
-if AliNight:get(Night.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_) then 
+if AliNight:get(Night.."textch:user"..msg.chat_id_.."" .. msg.sender_user_id_) then 
 if text and text:match("^الغاء$") then 
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم الغاء الامر", 1, "md") 
-AliNight:del(Night.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del(Night.."textch:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 return false  end 
-AliNight:del(Night.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_)  
+AliNight:del(Night.."textch:user"..msg.chat_id_.."" .. msg.sender_user_id_)  
 local texxt = string.match(text, "(.*)") 
-AliNight:set(Night..'Abs:textch:user',texxt)
+AliNight:set(Night..'Abs:ChText',texxt)
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم تغيير كليشة الاشتراك الاجباري', 1, 'md')
 end
 if text and text:match("^تغير كليشه الاشتراك$") and SecondSudo(msg) or text and text:match("^تغيير كليشه الاشتراك$") and SecondSudo(msg) then  
-AliNight:setex(Night.."textch:user" .. msg.chat_id_ .. "" .. msg.sender_user_id_, 300, true)  
+AliNight:setex(Night.."textch:user"..msg.chat_id_.."" .. msg.sender_user_id_, 300, true)  
 local text = '⌁︙حسنا ارسل كليشة الاشتراك الجديده'  
 Ali_Night(msg.chat_id_, msg.id_, 1,text, 1, 'md') 
 end
@@ -9686,7 +10546,7 @@ if text == "حذف كليشه الاشتراك الاجباري" or text == "ح�
 if not SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-AliNight:del(Night..'Abs:textch:user')
+AliNight:del(Night..'Abs:ChText')
 textt = "⌁︙تم حذف كليشة الاشتراك الاجباري"
 Ali_Night(msg.chat_id_, msg.id_, 1,textt, 1, 'md') 
 end end
@@ -9694,19 +10554,29 @@ if text == 'كليشه الاشتراك' or text == 'جلب كليشه الاش�
 if not SecondSudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-local chtext = AliNight:get(Night.."Abs:textch:user")
+local chtext = AliNight:get(Night.."Abs:ChText")
 if chtext then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙كليشة الاشتراك ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n['..chtext..']', 1, 'md')
 else
-local AliNight6 = AliNight:get(Night.."AliNight3")
-if AliNight6 then
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عليك الاشتراك في قناة البوت \n⌁︙قناة البوت ↫ '..AliNight6, 1, "html")
+if AliNight:get(Night.."Abs:ChId") then
+local Check = https.request('https://api.telegram.org/bot'..TokenBot..'/getChat?chat_id='..AliNight:get(Night.."Abs:ChId"))
+local GetInfo = JSON.decode(Check)
+if GetInfo.result.username then
+User = "https://t.me/"..GetInfo.result.username
+else
+User = GetInfo.result.invite_link
+end
+Text = "⌁︙عذرا لاتستطيع استخدام البوت !\n⌁︙عليك الاشتراك في القناة اولا :"
+keyboard = {} 
+keyboard.inline_keyboard = {{{text=GetInfo.result.title,url=User}}} 
+Msg_id = msg.id_/2097152/0.5
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?chat_id='..msg.chat_id_..'&text=' .. URL.escape(Text).."&reply_to_message_id="..Msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم يتم تعيين قناة الاشتراك الاجباري \n⌁︙ارسل ↫ تعيين قناة الاشتراك للتعيين ', 1, 'md')
 end end end end
 --     Source Night     --
 if text == 'القناة' or text == 'قناة السورس' or text == 'قناه السورس' or text == 'قنات السورس' then 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ @sheserlo0', 1, 'html')    
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ [@YV9YV]', 1, 'md')    
 end 
 --     Source Night     --
 if Sudo(msg) then 
@@ -9746,7 +10616,7 @@ elseif result.content_.ID == "MessageVideo" then Media = 'الفيديو'
 elseif result.content_.ID == "MessageAnimation" then Media = 'المتحركه'
 end
 tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,dp) 
-local absname = '⌁︙العضو ↫ ['..CatchName(dp.first_name_,15)..'](tg://user?id='..dp.id_..')'
+local absname = '⌁︙العضو ↫ ['..dp.first_name_..'](tg://user?id='..dp.id_..')'
 local absid = '⌁︙ايديه ↫ `'..dp.id_..'`'
 local abstext = '⌁︙قام بالتعديل على '..Media
 local abstxt = '┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙تعالو يامشرفين اكو مخرب'
@@ -9754,6 +10624,7 @@ tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100"
 local admins = abbas.members_  
 text = '\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n'
 for i=0 , #admins do 
+if not abbas.members_[i].bot_info_ then
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,data) 
 if data.first_name_ ~= false then
 text = text.."~ [@"..data.username_.."]\n"
@@ -9762,6 +10633,7 @@ if #admins == i then
 SendText(msg.chat_id_, absname..'\n'..absid..'\n'..abstext..text..abstxt,0,'md') 
 end
 end,nil)
+end
 end
 end,nil)
 end,nil)
@@ -9837,9 +10709,9 @@ end
 --     Source Night     --
 end 
 ---------------------------------------------
--- This Source Was Developed By  --
+-- This Source Was Developed By abbas      --
 -- (abbasfadhil) @abbasfadhil. --
 -- This Is The Source Channel @NightTeaM   --
---    - Night -                  --
---       -- https://t.me/sheserlo0 --          --
+--                 - Night -               --
+--       -- https://t.me/sheserlo0 --      --
 --------------------------------------------- 
