@@ -128,7 +128,7 @@ DevId = Config.DevId
 SudoIds = {Config.SudoIds,782717203,1809393499,1779659067,1746615144} or {Config.sudo_users,782717203,1809393499,1779659067,1746615144}
 Night = Config.Night
 TokenBot = Config.TokenBot
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 --     Source Night     --
 FilesPrint = "\27[35m".."\nAll Source Files Started ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"..'\27[m'
 FilesNumber = 0
@@ -591,7 +591,7 @@ end ,nil)
 end
 --     Source Night     --
 local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then NightTeaM  = "المطور" elseif SecondSudo(msg) then NightTeaM = "المطور" elseif SudoBot(msg) then NightTeaM = "المطور" elseif ManagerAll(msg) then NightTeaM = "المدير" elseif AdminAll(msg) then NightTeaM = "الادمن" elseif AbsConstructor(msg) then NightTeaM = "المالك" elseif BasicConstructor(msg) then NightTeaM = "المنشئ" elseif Constructor(msg) then NightTeaM = "المنشئ" elseif Manager(msg) then NightTeaM = "المدير" elseif Admin(msg) then NightTeaM = "الادمن" else NightTeaM = "العضو" end return NightTeaM end
-function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1779659067) then NightTeaM = 'مطور السورس' elseif tonumber(user_id) == tonumber(782717203) then NightTeaM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTeaM = 'البوت' elseif SudoId(user_id) then NightTeaM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTeaM = 'المطور الثانوي' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTeaM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:ManagerAll:', user_id) then NightTeaM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير العام' elseif AliNight:sismember(Night..'Abs:AdminAll:', user_id) then NightTeaM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' elseif AliNight:sismember(Night..'Abs:VipAll:', user_id) then NightTeaM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTeaM = 'منشئ المجموعه' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTeaM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTeaM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTeaM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTeaM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTeaM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTeaM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTeaM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTeaM end
+function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1779659067) then NightTEAM = 'مطور السورس' elseif tonumber(user_id) == tonumber(782717203) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الثانوي' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:ManagerAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير العام' elseif AliNight:sismember(Night..'Abs:AdminAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' elseif AliNight:sismember(Night..'Abs:VipAll:', user_id) then NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'منشئ المجموعه' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
 --     Source Night     --
 function RankChecking(user_id,chat_id)
 if SudoId(user_id) then
@@ -1417,8 +1417,8 @@ end
 AliNight:del(Night.."Del:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_)
 return false
 end
-if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "جيسون")..' ') then
-data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "جيسون")..' ','')
+if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ') then
+data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ','')
 end
 if data.message_.content_.text_ then
 local NewCmmd = AliNight:get(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..data.message_.content_.text_)
@@ -1700,7 +1700,7 @@ end
 if ChatType == 'pv' then 
 if text == '/start' or text == 'رجوع ،🔙‘' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '⌁︙مرحبا عزيزي المطور \n⌁︙انت المطور الاساسي هنا \n⌁︙اليك ازرار سورس جيسون \n⌁︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '⌁︙مرحبا عزيزي المطور \n⌁︙انت المطور الاساسي هنا \n⌁︙اليك ازرار سورس نايت \n⌁︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'وضع اسم البوت','↫ تحديث ⌁','وضع كليشه المطور'},
 {'↫ المطورين ⌁','↫ الاحصائيات ⌁'},
@@ -1728,7 +1728,7 @@ return false
 end end
 if text == '~ تعيين كلايش الاوامر ~' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '⌁︙اهلا بك مجددا عزيزي المطور \n⌁︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس جيسون فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '⌁︙اهلا بك مجددا عزيزي المطور \n⌁︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'حذف كليشة الايدي','تعيين كليشة الايدي'},
 {'تعيين امر الاوامر'},
@@ -3136,7 +3136,7 @@ end end
 if SecondSudo(msg) then
 if text == 'جلب نسخه الكروبات' or text == 'جلب نسخه احتياطيه' or text == 'جلب النسخه الاحتياطيه' then
 local List = AliNight:smembers(Night..'Abs:Groups') 
-local BotName = (AliNight:get(Night.."Abs:NameBot") or 'جيسون')
+local BotName = (AliNight:get(Night.."Abs:NameBot") or 'نايت')
 local GetJson = '{"BotId": '..Night..',"BotName": "'..BotName..'","GroupsList":{'  
 for k,v in pairs(List) do 
 LinkGroups = AliNight:get(Night.."Abs:Groups:Links"..v)
@@ -3326,19 +3326,19 @@ end
 --     Source Night     --
 if ChatType == 'sp' or ChatType == 'gp'  then
 if text == 'بوت' or text == 'بوتت' then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 local NightTeaM = {"لتكول بوت اسمي "..NameBot.." 😒🔪","اسمي القميل "..NameBot.." 😚♥️","عندي اسم تره 😒💔","صيحولي "..NameBot.." كافي بوت 😒🔪","انت البوت لك 😒💔"} 
 Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false
 end
 if text == 'اسم البوت' or text == 'البوت شنو اسمه' or text == 'شسمه البوت' or text == 'البوت شسمه' then
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون') 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت') 
 local NightTeaM = {"اسمي القميل "..NameBot.." 😚♥️","هلاا يروحيي وياكك "..NameBot.." 😻♥️"} 
 Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false
 end
-if text and text == (AliNight:get(Night..'Abs:NameBot') or 'جيسون') then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'جيسون')
+if text and text == (AliNight:get(Night..'Abs:NameBot') or 'نايت') then 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 local NightTeaM = {'😸♥️ هلا كلبي وياك '..NameBot..' تفضل','ترةه مصختهاا احجيي شرايد 😕😒💔','اطلقق واحدد يصيح '..NameBot..' 😻♥️','خبصتت امنةة شتريدد عااد 🤧😒💔'} 
 Ali_Night(msg.chat_id_, msg.id_, 1, NightTeaM[math.random(#NightTeaM)] , 1, 'html') 
 return false 
@@ -3355,8 +3355,8 @@ if text ==  'حذف نقاطي' and ChCheck(msg) or text ==  'مسح نقاطي'
 --     Source Night     --
 if text == 'سمايلات' and ChCheck(msg) or text == 'السمايلات' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','🚜','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','🚜','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'🍞','🍞')
@@ -3489,8 +3489,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end
 if text == 'ترتيب' and ChCheck(msg) or text == 'الترتيب' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'سحور','سياره','استقبال','قنفه','ايفون','بزونه','مطبخ','كرستيانو','دجاجه','مدرسه','الوان','غرفه','ثلاجه','كهوه','سفينه','العراق','محطه','طياره','رادار','منزل','مستشفى','كهرباء','تفاحه','اخطبوط','سلمون','فرنسا','برتقاله','تفاح','مطرقه','بتيته','لهانه','شباك','باص','سمكه','ذباب','تلفاز','حاسوب','انترنيت','ساحه','جسر'};
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'سحور','سياره','استقبال','قنفه','ايفون','بزونه','مطبخ','كرستيانو','دجاجه','مدرسه','الوان','غرفه','ثلاجه','كهوه','سفينه','العراق','محطه','طياره','رادار','منزل','مستشفى','كهرباء','تفاحه','اخطبوط','سلمون','فرنسا','برتقاله','تفاح','مطرقه','بتيته','لهانه','شباك','باص','سمكه','ذباب','تلفاز','حاسوب','انترنيت','ساحه','جسر'};
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'سحور','س ر و ح')
@@ -3563,8 +3563,8 @@ return false
 end end
 if text == 'حزوره' and ChCheck(msg) or text == 'الحزوره' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'الجرس','عقرب الساعه','السمك','المطر','5','الكتاب','البسمار','7','الكعبه','بيت الشعر','لهانه','انا','امي','الابره','الساعه','22','غلط','كم الساعه','البيتنجان','البيض','المرايه','الضوء','الهواء','الضل','العمر','القلم','المشط','الحفره','البحر','الثلج','الاسفنج','الصوت','بلم'};
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'الجرس','عقرب الساعه','السمك','المطر','5','الكتاب','البسمار','7','الكعبه','بيت الشعر','لهانه','انا','امي','الابره','الساعه','22','غلط','كم الساعه','البيتنجان','البيض','المرايه','الضوء','الهواء','الضل','العمر','القلم','المشط','الحفره','البحر','الثلج','الاسفنج','الصوت','بلم'};
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'الجرس','شيئ اذا لمسته صرخ ما هوه ؟')
@@ -3614,8 +3614,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end 
 if text == 'المعاني' and ChCheck(msg) or text == 'معاني' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'قرد','دجاجه','بطريق','ضفدع','بومه','نحله','ديك','جمل','بقره','دولفين','تمساح','قرش','نمر','اخطبوط','سمكه','خفاش','اسد','فأر','ذئب','فراشه','عقرب','زرافه','قنفذ','تفاحه','باذنجان'}
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'قرد','دجاجه','بطريق','ضفدع','بومه','نحله','ديك','جمل','بقره','دولفين','تمساح','قرش','نمر','اخطبوط','سمكه','خفاش','اسد','فأر','ذئب','فراشه','عقرب','زرافه','قنفذ','تفاحه','باذنجان'}
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum2'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'قرد','🐒')
@@ -3657,8 +3657,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end 
 if text == 'العكس' and ChCheck(msg) or text == 'عكس' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'باي','فهمت','موزين','اسمعك','احبك','موحلو','نضيف','حاره','ناصي','جوه','سريع','ونسه','طويل','سمين','ضعيف','شريف','شجاع','رحت','عدل','نشيط','شبعان','موعطشان','خوش ولد','اني','هادئ'}
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'باي','فهمت','موزين','اسمعك','احبك','موحلو','نضيف','حاره','ناصي','جوه','سريع','ونسه','طويل','سمين','ضعيف','شريف','شجاع','رحت','عدل','نشيط','شبعان','موعطشان','خوش ولد','اني','هادئ'}
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum3'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'باي','هلو')
@@ -3700,8 +3700,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end 
 if text == 'المختلف' and ChCheck(msg) or text == 'مختلف' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'😸','☠','🐼','🐇','🌑','🌚','⭐️','📥','⛈','🌥','⛄️','👨‍🔬','👨‍💻','👨‍🔧','👩‍🍳','🧚‍♀','🧚‍♂️','🧝‍♂','🙍‍♂','🧖‍♂','👬','👨‍👨‍👧','🕓','🕤','⌛️','📅','👩‍⚖️','👨‍🎨'};
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'😸','☠','🐼','🐇','🌑','🌚','⭐️','📥','⛈','🌥','⛄️','👨‍🔬','👨‍💻','👨‍🔧','👩‍🍳','🧚‍♀','🧚‍♂️','🧝‍♂','🙍‍♂','🧖‍♂','👬','👨‍👨‍👧','🕓','🕤','⌛️','📅','👩‍⚖️','👨‍🎨'};
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum4'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'😸','😹😹😹😸😹😹😹😹')
@@ -3746,10 +3746,10 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
 if text == 'امثله' and ChCheck(msg) or text == 'الامثله' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {
+AliNight2 = {
 'جوز','ضراطه','الحبل','الحافي','شقره','بيدك','سلايه','النخله','الخيل','حداد','المبلل','يركص','قرد','العنب','العمه','الخبز','بالحصاد','شهر','شكه','يكحله',
 };
-name = AliNight[math.random(#AliNight)]
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum5'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'جوز','ينطي ___ للماعنده سنون')
@@ -3787,8 +3787,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
 if text == 'رياضيات' and ChCheck(msg) or text == 'الرياضيات' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'9','46','2','9','5','4','25','10','17','15','39','5','16',};
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'9','46','2','9','5','4','25','10','17','15','39','5','16',};
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum6'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'9','7 + 2 = ?')
@@ -3819,8 +3819,8 @@ AliNight:set(Night..'Abs:Games:Ids'..msg.chat_id_,true)
 end  
 if text == 'الانكليزي' and ChCheck(msg) or text == 'الانجليزيه' and ChCheck(msg) or text == 'انكليزيه' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'معلومات','قنوات','مجموعات','كتاب','تفاحه','سدني','نقود','اعلم','ذئب','تمساح','ذكي','شاطئ','غبي',};
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'معلومات','قنوات','مجموعات','كتاب','تفاحه','سدني','نقود','اعلم','ذئب','تمساح','ذكي','شاطئ','غبي',};
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum7'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'ذئب','Wolf')
@@ -3851,8 +3851,8 @@ end
 --     Source Night     --
 if text == 'اسئله' and ChCheck(msg) or text == 'اختيارات' and ChCheck(msg) or text == 'الاسئله' and ChCheck(msg) or text == 'اساله' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
-AliNight = {'النيل','14','الفم','11','30','بوتين','ستيف جوبر','باريس','10','النمل','حرف الواو','الشعر','سحاب','الاسم','ذهب','حرف الام','العزائم','انسات','المنجنيق','اسيا','6','الاسد','مهر','الدولفين','اوروبا','الزئبق','لندن','الانسان','طوكيو','خديجه',}
-name = AliNight[math.random(#AliNight)]
+AliNight2 = {'النيل','14','الفم','11','30','بوتين','ستيف جوبر','باريس','10','النمل','حرف الواو','الشعر','سحاب','الاسم','ذهب','حرف الام','العزائم','انسات','المنجنيق','اسيا','6','الاسد','مهر','الدولفين','اوروبا','الزئبق','لندن','الانسان','طوكيو','خديجه',}
+name = AliNight2[math.random(#AliNight2)]
 AliNight:set(Night..'Abs:GameNum8'..msg.chat_id_,name)
 AliNight:del(Night..'Abs:Games:Ids'..msg.chat_id_)
 name = string.gsub(name,'النيل','⌁︙ماهو اطول نهر في العالم ؟\n1- النيل\n2- الفرات\n3- نهر الكونغو')
@@ -9367,7 +9367,7 @@ if text == 'جلب نسخه السورس' then
 if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙للمطور الاساسي فقط ', 1, 'md')
 else
-sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './Night.lua', '⌁︙نسخة ملف سورس جيسون',dl_cb, nil)
+sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './Night.lua', '⌁︙نسخة ملف سورس نايت',dl_cb, nil)
 end end
 --     Source Night     --
 if text == 'روابط الكروبات' or text == 'روابط المجموعات' then
@@ -10368,13 +10368,13 @@ end
 --     Source Night     --
 if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس جيسون', 1, 'md') 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس نايت', 1, 'md') 
 os.execute('rm -rf Night.lua') 
-os.execute('wget https://raw.githubusercontent.com/NightTeaM/Night/main/Night.lua') 
+os.execute('wget https://raw.githubusercontent.com/aliNightTeaM/Night/main/Night.lua') 
 dofile('Night.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم التحديث الى الاصدار 1.0', 1, 'md') 
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙تم التحديث الى الاصدار 2.0', 1, 'md') 
 end
 if text == 'تحديث' or text == 'تحديث البوت' or text == '↫ تحديث ⌁' then  
 dofile('Night.lua') 
@@ -10382,9 +10382,9 @@ io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n        ( تم تحديث ملفات البوت )        \n\27[0;34;49m\n") 
 Ali_Night(msg.chat_id_, msg.id_, 1, "⌁︙تم تحديث ملفات البوت", 1, "md")
 end 
-if AliNight:get(Night.."AliNight") then
-AliNight:set(Night.."Abs:ChId",AliNight:get(Night.."AliNight"))
-AliNight:del(Night.."AliNight")
+if AliNight:get(Night.."AliNight2") then
+AliNight:set(Night.."Abs:ChId",AliNight:get(Night.."AliNight2"))
+AliNight:del(Night.."AliNight2")
 end
 if AliNight:get(Night.."Abs:textch:user") then
 AliNight:set(Night.."Abs:ChText",AliNight:get(Night.."Abs:textch:user"))
@@ -10406,12 +10406,12 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
 if Get_info then
-local TextS = "\n⌁︙قائمة ملفات متجر سورس جيسون\n⌁︙الملفات المتوفره حاليا ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
+local TextS = "\n⌁︙قائمة ملفات متجر سورس نايت\n⌁︙الملفات المتوفره حاليا ↫ ⤈\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 local TextE = "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙علامة ↫ (✔) تعني الملف مفعل\n⌁︙علامة ↫ (✖️) تعني الملف معطل\n"
 local NumFile = 0
 for name,Info in pairs(res.plugins_) do
@@ -10438,7 +10438,7 @@ end
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 os.execute("rm -fr Files/"..FileName)
 send(msg.chat_id_, msg.id_,"\n⌁︙الملف ↫ *"..FileName.."*\n⌁︙تم تعطيله وحذفه من البوت بنجاح") 
@@ -10450,7 +10450,7 @@ end
 if text and text:match("^(تفعيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تفعيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/NightTeaM/NightFiles/main/NightFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/aliNightTeaM/NightFiles/main/NightFiles/"..FileName)
 if Res == 200 then
 local ChekAuto = io.open("Files/"..FileName,'w+')
 ChekAuto:write(GetJson)
