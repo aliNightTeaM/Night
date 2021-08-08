@@ -1024,7 +1024,7 @@ local Text = [[
 ⌁︙م5 ↫ اوامر المطورين
 ⌁︙م6 ↫ اوامر الاعضاء
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]] 
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}}}
@@ -1087,7 +1087,7 @@ local Text = [[
 ⌁︙البوتات بالطرد
 ⌁︙البوتات بالتقيد
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -1157,7 +1157,7 @@ local Text = [[
 ⌁︙تقييد يوم + عدد الايام
 ⌁︙الغاء تقييد ↫ لالغاء التقييد بالوقت
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -1216,7 +1216,7 @@ local Text = [[
 ⌁︙ردود المدير • ردود المطور • التحقق
 ⌁︙ضافني • حساب العمر • الزخرفه
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -1269,7 +1269,7 @@ local Text = [[
 ⌁︙المنشئين الاساسيين 
 ⌁︙حذف جميع الرتب
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -1349,7 +1349,7 @@ local Text = [[
 ⌁︙ترحيب البوت • المغادره
 ⌁︙البوت الخدمي • التواصل
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -1391,7 +1391,7 @@ local Text = [[
 ⌁︙تحويل + بالرد ↫ صوره • ملصق • صوت • بصمه
 ⌁︙انطق + الكلام تدعم جميع اللغات مع الترجمه للعربي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..data.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..data.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..data.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..data.sender_user_id_}},{{text="اوامر المطورين",callback_data="/HelpList5:"..data.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_}},{{text="• رجوع •",callback_data="/HelpList:"..data.sender_user_id_}}}
@@ -2693,7 +2693,7 @@ Welcomes = '• نورت حبي \n• firstname \n• @username'
 end
 local Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
 local Welcomes = Welcomes:gsub('firstname',('['..result.first_name_..']' or ''))
-local Welcomes = Welcomes:gsub('username',('[@'..result.username_..']' or '[@YV9YV]'))
+local Welcomes = Welcomes:gsub('username',('[@'..result.username_..']' or '[@sheserlo0]'))
 Ali_Night(msg.chat_id_, msg.id_, 1, Welcomes, 1, 'md')
 end 
 if AliNight:get(Night.."Abs:Lock:Welcome"..msg.chat_id_) then
@@ -2741,7 +2741,7 @@ Welcomes = '• نورت حبي \n• firstname \n• @username'
 end
 local Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
 local Welcomes = Welcomes:gsub('firstname',('['..msg.content_.members_[0].first_name_..']' or ''))
-local Welcomes = Welcomes:gsub('username',('[@'..msg.content_.members_[0].username_..']' or '[@YV9YV]'))
+local Welcomes = Welcomes:gsub('username',('[@'..msg.content_.members_[0].username_..']' or '[@sheserlo0]'))
 Ali_Night(msg.chat_id_, msg.id_, 1, Welcomes, 1, 'md')
 end
 --     Source Night     --
@@ -4024,7 +4024,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1,[[
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
 ⌁︙نقاطي • بيع نقاطي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]], 1, 'md')
 else
 Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙عذرا الالعاب معطله في المجموعه', 1, 'md')
@@ -4194,13 +4194,11 @@ local text =  [[
 Welcome To Source
 ⌁︙Night TEAM
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 
-⌁︙[Exp Source](https://t.me/Q1N_A)
-
-⌁︙[Developer](https://t.me/C7777J)
+⌁︙[Developer](https://t.me/DDTDK)
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Tws Night](t.me/BNJLCBOT)
+⌁︙[Tws Night](t.me/sheserlo0SEND_BOT)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, text, 1, 'md')
 end
@@ -8559,7 +8557,7 @@ local TXTE = "⌁︙اعدادات المجموعه ↫ ⤈\n┉ ≈ ┉ ≈ ┉
 .."⌁︙التكرار ↫ "..flood.."\n"
 .."⌁︙عدد التكرار ↫ "..Flood_Num.."\n"
 .."⌁︙عدد السبام ↫ "..spam_c.."\n"
-.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/YV9YV)\n"
+.."┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n⌁︙[Source Channel](https://t.me/sheserlo0)\n"
 Ali_Night(msg.chat_id_, msg.id_, 1, TXTE, 1, 'md')
 end
 end
@@ -8834,7 +8832,7 @@ if Audios.Info == true then
 local Text ='⌁︙تم اختيار المقطع الصوتي لك'
 keyboard = {} 
 keyboard.inline_keyboard = {
-{{text = '⌁ Night TeAM .',url="t.me/Night"}},
+{{text = '⌁ Night TeAM .',url="t.me/sheserlo0"}},
 }
 local msg_id = msg.id_/2097152/0.5
 https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id='..msg.chat_id_..'&voice='..URL.escape(Audios.info)..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
@@ -9115,7 +9113,7 @@ local TkeedList = AliNight:scard(Night.."Abs:Abs:Tkeed:"..ChatId) or 0
 local AdminsList = AliNight:scard(Night.."Abs:Admins:"..ChatId) or 0
 local VipList = AliNight:scard(Night.."Abs:VipMem:"..ChatId) or 0
 local LinkGp = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/exportChatInviteLink?chat_id='..ChatId))
-if LinkGp.ok == true then LinkGroup = LinkGp.result else LinkGroup = 't.me/Night' end
+if LinkGp.ok == true then LinkGroup = LinkGp.result else LinkGroup = 't.me/sheserlo0' end
 tdcli_function({ID ="GetChat",chat_id_=ChatId},function(arg,dp)
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = ChatId:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,data) 
 if dp.id_ then
@@ -9955,7 +9953,7 @@ local Text = [[
 ⌁︙م5 ↫ اوامر المطورين
 ⌁︙م6 ↫ اوامر الاعضاء
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]] 
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="اوامر الادمنيه",callback_data="/HelpList2:"..msg.sender_user_id_},{text="اوامر الحمايه",callback_data="/HelpList1:"..msg.sender_user_id_}},{{text="اوامر المنشئين",callback_data="/HelpList4:"..msg.sender_user_id_},{text="اوامر المدراء",callback_data="/HelpList3:"..msg.sender_user_id_}},{{text="اوامر الاعضاء",callback_data="/HelpList6:"..msg.sender_user_id_},{text="اوامر المطورين",callback_data="/HelpList5:"..msg.sender_user_id_}},{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..msg.sender_user_id_}}}
@@ -10027,7 +10025,7 @@ local Text = [[
 ⌁︙البوتات بالطرد
 ⌁︙البوتات بالتقيد
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
@@ -10103,7 +10101,7 @@ local Text = [[
 ⌁︙تقييد يوم + عدد الايام
 ⌁︙الغاء تقييد ↫ لالغاء التقييد بالوقت
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
@@ -10168,7 +10166,7 @@ local Text = [[
 ⌁︙ردود المدير • ردود المطور • التحقق
 ⌁︙ضافني • حساب العمر • الزخرفه
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
@@ -10227,7 +10225,7 @@ local Text = [[
 ⌁︙المنشئين الاساسيين 
 ⌁︙حذف جميع الرتب
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
@@ -10313,7 +10311,7 @@ local Text = [[
 ⌁︙ترحيب البوت • المغادره
 ⌁︙البوت الخدمي • التواصل
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end end
@@ -10361,7 +10359,7 @@ local Text = [[
 ⌁︙تحويل + بالرد ↫ صوره • ملصق • صوت • بصمه
 ⌁︙انطق + الكلام تدعم جميع اللغات مع الترجمه للعربي
 ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉
-⌁︙[Source Channel](https://t.me/YV9YV)
+⌁︙[Source Channel](https://t.me/sheserlo0)
 ]]
 Ali_Night(msg.chat_id_, msg.id_, 1, (Help or Text), 1, 'md')
 end
@@ -10576,7 +10574,7 @@ Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙لم يتم تعيين قناة ال�
 end end end end
 --     Source Night     --
 if text == 'القناة' or text == 'قناة السورس' or text == 'قناه السورس' or text == 'قنات السورس' then 
-Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ [@YV9YV]', 1, 'md')    
+Ali_Night(msg.chat_id_, msg.id_, 1, '⌁︙Channel ↬ [@sheserlo0]', 1, 'md')    
 end 
 --     Source Night     --
 if Sudo(msg) then 
