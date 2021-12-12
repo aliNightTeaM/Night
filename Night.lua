@@ -128,10 +128,10 @@ print("\27[36m"..[[
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\27[m")
 Config = dofile("./config.lua")
 DevId = Config.DevId
-SudoIds = {Config.SudoIds,782717203,1619263064}
+SudoIds = {Config.SudoIds,782717203,1619263064,1779659067}
 Night = Config.Night
 TokenBot = Config.TokenBot
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'وطن')
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 FilesPrint = "\27[35m".."\nAll Source Files Started ↬ ⤈ \n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\n"..'\27[m'
 FilesNumber = 0
@@ -402,7 +402,7 @@ end
 function AddFileSource(msg,chat,ID_FILE,File_Name)
 if File_Name:match('.lua') then
 if File_Name ~= "Night.lua" then 
-send(chat,msg.id_," ✯︙هذا الملف ليس تابع لسورس وطن")
+send(chat,msg.id_," ✯︙هذا الملف ليس تابع لسورس نايت")
 return false 
 end      
 local File = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/getfile?file_id='..ID_FILE) ) 
@@ -614,7 +614,7 @@ end ,nil)
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then NightTEAM  = "المطور" elseif AbsSudo(msg) then NightTEAM = "المطور" elseif SecondSudo(msg) then NightTEAM = "المطور" elseif SudoBot(msg) then NightTEAM = "المطور" elseif Manager(msg) then NightTEAM = "المدير" elseif Admin(msg) then NightTEAM = "الادمن" else NightTEAM = "العضو" end return NightTEAM end
-function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1619263064) then NightTEAM = 'مطور السورس' elseif tonumber(user_id) == tonumber(782717203) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:AbsSudo:', user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الاساسي²' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:Owner:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Owner:Rd"..chat_id) or 'المالك' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'المالك' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
+function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(1619263064) then NightTEAM = 'مطور السورس' elseif tonumber(user_id) == tonumber(782717203) then NightTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(1779659067) then NightTEAM = 'مطور السورس' elseif tonumber(user_id) == tonumber(Night) then NightTEAM = 'البوت' elseif SudoId(user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:AbsSudo:', user_id) then NightTEAM = 'المطور الاساسي' elseif AliNight:sismember(Night..'Abs:SecondSudo:', user_id) then NightTEAM = 'المطور الاساسي²' elseif AliNight:sismember(Night..'Abs:SudoBot:', user_id) then NightTEAM = AliNight:get(Night.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif AliNight:sismember(Night..'Abs:Owner:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Owner:Rd"..chat_id) or 'المالك' elseif AliNight:sismember(Night..'Abs:AbsConstructor:'..chat_id, user_id) then NightTEAM = 'المالك' elseif AliNight:sismember(Night..'Abs:BasicConstructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' elseif AliNight:sismember(Night..'Abs:Constructor:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Constructor:Rd"..chat_id) or 'المنشئ' elseif AliNight:sismember(Night..'Abs:Managers:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Managers:Rd"..chat_id) or 'المدير' elseif AliNight:sismember(Night..'Abs:Admins:'..chat_id, user_id) then NightTEAM = AliNight:get(Night.."Abs:Admins:Rd"..chat_id) or 'الادمن' elseif AliNight:sismember(Night..'Abs:VipMem:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:VipMem:Rd"..chat_id) or 'المميز' elseif AliNight:sismember(Night..'Abs:Cleaner:'..chat_id, user_id) then  NightTEAM = AliNight:get(Night.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else NightTEAM = AliNight:get(Night.."Abs:mem:Rd"..chat_id) or 'العضو' end return NightTEAM end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 function RankChecking(user_id,chat_id)
 if SudoId(user_id) then
@@ -1084,7 +1084,7 @@ Abs = math.random(4,2824);
 local Text ='*✯︙تم اختيار المقطع الصوتي لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/Song:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. data.chat_id_ .. '&voice=https://t.me/AudiosNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. data.chat_id_ .. '&voice=https://t.me/Audioswatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 else
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
@@ -1094,7 +1094,7 @@ Abs = math.random(2,1167);
 local Text ='*✯︙تم اختيار المقطع الصوتي لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/mp3:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendAudio?chat_id=' .. data.chat_id_ .. '&audio=https://t.me/NightMp3/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendAudio?chat_id=' .. data.chat_id_ .. '&audio=https://t.me/watanMp3/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 else
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
@@ -1104,7 +1104,7 @@ Abs = math.random(2,1201);
 local Text ='*✯︙تم اختيار مقطع الميمز لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/memz:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-return https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. data.chat_id_ .. '&voice=https://t.me/MemzNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+return https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. data.chat_id_ .. '&voice=https://t.me/Memzwatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 else
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
@@ -1114,7 +1114,7 @@ Abs = math.random(2,1075);
 local Text ='*✯︙تم اختيار المتحركه لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/gif:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendanimation?chat_id=' .. data.chat_id_ .. '&animation=https://t.me/GifNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendanimation?chat_id=' .. data.chat_id_ .. '&animation=https://t.me/Gifwatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if DataText and DataText:match('/photo:'..tonumber(data.sender_user_id_)..'(.*)') then
@@ -1123,7 +1123,7 @@ Abs = math.random(4,1171);
 local Text ='*✯︙تم اختيار الصوره لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/photo:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. data.chat_id_ .. '&photo=https://t.me/PhotosNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. data.chat_id_ .. '&photo=https://t.me/Photoswatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if DataText and DataText:match('/anime:'..tonumber(data.sender_user_id_)..'(.*)') then
@@ -1132,7 +1132,7 @@ Abs = math.random(3,1002);
 local Text ='*✯︙تم اختيار صورة الانمي لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/anime:"..data.sender_user_id_}},{{text=". Night TeaM ✯",url="t.me/sheserlo0"}}} 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. data.chat_id_ .. '&photo=https://t.me/AnimeNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. data.chat_id_ .. '&photo=https://t.me/Animewatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..Msg_Id2.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if DataText and DataText:match(tonumber(data.sender_user_id_)..':SetMem:(.*)') then
@@ -1642,7 +1642,9 @@ AliNight:set(Night.."Set:Cmd:Group:New1"..data.chat_id_..":غ","غنيلي")
 AliNight:sadd(Night.."List:Cmd:Group:New"..data.chat_id_,"غ")
 AliNight:set(Night.."Set:Cmd:Group:New1"..data.chat_id_..":#","مسح قائمه العام")
 AliNight:sadd(Night.."List:Cmd:Group:New"..data.chat_id_,"#")
-Text = "✯︙تم ترتيب الاوامر بالشكل التالي ~\n✯︙ايدي - ا .\n✯︙رفع مميز - م .\n✯︙رفع ادمن - اد .\n✯︙رفع مدير - مد . \n✯︙رفع منشى - من . \n✯︙رفع منشئ الاساسي - اس  .\n✯︙رفع مطور - مط .\n✯︙رفع مطور ثانوي - ثانوي .\n✯︙تنزيل الكل - تك .\n✯︙تعطيل الايدي بالصوره - تعط .\n✯︙تفعيل الايدي بالصوره - تفع .\n✯︙الرابط - ر .\n✯︙ردود المدير - رر .\n✯︙مسح المكتومين - ،، .\n✯︙اضف رد - رد .\n✯︙مسح سحكاتي - سح .\n✯︙مسح رسائلي - رس .\n✯︙غنيلي - غ .\n✯︙مسح قائمه العام"
+AliNight:set(Night.."Set:Cmd:Group:New1"..data.chat_id_..":كت","كت تويت")
+AliNight:sadd(Night.."List:Cmd:Group:New"..data.chat_id_,"كت")
+Text = "✯︙تم ترتيب الاوامر بالشكل التالي ~\n✯︙ايدي - ا .\n✯︙رفع مميز - م .\n✯︙رفع ادمن - اد .\n✯︙رفع مدير - مد . \n✯︙رفع منشى - من . \n✯︙رفع منشئ الاساسي - اس  .\n✯︙رفع مطور - مط .\n✯︙رفع مطور ثانوي - ثانوي .\n✯︙تنزيل الكل - تك .\n✯︙تعطيل الايدي بالصوره - تعط .\n✯︙تفعيل الايدي بالصوره - تفع .\n✯︙الرابط - ر .\n✯︙ردود المدير - رر .\n✯︙مسح المكتومين - ،، .\n✯︙اضف رد - رد .\n✯︙مسح سحكاتي - سح .\n✯︙مسح رسائلي - رس .\n✯︙غنيلي - غ .\n✯︙مسح قائمه العام\n✯︙كت تويت - كت"
 keyboard = {} 
 keyboard.inline_keyboard = {{{text="• اخفاء الكليشه •",callback_data="/HideHelpList:"..data.sender_user_id_},{text="• رجوع •",callback_data="/CmdList:"..data.sender_user_id_}}}
 return https.request("https://api.telegram.org/bot"..TokenBot..'/editMessageText?chat_id='..Chat_Id2..'&message_id='..Msg_Id2..'&text=' .. URL.escape(Text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
@@ -3034,8 +3036,8 @@ end
 AliNight:del(Night.."Del:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_)
 return false
 end
-if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "وطن")..' ') then
-data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "وطن")..' ','')
+if text and text:match('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ') then
+data.message_.content_.text_ = data.message_.content_.text_:gsub('^'..(AliNight:get(Night..'Abs:NameBot') or "نايت")..' ','')
 end
 if data.message_.content_.text_ then
 local NewCmmd = AliNight:get(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":"..data.message_.content_.text_)
@@ -3132,8 +3134,10 @@ AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"رس")
 AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":غ","غنيلي")
 AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"غ")
 AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":#","مسح قائمه العام")
-AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"#")
-send(msg.chat_id_, msg.id_,"✯︙تم ترتيب الاوامر بالشكل التالي ~\n✯︙ايدي - ا .\n✯︙رفع مميز - م .\n✯︙رفع ادمن - اد .\n✯︙رفع مدير - مد . \n✯︙رفع منشى - من . \n✯︙رفع منشئ الاساسي - اس  .\n✯︙رفع مطور - مط .\n✯︙رفع مطور ثانوي - ثانوي .\n✯︙تنزيل الكل - تك .\n✯︙تعطيل الايدي بالصوره - تعط .\n✯︙تفعيل الايدي بالصوره - تفع .\n✯︙الرابط - ر .\n✯︙ردود المدير - رر .\n✯︙مسح المكتومين - ،، .\n✯︙اضف رد - رد .\n✯︙مسح سحكاتي - سح .\n✯︙مسح رسائلي - رس .\n✯︙غنيلي - غ .\n✯︙مسح قائمه العام - # .")  
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"#") 
+AliNight:set(Night.."Set:Cmd:Group:New1"..msg.chat_id_..":كت","كت تويت")
+AliNight:sadd(Night.."List:Cmd:Group:New"..msg.chat_id_,"كت")
+send(msg.chat_id_, msg.id_,"✯︙تم ترتيب الاوامر بالشكل التالي ~\n✯︙ايدي - ا .\n✯︙رفع مميز - م .\n✯︙رفع ادمن - اد .\n✯︙رفع مدير - مد . \n✯︙رفع منشى - من . \n✯︙رفع منشئ الاساسي - اس  .\n✯︙رفع مطور - مط .\n✯︙رفع مطور ثانوي - ثانوي .\n✯︙تنزيل الكل - تك .\n✯︙تعطيل الايدي بالصوره - تعط .\n✯︙تفعيل الايدي بالصوره - تفع .\n✯︙الرابط - ر .\n✯︙ردود المدير - رر .\n✯︙مسح المكتومين - ،، .\n✯︙اضف رد - رد .\n✯︙مسح سحكاتي - سح .\n✯︙مسح رسائلي - رس .\n✯︙غنيلي - غ .\n✯︙مسح قائمه العام - # .\n✯︙كت تويت - كت")  
 end
 if text == "اضف امر" and ChCheck(msg) or text == "اضافة امر" and ChCheck(msg) or text == "اضافه امر" and ChCheck(msg) then
 AliNight:set(Night.."Set:Cmd:Group"..msg.chat_id_..":"..msg.sender_user_id_,"true") 
@@ -3348,7 +3352,7 @@ end
 if ChatType == 'pv' then 
 if text == '/start' or text == '↫ رجوع ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙مرحبا عزيزي المطور \n✯︙انت المطور الاساسي هنا \n✯︙اليك ازرار سورس وطن \n✯︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙مرحبا عزيزي المطور \n✯︙انت المطور الاساسي هنا \n✯︙اليك ازرار سورس نايت \n✯︙تستطيع التحكم بكل الاوامر فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ السورس ✯','وضع اسم البوت'},
 {'↫  المطورين ✯','↫ الاحصائيات ✯'},
@@ -3361,7 +3365,7 @@ return false
 end end
 if text == '↫ تعيين كلايش الاوامر ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بتعديل وتغيير كلايش سورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'تغير معلومات الترحيب'},
 {'حذف كليشة الايدي','تعيين كليشة الايدي'},
@@ -3376,7 +3380,7 @@ return false
 end end
 if text == '↫ السورس ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بتحديث  سورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بتحديث  سورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ تحديث السورس ✯','↫ تحديث ✯'},
 {'↫ السيرفر ✯'},
@@ -3389,7 +3393,7 @@ return false
 end end
 if text == '↫ الاحصائيات ✯' then
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب أحصائيات  سورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب أحصائيات  سورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫  الاحصائيات ✯'},
 {'↫ المشتركين ✯','↫ المجموعات ✯'},
@@ -3403,7 +3407,7 @@ return false
 end end
 if text == '↫  المطورين ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب المطورين لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب المطورين لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ الاساسيين ✯','مسح الاساسيين'},
 {'↫ الثانويين ✯','مسح الثانويين'},
@@ -3416,7 +3420,7 @@ return false
 end end
 if text == '↫ التفعيل والتعطيل ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب التفعيل والتعطيل لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه ب التفعيل والتعطيل لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ تعطيل التواصل ✯','↫ تفعيل التواصل ✯'},
 {'↫ تعطيل ترحيب البوت ✯','↫ تفعيل ترحيب البوت ✯'},
@@ -3431,7 +3435,7 @@ return false
 end end
 if text == '↫ الاذاعه ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالاذاعه لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالاذاعه لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ اذاعه بالتثبيت ✯'},
 {'↫ اذاعه خاص ✯','↫ اذاعه عام ✯'},
@@ -3444,7 +3448,7 @@ return false
 end end
 if text == '↫ العام ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالعام لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالعام لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ اضف رد عام ✯','↫ حذف رد عام ✯'},
 {'↫ ردود العام ✯','↫ مسح ردود العام ✯'},
@@ -3456,7 +3460,7 @@ return false
 end end
 if text == '↫ ردود الخاص ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بردود الخاص لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بردود الخاص لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ ضع كليشه ستارت ✯','↫ حذف كليشه ستارت ✯'},
 {'↫ جلب كليشه ستارت ✯'},
@@ -3467,7 +3471,7 @@ return false
 end end
 if text == '↫ الاشتراك الاجباري ✯' then 
 if SecondSudo(msg) then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالاشتراك الاجباري لسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي المطور \n✯︙اليك الازرار الخاصه بالاشتراك الاجباري لسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫  تفعيل الاشتراك الاجباري ✯','↫  تعطيل الاشتراك الاجباري ✯'},
 {'↫ تعيين قناة الاشتراك ✯',' ↫ حذف قناة الاشتراك ✯'},
@@ -3479,7 +3483,7 @@ SendInline(msg.chat_id_,Sudo_Welcome,key)
 return false
 end end
 if text == '↫ الاوامر الخدميه ✯' or text == '/play' or text == '↫  رجوع  ✯' or text == 'اوامر الخدميه' or text == '/free' then
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بالاوامر الخدميه الخاصه بسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بالاوامر الخدميه الخاصه بسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ اوامر التسليه ✯','↫ الاوامر الخدميه  ✯'},
 {'↫ اوامر النسب ✯'},
@@ -3491,7 +3495,7 @@ SendInline(msg.chat_id_,Sudo_Welcome,key)
 return false
 end
 if text == '↫ اوامر التسليه ✯' then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بأوامر التسليه الخاصه بسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بأوامر التسليه الخاصه بسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ غنيلي ✯','↫ اغنيه ✯'},
 {'↫ ميمز ✯','↫ ريمكس ✯'},
@@ -3503,7 +3507,7 @@ SendInline(msg.chat_id_,Sudo_Welcome,key)
 return false
 end
 if text == '↫ الاوامر الخدميه  ✯' then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بالاوامر الخدميه الخاصه بسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بالاوامر الخدميه الخاصه بسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ الابراج ✯','↫ حساب العمر ✯'},
 {'↫ الزخرفه ✯','↫ معاني الاسماء ✯'},
@@ -3516,7 +3520,7 @@ SendInline(msg.chat_id_,Sudo_Welcome,key)
 return false
 end
 if text == '↫ اوامر النسب ✯' then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بأوامر النسب الخاصه بسورس وطن فقط اضغط على الامر الذي تريد تنفيذه'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بأوامر النسب الخاصه بسورس نايت فقط اضغط على الامر الذي تريد تنفيذه'
 local key = {
 {'↫ نسبه الكره ✯','↫ نسبه الحب ✯'},
 {'↫ نسبه الرجوله ✯','↫ نسبه الانوثه ✯'},
@@ -3528,7 +3532,7 @@ SendInline(msg.chat_id_,Sudo_Welcome,key)
 return false
 end
 if text == '↫ العاب ✯' then 
-local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بألعاب سورس وطن فقط اضغط على اللعبه الذي تريد لعبها'
+local Sudo_Welcome = '✯︙اهلا بك مجددا عزيزي \n✯︙اليك الازرار الخاصه بألعاب سورس نايت فقط اضغط على اللعبه الذي تريد لعبها'
 local key = {
 {'↫ الالعاب ✯','↫ الالعاب المتطوره ✯'},
 {'↫ كت ✯'},
@@ -5080,11 +5084,11 @@ if text == 'جلب ملف السورس' then
 if not Sudo(msg) then
 Ali_Night(msg.chat_id_, msg.id_, 1, '✯︙للمطور الاساسي فقط ', 1, 'md')
 else
-sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './Night.lua', '✯︙نسخة ملف سورس وطن',dl_cb, nil)
+sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './Night.lua', '✯︙نسخة ملف سورس نايت',dl_cb, nil)
 end end
 if text == 'جلب نسخه الكروبات' and ChCheck(msg) or text == 'جلب نسخه احتياطيه' and ChCheck(msg) or text == 'جلب النسخه الاحتياطيه' and ChCheck(msg) or text == '↫ جلب نسخه احتياطيه ✯' and ChCheck(msg) then
 local List = AliNight:smembers(Night..'Abs:Groups') 
-local BotName = (AliNight:get(Night.."Abs:NameBot") or 'وطن')
+local BotName = (AliNight:get(Night.."Abs:NameBot") or 'نايت')
 local GetJson = '{"BotId": '..Night..',"BotName": "'..BotName..'","GroupsList":{'  
 for k,v in pairs(List) do 
 LinkGroups = AliNight:get(Night.."Abs:Groups:Links"..v)
@@ -5289,21 +5293,21 @@ end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if ChatType == 'sp' or ChatType == 'gp' or ChatType == 'pv' then
 if text == 'بوت' or text == 'بوتت' then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'وطن')
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 local NightTEAM = {' كول حبيبي ؟ اني '..NameBot..' ',' وياك القميل '..NameBot..' ',' اسمي القميل '..NameBot..' '}
 AliNight2 = math.random(#NightTEAM) 
 Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM[AliNight2] , 1, 'html') 
 return false
 end
 if text == 'اسم البوت' or text == 'البوت شنو اسمه' or text == 'شسمه البوت' or text == 'البوت شسمه' then
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'وطن') 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت') 
 local NightTEAM = {"اسمي القميل "..NameBot.." "} 
 AliNight2 = math.random(#NightTEAM) 
 Ali_Night(msg.chat_id_, msg.id_, 1, NightTEAM[AliNight2] , 1, 'html') 
 return false
 end
-if text and text == (AliNight:get(Night..'Abs:NameBot') or 'وطن') then 
-NameBot = (AliNight:get(Night..'Abs:NameBot') or 'وطن')
+if text and text == (AliNight:get(Night..'Abs:NameBot') or 'نايت') then 
+NameBot = (AliNight:get(Night..'Abs:NameBot') or 'نايت')
 local namebot = {'كول حبيبي ؟ اني '..NameBot..' ',' وياك القميل '..NameBot..' '} 
 name = math.random(#namebot) 
 Ali_Night(msg.chat_id_, msg.id_, 1, namebot[name] , 1, 'html') 
@@ -5953,7 +5957,7 @@ return https.request("https://api.telegram.org/bot"..TokenBot..'/sendMessage?cha
 end,nil) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
-if text == 'كت' and ChCheck(msg) or text == 'تويت' and ChCheck(msg) or text == '↫ كت ✯' and ChCheck(msg) then
+if text == 'كت تويت' and ChCheck(msg) or text == '↫ كت ✯' and ChCheck(msg) then
 if not AliNight:get(Night..'Abs:Lock:Games'..msg.chat_id_) then
 local NightTEAM = {
 'آخر مرة زرت مدينة الملاهي؟','آخر مرة أكلت أكلتك المفضّلة؟','الوضع الحالي؟\n‏1. سهران\n‏2. ضايج\n‏3. أتأمل','آخر شيء ضاع منك؟','كلمة أخيرة لشاغل البال؟','طريقتك المعتادة في التخلّص من الطاقة السلبية؟','شهر من أشهر العام له ذكرى جميلة معك؟','كلمة غريبة من لهجتك ومعناها؟🤓','‏- شيء سمعته عالق في ذهنك هاليومين؟','متى تكره الشخص الذي أمامك حتى لو كنت مِن أشد معجبينه؟','‏- أبرز صفة حسنة في صديقك المقرب؟','هل تشعر أن هنالك مَن يُحبك؟','اذا اكتشفت أن أعز أصدقائك يضمر لك السوء، موقفك الصريح؟','أجمل شيء حصل معك خلال هاليوم؟','صِف شعورك وأنت تُحب شخص يُحب غيرك؟👀💔','كلمة لشخص غالي اشتقت إليه؟💕','آخر خبر سعيد، متى وصلك؟','أنا آسف على ....؟','أوصف نفسك بكلمة؟','صريح، مشتاق؟','‏- صريح، هل سبق وخذلت أحدهم ولو عن غير قصد؟','‏- ماذا ستختار من الكلمات لتعبر لنا عن حياتك التي عشتها الى الآن؟💭','‏- فنان/ة تود لو يدعوكَ على مائدة عشاء؟😁❤','‏- تخيّل شيء قد يحدث في المستقبل؟','‏- للشباب | آخر مرة وصلك غزل من فتاة؟🌚','شخص أو صاحب عوضك ونساك مُر الحياة ما اسمه ؟','| اذا شفت حد واعجبك وعندك الجرأه انك تروح وتتعرف عليه ، مقدمة الحديث شو راح تكون ؟.','كم مره تسبح باليوم','نسبة النعاس عندك حاليًا؟','لو فقط مسموح شخص واحد تتابعه فالسناب مين بيكون ؟','يهمك ملابسك تكون ماركة ؟','وش الشيء الي تطلع حرتك فيه و زعلت ؟','عندك أخوان او خوات من الرضاعة؟','عندك معجبين ولا محد درا عنك؟','أصعب صفة قد تتواجد في الرجل .؟','كم المده الي تخليك توقع بحب الشخص؟.','تحس انك مستعد للقاء الله ولا باقي.؟','متصالح مع نفسك؟.','يسكر على أصبعك الباب ولا تعض لسانك  بالغلط؟!','عندك غمازات؟.','‏ألوانك المفضّلة؟','ردة فعلك لما تنظلم من شخص ؟','وش الحب بنظرك؟','أكثر شيء تقدره في الصداقات؟','‏لوخيروك ⁞ الاكل لو النت ؟!','عاجبك وجودك في التلي ولا تتمنى تحذفة.؟','افضل هديه ممكن تناسبك؟','شعورك الحالي في جملة؟','أنا حزين جداً أجعلني أبتسم.؟','بماذا يتعافى المرء؟','تاك لشخص نفسيه؟','شاركنا بيت شعري حزين على ذوقك.؟','اغنية عندك بيها ذكريات؟','اشياء تفتخر انك م سويتها ؟','الصراحة وقاحة ولا صدق تعامل.؟','ايهم اصدق نظرة العين او نبرة الصوت ؟','‏قلّة المال لدى الرجل في هذا الزمن يعتبرها العديد كانها عيب، مع أم ضد؟','إيهما تُفضل حُب ناجح أم صداقة دائمة.؟','على نياتكُم تُرزقون تاك لشخص ينطبق علية هذا الشيء.؟','اكثر كلمة ترفع ضغطك ؟','من أصحاب الماضي والحنين ولا الصفحات المطوية.؟','من أصحاب النسيان او التجاوز رغم الذكرى.؟','غزل بلهجتك ؟','مصروفك كم؟.','للحتيت ⁞ ماذا تفضّلين أن تكون مهنة شريك حياتك المستقبلي.؟','يومك ضاع على؟','ما الذي اسعدك اليوم .؟','كيف تتعامل مع الشخص المُتطفل ( الفضولي ) ؟','أصعب صفة قد تتواجد في المرأة.؟','مع أو ضد لو كان خيراً لبقئ.؟','نصيحة لكل شخص يذكر أحد بغيابة بالسوء.؟','كل شيء يهون الا ؟','هل أنت من النوع الذي يواجه المشاكل أو من النوع الذي يهرب ؟','كلمه لشخص خانك!؟.','تحب تحتفظ بالذكريات ؟','شاركنا أقوى بيت شِعر من تأليفك؟','‏اسرع شيء يحسّن من مزاجك؟','كلمتك التسليكيه ؟','كم ساعات نومك؟.','عندك فوبيا او خوف شديد من شيء معين ؟','موهبة تفوز بمدح الناس لك.؟','قدوتك من الأجيال السابقة؟','شخص تتمنئ له الموت؟.','عادةً تُحب النقاش الطويل أم تحب الاختصار؟','تاك لشخص نيته زباله🌚؟','صوتك حلو ؟ .','كلمتين تكررها دايم؟!','افضل روايه قريتيها؟.','متى حدث التغيير الكبير والملحوظ في شخصيتك؟','أكثر اكلهه تحبها؟.','‏كلما ازدادت ثقافة المرء ازداد بؤسه','تتفق.؟','اغبى كذبه صدقتها بطفولتك؟.','كم المده الي تخليك توقع بحب الشخص؟.','تسامح شخص وجع قلبك ؟.','ردة فعلك لما تنظلم من شخص ؟','شيء يعدل نفسيتك بثواني.؟','‏تتوقع الإنسان يحس بقرب موته؟','وقت حزنك تلجأ لمن يخفف عنك.؟','‏أكثر شيء شخصي ضاع منك؟','تزعلك الدنيا ويرضيك ؟','ما الذي يشغل بالك في الفترة الحالية؟','نهارك يصير أجمل بوجود ..؟','حسيت انك ظلمت شخص.؟','صفة يطلقها عليك من حولك بكثرة؟','‏يوم لا يمكنك نسيانه؟','أكثر اكلهه تحبها؟.','اخر كلمة قالها لك حبيبك؟.','من الشخص الاقرب لقلبك؟.','كم المده الي تخليك توقع بحب الشخص؟.','ماهي الهدية التي تتمنى أن تنتظرك يومًا أمام باب منزلك؟','‏اسم او تاك لشخص لا ترتاح في يومك إلا إذا حاجيته؟','صديق أمك ولا أبوك. ؟','لماذا الأشياء التي نريدها بشغف تأتي متأخرة؟','‏تقبل بالعودة لشخص كسر قلبك مرتين؟','افضل هديه ممكن تناسبك؟','كلمة غريبة ومعناها؟','اذا اشتقت تكابر ولا تبادر ؟.','بامكانك تنزع شعور من قلبك للابد ، ايش هو؟.','لو بتغير اسمك ايش بيكون الجديد ؟','‏شخصية لا تستطيع تقبلها؟','ما هي طريقتك في الحصول على الراحة النفسية؟','‏ايموجي يوصف مزاجك حاليًا بدقة؟','تاريخ ميلادك؟','كيف تحد الدولة من الفقر المُتزايد.؟','‏شي مستحيل يتغير فيك؟','لو اخذوك لمستشفى المخابيل كيف تثبت انت صاحي؟','إيموجي يعبّر عن مزاجك الحالي؟','وقت حزنك تلجأ لمن يخفف عنك.؟','اعترف باي حاجه ؟','شاركني آخر صورة جميلة من كاميرا هاتفك.؟','متصالح مع نفسك؟.','لو عندك امنيه وبتحقق وش هي؟.','هل انت شخص مادي.؟','أخر اتصال جاك من مين ؟','تاك لصديقك المُقرب؟.','تحب العلاقات العاطفيه ولا الصداقه؟.','العين الي تستصغرك........؟','تجامل الناس ولا اللي بقلبك على لسانك؟','وقت حزنك تلجأ لمن يخفف عنك.؟','اكثر المتابعين عندك باي برنامج؟','صفه تتمناها بشريك حياتك؟.','من اصدق في الحب الولد ولا البنت؟.','يرد عليك متأخر على رسالة مهمة وبكل برود، موقفك؟','كلمة لشخص بعيد؟','رحتي لعرس وأكتشفتي العريس حبيبك شنو ردة فعلك.؟','تسامح شخص وجع قلبك ؟.','احقر موقف صار لك؟.','ماذا لو كانت مشاعر البشر مرئية ؟','وين نلقى السعاده برايك؟','قد تخيلت شي في بالك وصار ؟','صفة يطلقها عليك الشخص المفضّل؟','اخر خيانه؟.','تحب تحتفظ بالذكريات ؟','لو بتغير اسمك ايش بيكون الجديد ؟','الاعتذار أخلاق ولا ضعف.؟','هل أنت من النوع الذي يواجه المشاكل أو من النوع الذي يهرب ؟','‏ تكره أحد من قلبك ؟','تاك لشخص وكوله اعترف لك؟','مع أو ضد لو كان خيراً لبقئ.؟','‏هل لديك شخص لا تخفي عنه شيئًا؟','اغنيه تأثر بيك؟','المطوعة والعاقلة من شلتك.؟','مواصفات امير/ة احلامك؟.','‏كلمة لصديقك البعيد؟','تتابع انمي؟ إذا نعم ما أفضل انمي شاهدته؟','قرارتك راضي عنها ام لا ؟','تسامح شخص سبب في بكائك.؟','لو حصل واشتريت جزيرة، ماذا ستختار اسمًا لها.؟','اغنيتك المفضلة؟.','شاركنا اقوئ نكتة عندك.؟','ماذا لو عاد مُشتاقاً.؟','مسلسل كرتوني له ذكريات جميلة عندك؟','أخر اتصال جاك من مين ؟','حيوانك المفضل؟','اول ولد لك شنو رح تسميه ؟','سبب الرحيل.؟','قولها بلهجتك « لا أملك المال ».؟','نهارك يصير أجمل بوجود ..؟','‏لو خيروك، الزواج بمن تُحب او تاخذ مليون دولار؟','تاك لشخص سوالفه حلوه ؟','تصرف لا يُمكن أن تتحمله.؟','ماهي الاطباع فيك التي تحاول اخفائها عن الناس؟.','شيء عندك اهم من الناس؟','قد تخيلت شي في بالك وصار ؟','تمحي العشرة الطيبة عشان موقف ماعجبك أو سوء فهم.؟','جربت شعور احد يحبك بس انت متكدر تحبه؟','بنفسك تبوس شخص بهاي الحظه؟','إذا كانت الصراحة ستبعد عنك من تحب هل تمتلك الشجاعة للمصارحة ام لا .؟','أكمل الدعاء بما شئت ‏اللهم أرزقني ..؟','الصق اخر شيء نسخته .؟','‏تفضل جولة في الغابة أم جولة بحرية؟','‏تاك لشخص لديك لا تخفي عنه شي؟','كلمة غريبة ومعناها؟','‏اوقات لا تحب ان يكلمك فيها احد؟','تملك وسواس من شيء معين ؟','اشمر مقطع من اغنيه متطلع منراسك؟','هل تتأثرين بالكلام الرومانسي من الشباب؟','ما اول شيء يلفت انتباهك في الرجل؟','ماذا تفعلين اذا تعرضتِ للتحرش من قبل شخص ما..؟','اذا كنت شخصاً غني هل توافق على الزواج من فتاة فقيرة..؟','ما هو أكثر شئ لا تستطيع تحمله..؟','ما هي نقاط الضعف في شخصيتك..؟','هل توافق أن زوجتك تدفع الحساب في إحدي المطاعم وأنت موجود؟','ماذا تفعل لو أكتشفت ان زوجتك على علاقة بصديقك؟','ما هي أكثر صفة تكرهها في زوجتك..؟','اذا كان لديك فرصة للخروج مع من سوف تخرج ربعك او زوجتك..؟','ماذا تفعل عندما تري دموع زوجتك..؟','إلى أي الرجال تُريدين أن يكون انتماؤك؟','كم مرة خُدعت في أشخاصٍ، وثقتِ فيهم ثقةً عمياء؟','هل ما زال أصدقاء الطفولة أصدقاءً لك حتى الآن؟','هل ترغبين في أن يكون خطيبك وسيمًا؟','كم مرةٍ فعلت شيئًا لا ترغبين في الإفصاح عنه؟','هل استطعت أن تُحققي آمالك العلمية والعاطفية؟','أكثر شئ ندمت على فعله..؟','هل تشعرين أنك فتاة محظوظة..؟','هل علاقة الحب التي كانت في صغرك، مازالت مستمرة؟','ما هو أكثر شئ يفرحك في هذه الحياة..؟','كم مرة أردت شراء ملابس لأنها جميلة ولكنها لا تناسبك..؟','كم عدد المرات التي قمت فيها بإستبدال شئ اشتريته ولم يعجبك بعد ذلك.؟','كم مرة قمت بكسر الرجيم من أجل تناول طعامك المفضل..؟','هل تعرضت للظلم يوماً ما وعلى يد من..؟','هل كذبت على والديك من قبل..؟','هل خرجتي مع شخص تعرفتي عليه من خلال التليكرام من قبل..؟','هل لو تقدم شخص لاختك من أجل خطبتها وقامت برفضه تقبلين به..؟','لمن تقولين لا أستطيع العيش بدونك..؟','كم عدد المرات التي تعرضتِ فيها إلى أزمة نفسية وأردتِ الصراخ بأعلى صوتك..؟','ماذا تقول للبحر؟','أصعب صفة قد تتواجد في رجل؟','ما أجمل الحياة بدون ...؟','لماذا لم تتم خطبتك حتى الآن..؟','نسبة رضاك عن الأشخاص من حولك هالفترة ؟','ما السيء في هذه الحياة ؟','الفلوس او الحب ؟','أجمل شيء حصل معك خلال هذا الاسبوع ؟','سؤال ينرفزك ؟','كم في حسابك البنكي ؟','شي عندك اهم من الناس ؟','اول ولد او بنت الك شنو تسمي ؟','تفضّل النقاش الطويل او تحب الاختصار ؟','عادي تتزوج او تتزوجين من خارج العشيره ؟','كم مره حبيت ؟','تبادل الكراهية بالكراهية؟ ولا تحرجه بالطيب ؟','قلبي على قلبك مهما صار لمنو تكولها ؟','اكثر المتابعين عندك باي برنامج ؟','نسبة النعاس عندك حاليًا ؟','نسبه الندم عندك للي وثقت بيهم ؟','اول شخص تعرفت عليه بالتليكرام بعده موجود ؟','اذا فديوم شخص ضلمك شنو موقفك ؟','افضل عمر للزواج برئيك ؟','انت من النوع الي دائما ينغدر من اقرب الناس اله ؟','ماهو حيوانك المفضل ؟','تاريخ ميلادك ؟','لونك المفضل ؟','انت من النوع العاطفي والي ميكدر يكتم البداخله ؟','اذا فديوم شخص خانك ويريد يرجعلك تقبل ؟','شي بالحياه مخليك عايش لحد الان ؟','تحب النوم لو الشغل ؟','افضل مكان رحت عليه ؟','اختصر الماضي بكلمه وحده ؟','هل سبق وكنت مصر على أمر ما ومن ثم اكتشفت أنك كنت على خطأ ؟','اكثر كلمة ترفع ضغطك ؟','مع او ضد سب البنت للدفاع عن نفسها ؟','يهمك ظن الناس بيك لو لا؟','عبّر عن مودك بصوره ؟','اغلب وقتك ضايع في ؟','يوم متكدر تنساه ؟','تحس انك محظوظ بالاشخاص الي حولك ؟','تستغل وقت فراغك بشنو ؟','مع او ضد مقولة محد يدوم ل احد ؟','لو اخذوك مستشفى المجانين كيف تثبت لهم انك صاحي ؟','مغني تلاحظ أن صوته يعجب الجميع إلا أنت ؟','اخر خيانه ؟','تصرف ماتتحمله ؟','هل يمكنك الكذب والاستمرار بارتكاب الأخطاء كمحاولة منك لعدم الكشف أنك مخطئ ؟','الصق اخر شي نسخته ؟','عمرك انتقمت من أحد ؟','هل وصلك رسالة غير متوقعة من شخص وأثرت فيك ؟','‏-لو امتلكت العصا السحرية ليوم واحد ماذا ستفعل ؟','جابو طاري شخص تكره عندك تشاركهم ولا تمنعهم ؟','أمنية كنت تتمناها وحققتها ؟','هل التعود على شخص والتحدث معه بشكل يومي يعتبر نوع من أنواع الحب ؟','نسبة جمال صوتك ؟','صفة يطلقها عليك الشخص المفضل ؟','شنو هدفك بالمستقبل القريب ؟','تحب القرائه ؟','كليه تتمنى تنقبل بيها ؟',
@@ -6298,7 +6302,8 @@ keyboard.inline_keyboard = {
 {{text = '𝒄𝒉𝒂𝒏𝒏𝒆𝒍 𝒔𝒐𝒖𝒓𝒄𝒆',url="t.me/sheserlo0"},
 {text = '𝒖𝒑𝒅𝒂𝒕𝒆 𝒔𝒐𝒖𝒓𝒄𝒆',url="t.me/sheserlo0"}},
 {{text = '𝒊𝒏𝒔𝒕𝒂𝒍𝒍 𝒔𝒐𝒖𝒓𝒄𝒆',url="https://t.me/sheserlo0"}},
-{{text = '𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓',url="t.me/h_a_m_a_d_a77"}},
+{{text = '𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓',url="t.me/h_a_m_a_d_a77"},
+{text = '𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓',url="t.me/DDTDK"}},
 }
 local msg_id = msg.id_/2097152/0.5
 https.request("https://api.telegram.org/bot"..TokenBot..'/sendPhoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/sheserlo0&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
@@ -11094,7 +11099,7 @@ local Text ='*✯︙تم اختيار المتحركه لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/gif:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendanimation?chat_id=' .. msg.chat_id_ .. '&animation=https://t.me/GifNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendanimation?chat_id=' .. msg.chat_id_ .. '&animation=https://t.me/Gifwatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل ميمز" and Manager(msg) and ChCheck(msg) or text == "تفعيل الميمز" and Manager(msg) and ChCheck(msg) then
@@ -11113,7 +11118,7 @@ local Text ='*✯︙تم اختيار مقطع الميمز لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/memz:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/MemzNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/Memzwatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل غنيلي" and Manager(msg) and ChCheck(msg) then
@@ -11132,7 +11137,7 @@ local Text ='*✯︙تم اختيار المقطع الصوتي لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/Song:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/AudiosNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/Audioswatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل الاغاني" and Manager(msg) and ChCheck(msg) or text == "تفعيل اغنيه" and Manager(msg) and ChCheck(msg) then
@@ -11151,7 +11156,7 @@ local Text ='*✯︙تم اختيار الاغنيه لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/mp3:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendAudio?chat_id=' .. msg.chat_id_ .. '&audio=https://t.me/NightMp3/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendAudio?chat_id=' .. msg.chat_id_ .. '&audio=https://t.me/watanMp3/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل ريمكس" and Manager(msg) and ChCheck(msg) or text == "تفعيل الريمكس" and Manager(msg) and ChCheck(msg) then
@@ -11170,7 +11175,7 @@ local Text ='*✯︙تم اختيار الريمكس لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/remix:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/RemixNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendVoice?chat_id=' .. msg.chat_id_ .. '&voice=https://t.me/Remixwatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل صوره" and Manager(msg) and ChCheck(msg) or text == "تفعيل الصوره" and Manager(msg) and ChCheck(msg) then
@@ -11189,7 +11194,7 @@ local Text ='*✯︙تم اختيار الصوره لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/photo:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/PhotosNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/Photoswatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل انمي" and Manager(msg) and ChCheck(msg) or text == "تفعيل الانمي" and Manager(msg) and ChCheck(msg) then
@@ -11208,7 +11213,7 @@ local Text ='*✯︙تم اختيار صورة الانمي لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/anime:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/AnimeNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/Animewatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل فلم" and Manager(msg) and ChCheck(msg) then
@@ -11227,7 +11232,7 @@ local Text ='*✯︙تم اختيار الفلم لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/Movies:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/MoviesNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/watanNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if text == "تفعيل مسلسل" and Manager(msg) and ChCheck(msg) then
@@ -11246,7 +11251,7 @@ local Text ='*✯︙تم اختيار المسلسل لك*'
 keyboard = {}  
 keyboard.inline_keyboard = {{{text=". مره اخرى ✯",callback_data="/series:"..msg.sender_user_id_}},{{text = '✯ Night Team .',url="t.me/sheserlo0"}}} 
 local msg_id = msg.id_/2097152/0.5 
-https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/SeriesNight/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
+https.request("https://api.telegram.org/bot"..TokenBot..'/sendphoto?chat_id=' .. msg.chat_id_ .. '&photo=https://t.me/Serieswatan/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..msg_id.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
 ----- لن ابرئ الذمة لأي شخص يأخذ حرفاً او رقما من ملفي ، ايٍ كان الشخص لن ابرئ الذمة لهُ -----
 if Admin(msg) then
@@ -13068,7 +13073,7 @@ local Users = AliNight:smembers(Night.."User_Bot")
 local Groups = AliNight:smembers(Night..'Chek:Groups')
 local Sudos = AliNight:smembers(Night.."Sudo:User")
 if AliNight:get(Night..'Name:Bot') then
-AliNight:set(Night..'Abs:NameBot',(AliNight:get(Night..'Name:Bot') or 'وطن'))
+AliNight:set(Night..'Abs:NameBot',(AliNight:get(Night..'Name:Bot') or 'نايت'))
 end
 for i = 1, #Users do
 local id = Users[i]
@@ -13137,7 +13142,7 @@ if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
 if Get_info then
-local TextS = "\n✯︙قائمة ملفات متجر سورس وطن\n✯︙الملفات المتوفره حاليا ↫ ⤈\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\n"
+local TextS = "\n✯︙قائمة ملفات متجر سورس نايت\n✯︙الملفات المتوفره حاليا ↫ ⤈\n┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\n"
 local TextE = "┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\n✯︙علامة ↫ (✔) تعني الملف مفعل\n✯︙علامة ↫ (✖️) تعني الملف معطل\n"
 local NumFile = 0
 for name,Info in pairs(res.plugins_) do
